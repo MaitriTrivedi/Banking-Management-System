@@ -48,6 +48,6 @@ int main(int argc, char const *argv[])
         return 0;
     }
     // printf("========================= CONNECTION CLOSED ==========================\n");
-
+    getchar();
     return 0;
 }
