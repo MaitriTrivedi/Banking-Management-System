@@ -17,6 +17,7 @@ struct Customer{
     float account_balance;
     bool loan_taken; // 0 bydefault
     int loan_id; // -1 by default
+    int employee_id; // user_id of that employee
 };
 
 struct Employee{

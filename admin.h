@@ -64,7 +64,13 @@ void list_of_customers(){
     int i=1;
     struct Customer c;
     while((bytesRead = read(fd, &c, sizeof(c))) > 0 ){
-        char *t = c.loan_taken ? "Yes" : "No";
+        char t[6];
+        if(c.loan_taken) {
+            strcpy(t, "Yes");
+        }
+        else {
+            strcpy(t, "No");
+        }
         printf("%d %s %d %f %s %d\n", i, c.u.username, c.account_no, c.account_balance, t, c.loan_id);
         i++;
     }

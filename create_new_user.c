@@ -5,6 +5,7 @@
 #include "structures.h"
 #include<fcntl.h>
 #include <sys/stat.h>
+#include "employee.h"
 
 void create_admin_user(struct Admin a){
     int fd;
@@ -113,7 +114,9 @@ void create_new_user(int type){
                 struct Admin a;
                 strcpy(a.u.username, "Maitri");
                 hashPassword( "1234", a.u.password);
+                a.u.id = show_user_id_by_one()+1;
                 create_admin_user(a);
+                update_user_id_by_one();
                 return;
             }
         case 2:
@@ -129,7 +132,9 @@ void create_new_user(int type){
 
                 strcpy(m.u.username, temp_name);
                 hashPassword( temp_password, m.u.password);
+                m.u.id = show_user_id_by_one()+1;
                 create_manager_user(m);
+                update_user_id_by_one();
                 return;
             }
 
@@ -152,7 +157,9 @@ void create_new_user(int type){
 
                 strcpy(e.u.username, temp_name);
                 hashPassword( temp_password, e.u.password);
+                e.u.id = show_user_id_by_one()+1;
                 create_employee_user(e);
+                update_user_id_by_one();
                 return;
             }
         case 4:
@@ -187,7 +194,9 @@ void create_new_user(int type){
 
                 strcpy(c.u.username, temp_name);
                 hashPassword( temp_password, c.u.password);
+                c.u.id = show_user_id_by_one()+1;
                 create_customer_user(c);
+                update_user_id_by_one();
                 return;
             }
         default:
