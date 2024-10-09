@@ -5,26 +5,42 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <pthread.h>
+#include <signal.h>
+#include <stdlib.h>
 
 #define PORT 8060
 #define LISTEN_BACKLOG 50
 #define MAX_CONCURRENT_CONNECTIONS 5
+
+static volatile int keep_running = 1;
+int server_socket;
+
+void signalHandler(int signal_num){
+    int cls = close(server_socket);
+    if (cls == -1)
+    {
+        perror("");
+        exit(1);
+    }
+    printf("======================= CLOSED SERVER SOCKET ============================\n");
+    exit(1);
+}
 
 void *handleClient(void *client_socket)
 {
     /*
     This is called after creating new thread for each new client when a new client sends the request to handle each client concurrently.
     */
+    printf("\n=============================== a new client connected ===============================\n");
     int acpt = *(int *)client_socket;
     char st[20];
-    printf("%d\n", acpt);
+    // printf("%d\n", acpt);
     int rd = read(acpt, &st, sizeof(st));
     if (rd == -1)
     {
         perror("");
         return 0;
     }
-    printf("Client Message : %s\n", st);
 
     int wr = write(acpt, &st, sizeof(st));
     if (wr == -1)
@@ -33,6 +49,7 @@ void *handleClient(void *client_socket)
         return 0;
     }
 
+    printf("=============================== client connection closed ===============================\n\n");
     close(acpt);
     pthread_exit(NULL);
 }
@@ -42,13 +59,13 @@ int main(int argc, char const *argv[])
     socklen_t l;
 
     // create socket
-    int server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket == -1)
     {
         perror("");
         return 0;
     }
-    // printf("======================= CRAETED SOCKET ============================\n");
+    printf("======================= CRAETED SERVER SOCKET ============================\n");
 
     // bind that socket to port
     struct sockaddr_in server_addr;
@@ -69,9 +86,14 @@ int main(int argc, char const *argv[])
         perror("");
         return 0;
     }
+    
+    signal(SIGINT, signalHandler);
 
-    while (1)
+    while (keep_running)
     {
+        
+        if(!keep_running) break;
+
         // accept connection requests
         struct sockaddr_in client_addr;
         l = sizeof(client_addr);
@@ -82,6 +104,7 @@ int main(int argc, char const *argv[])
             return 0;
         }
 
+        if(!keep_running) break;
         // new thread for each client
         pthread_t thread_id;
         int pthrd = pthread_create(&thread_id, NULL, (void *)handleClient, (void *)&client_socket);
@@ -99,6 +122,7 @@ int main(int argc, char const *argv[])
         perror("");
         return 0;
     }
+    printf("======================= CLOSED SERVER SOCKET ============================\n");
 
     return 0;
 }
