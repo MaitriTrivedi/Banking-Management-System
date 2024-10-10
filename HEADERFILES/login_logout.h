@@ -1,8 +1,9 @@
 #include "structures.h"
 #include "password_methods.h"
 #include "admin.h"
+// #include "create_new_user.h"
 
-bool login_admin(struct Admin a){
+int login_admin(struct Admin a){
     struct Admin tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
@@ -11,7 +12,7 @@ bool login_admin(struct Admin a){
     fd = open("DATABASE/admin.txt",O_RDWR);
     if(fd==-1){
         perror("");
-        return false;
+        return -1;
     }
 
     // search for the availability of the Admin userx
@@ -23,17 +24,17 @@ bool login_admin(struct Admin a){
         if(strcmp(tempAdmin.u.username, a.u.username)==0){
             if( (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 close(fd);
-                return true;
+                return tempAdmin.u.userid;
             }
         }
     }
 
     close(fd);
-    return false;
+    return -1;
 
 }
 
-bool login_customer(struct Customer a){
+int login_customer(struct Customer a){
     struct Customer tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
 
@@ -42,7 +43,7 @@ bool login_customer(struct Customer a){
     fd = open("DATABASE/customer.txt",O_RDWR);
     if(fd==-1){
         perror("");
-        return false;
+        return -1;
     }
 
     // search for the availability of the Admin userx
@@ -54,17 +55,17 @@ bool login_customer(struct Customer a){
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 close(fd);
-                return true;
+                return tempCustomer.u.userid;
             }
         }
     }
 
     close(fd);
-    return false;
+    return -1;
 
 }
 
-bool login(struct User u, int type){
+int login(struct User u, int type){
     printf("=================\n");
     printf("===== LOGIN =====\n");
     printf("=================\n");
@@ -88,7 +89,7 @@ bool login(struct User u, int type){
                 return t;
             }
     }
-    return 0;
+    return -1;
 }
 
 bool logout(){

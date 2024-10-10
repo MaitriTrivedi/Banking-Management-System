@@ -3,35 +3,7 @@
 #include<unistd.h>
 #include <stdbool.h>
 #include<stdio.h>
-#include "admin.h"
-#include "create_new_user.c"
-
-void loan_applications(){
-    int fd;
-
-    // open file in read write file
-    fd = open("DATABASE/customer.txt",O_RDWR);
-    if(fd==-1){
-        perror("");
-        return;
-    }
-    
-    int bytesRead;
-    int i=1;
-    struct Customer c;
-    while((bytesRead = read(fd, &c, sizeof(c))) > 0 ){
-        char t[6];
-        if(c.loan_taken) {
-            strcpy(t, "Yes");
-            printf("%d %s %d %f %s %d\n", i, c.u.username, c.account_no, c.account_balance, t, c.loan_id);
-        }
-        i++;
-    }
-
-    close(fd); 
-
-    return ;
-}
+#include "loan.h"
 
 void assign_loan_applications_to_emp(){
     
@@ -54,7 +26,7 @@ void manager_handler(){
         }
         case 2:
         {
-            loan_applications();
+            view_loan_applications();
             break;
         }
         case 3:

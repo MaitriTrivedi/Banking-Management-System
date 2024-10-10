@@ -3,6 +3,7 @@
 #include<unistd.h>
 #include <stdbool.h>
 #include<stdio.h>
+#include "create_new_user.h"
 
 void list_of_managers(){
     int fd;
@@ -71,7 +72,7 @@ void list_of_customers(){
         else {
             strcpy(t, "No");
         }
-        printf("%d %s %d %f %s %d\n", i, c.u.username, c.account_no, c.account_balance, t, c.loan_id);
+        printf("%d %s %d %f %s %d\n", i, c.u.username, c.account_no, c.account_balance, t, c.loan_taken);
         i++;
     }
 

@@ -1,9 +1,3 @@
-#include <sys/file.h>
-#include<unistd.h>
-#include<stdio.h>
-#include<fcntl.h>
-#include <sys/stat.h>
-
 void update_user_id_by_one(){
     int fd;
     struct stat file_stat;
@@ -45,18 +39,18 @@ void update_user_id_by_one(){
 
 int show_user_id_by_one(){
     int fd;
+    int t=0;
     struct stat file_stat;
 
     // open file in read write file
     fd = open("DATABASE/last_used_user_id.txt",O_RDWR);
     if(fd==-1){
         perror("");
-        return;
+        return t;
     }
 
     // check if the file is empty
     fstat(fd, &file_stat);
-    int t=0;
     if(file_stat.st_size == 0){
         // file is empty, initialize with 0
         int init_val = 0;
@@ -71,10 +65,4 @@ int show_user_id_by_one(){
 
     close(fd); 
     return t;
-}
-
-int main(int argc, char const *argv[])
-{
-    show_user_id_by_one();
-    return 0;
 }

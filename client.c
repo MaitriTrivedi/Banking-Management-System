@@ -4,13 +4,12 @@
 #include <netinet/in.h>
 #include<arpa/inet.h>
 #include <string.h>
-#include "structures.h"
-#include "password_methods.h"
-#include "login_logout.h"
-#include "create_new_user.c"
-#include "manager.h"
-#include "customer.h"
-#include "employee.h"
+#include "./HEADERFILES/structures.h"
+#include "HEADERFILES/password_methods.h"
+#include "HEADERFILES/login_logout.h"
+#include "HEADERFILES/manager.h"
+#include "HEADERFILES/customer.h"
+#include "HEADERFILES/employee.h"
 
 void main(int argc, char *argv[])
 {
@@ -54,33 +53,35 @@ void main(int argc, char *argv[])
 
         hashPassword(password, u.password);
 
-        int login_success = login(u, choice);
-        if(login_success)
-            printf("Login Successful !\n");
-        else {
+        int login_success_user_id = login(u, choice);
+        if(login_success_user_id==-1){
             printf("Login Unsuccessful !\n");
+            continue;
+        }
+        else {
+            printf("Login Successful !\n");
         }
         int t1=1;
         while(t1!=2){
             switch (choice){
                 case 1:
                 {
-                    admin_handler();
+                    admin_handler(login_success_user_id);
                     break;
                 }
                 case 2:
                 {
-                    manager_handler();
+                    manager_handler(login_success_user_id);
                     break;
                 }
                 case 3:
                 {
-                    employee_handler();
+                    employee_handler(login_success_user_id);
                     break;
                 }
                 case 4:
                 {
-                    customer_handler();
+                    customer_handler(login_success_user_id);
                     break;
                 }
             }

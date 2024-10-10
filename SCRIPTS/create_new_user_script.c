@@ -1,4 +1,4 @@
-#include "create_new_user.c"
+#include "../HEADERFILES/create_new_user.h"
 
 void main(int argc, char *argv[]){
     int type;
@@ -14,3 +14,4 @@ void main(int argc, char *argv[]){
 }
 
 // gcc create_new_user.c -o create_new_user -lssl -lcrypto
+// gcc create_new_user_script.c -lssl -lcrypto

@@ -5,7 +5,7 @@
 #include "structures.h"
 #include<fcntl.h>
 #include <sys/stat.h>
-#include "employee.h"
+#include "last_used_user_id.h"
 
 void create_admin_user(struct Admin a){
     int fd;
@@ -114,7 +114,7 @@ void create_new_user(int type){
                 struct Admin a;
                 strcpy(a.u.username, "Maitri");
                 hashPassword( "1234", a.u.password);
-                a.u.id = show_user_id_by_one()+1;
+                a.u.userid = show_user_id_by_one()+1;
                 create_admin_user(a);
                 update_user_id_by_one();
                 return;
@@ -132,7 +132,7 @@ void create_new_user(int type){
 
                 strcpy(m.u.username, temp_name);
                 hashPassword( temp_password, m.u.password);
-                m.u.id = show_user_id_by_one()+1;
+                m.u.userid = show_user_id_by_one()+1;
                 create_manager_user(m);
                 update_user_id_by_one();
                 return;
@@ -157,7 +157,7 @@ void create_new_user(int type){
 
                 strcpy(e.u.username, temp_name);
                 hashPassword( temp_password, e.u.password);
-                e.u.id = show_user_id_by_one()+1;
+                e.u.userid = show_user_id_by_one()+1;
                 create_employee_user(e);
                 update_user_id_by_one();
                 return;
@@ -179,22 +179,22 @@ void create_new_user(int type){
                 printf("Enter Customer's Account Balance : ");
                 scanf("%f", &c.account_balance);
 
-                char temp_loan[5];
-                printf("Has this customer taken loan?\nType 'Yes or Y or yes or y or 1' if taken anf 'No or no or n or 0' if not taken : ");
-                scanf("%s", temp_loan);
-                if(temp_loan=="Yes" || temp_loan=="Y" || temp_loan=="yes" || temp_loan=="y" || temp_loan=="1" ){
-                    c.loan_taken = true;
-                    printf("Enter Customer's Loan's Loan ID : ");
-                    scanf("%d", &c.loan_id);
-                }
-                else{
-                    c.loan_taken = false;
-                    c.loan_id = -1;
-                }
+                // char temp_loan[5];
+                // printf("Has this customer taken loan?\nType 'Yes or Y or yes or y or 1' if taken anf 'No or no or n or 0' if not taken : ");
+                // scanf("%s", temp_loan);
+                // if(temp_loan=="Yes" || temp_loan=="Y" || temp_loan=="yes" || temp_loan=="y" || temp_loan=="1" ){
+                //     c.loan_taken = true;
+                //     printf("Enter Customer's Loan's Loan ID : ");
+                //     scanf("%d", &c.loan_id);
+                // }
+                // else{
+                //     c.loan_taken = false;
+                //     c.loan_id = -1;
+                // }
 
                 strcpy(c.u.username, temp_name);
                 hashPassword( temp_password, c.u.password);
-                c.u.id = show_user_id_by_one()+1;
+                c.u.userid = show_user_id_by_one()+1;
                 create_customer_user(c);
                 update_user_id_by_one();
                 return;
