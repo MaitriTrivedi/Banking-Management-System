@@ -5,7 +5,7 @@
 #include<stdio.h>
 
 
-void employee_handler(){
+void employee_handler(int acpt){
     printf("==========================================\n");
     printf("Select Your Option :\n1. Add a New User.\n2. View Loans\n3. View Employees\n4. View Customers\n");
     printf("Enter your choice :");
@@ -18,7 +18,7 @@ void employee_handler(){
             int temp_type;
             printf("Enter type : ");
             scanf("%d", &temp_type);
-            create_new_user(temp_type);
+            create_new_user(acpt, temp_type);
         }
         case 2:
         {

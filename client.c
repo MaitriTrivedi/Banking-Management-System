@@ -13,13 +13,15 @@
 
 void main(int argc, char *argv[])
 {
+    char read_buffer[500], write_buffer[500];
+    size_t read_size, write_size;
+
     // create socket
     int sct = socket(AF_INET, SOCK_STREAM, 0);
     if(sct==-1){
         perror("");
         return;
     }
-    // printf("======================= CREATED SOCKET ============================\n");
 
     // connect
     struct sockaddr_in server_addr;
@@ -32,74 +34,150 @@ void main(int argc, char *argv[])
         perror("");
         return;
     }
+
+    // LOGIN HANDLING :
     while(1){
-        printf("====================================================================\n");
-        printf("===== WELCOME TO XYZ BANK =====\n");
-        printf("====================================================================\n");
-        printf("\nIN WHICH MODE YOU WANT TO LOGIN ?\n");
-        printf("SELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n");
-        int choice;
-        printf("==========================================\n");
-        printf("Enter your choice : ");
-        scanf("%d", &choice);
-
-        struct User u;
-        printf("Enter Name : ");
-        scanf("%s", u.username);
-
-        char password[50];
-        printf("Enter Password : ");
-        scanf("%s",password);
-
-        hashPassword(password, u.password);
-
-        int login_success_user_id = login(u, choice);
-        if(login_success_user_id==-1){
-            printf("Login Unsuccessful !\n");
-            continue;
+        memset(read_buffer, '\0', sizeof(read_buffer));
+        memset(write_buffer, '\0', sizeof(write_buffer));
+        
+        printf("===============>>>>>\n");
+        // login
+        // choice reading
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            // error
+            printf("Something Went Wrong.\n");
         }
-        else {
-            printf("Login Successful !\n");
+        
+        printf("%s\n", read_buffer);
+        printf("===============>>>>>22222222222222\n");
+        scanf("%s", write_buffer);
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data\n");
         }
-        int t1=1;
-        while(t1!=2){
-            switch (choice){
-                case 1:
-                {
-                    admin_handler(login_success_user_id);
-                    break;
-                }
-                case 2:
-                {
-                    manager_handler(login_success_user_id);
-                    break;
-                }
-                case 3:
-                {
-                    employee_handler(login_success_user_id);
-                    break;
-                }
-                case 4:
-                {
-                    customer_handler(login_success_user_id);
-                    break;
-                }
+
+        // username reading
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            printf("Something Went Wrong.\n");
+        }
+        printf("%s\n", read_buffer);
+        scanf("%s", write_buffer);
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data");
+        }
+
+        // password reading
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            // error
+            printf("Something Went Wrong.\n");
+        }
+        printf("%s\n", read_buffer);
+        scanf("%s", write_buffer);
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data");
+        }
+
+        // login success or failure
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            // error
+            printf("Something Went Wrong.\n");
+        }
+        // printf("===%s\n", read_buffer);
+        if(atoi(read_buffer) == 0) {
+            printf("Login Unsuccesful\n");
+            // continue;
             }
-            printf("Do you want to continue or logout?\n1.Continue\n2.Logout\n");
-            scanf("%d",&t1);
-            printf("==========================================\n");
+        else {
+            printf("Login Succesful\n============================================\n");
+            break;
+            }
+        printf("==========Continue =====");
+    }
+
+
+    // AFTER SUCCESSFUL LOGIN
+    // admin_handler()
+    // employee_handler()
+    // manager_handler()
+    // cutomer_handler()
+    while(1){
+        // empty buffer
+        memset(read_buffer, '\0', sizeof(read_buffer));
+        int choice;
+        printf("Start of loop \n============================================\n");
+        // getchar();
+
+        // send ready recv 
+        strcpy(write_buffer, "1");
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data");
         }
+        printf("%s\n", write_buffer);
+        printf("send ready sig \n============================================\n");
+        // getchar();
 
-        // if(t1==2){
-        //     logout();
-        // }
-    }
+        // rcv signal
+        if(recv(sct, &read_buffer, sizeof(read_buffer), 0)==-1){
+            perror("");
+        }
+        printf("%s\n", read_buffer);
+        int temp_choice = atoi(read_buffer);
+        printf("recvd TYPE of operation sig \n============================================\n");
+        // getchar();
 
-    // close
-    int cls = close(sct);
-    if(cls == -1){
-        perror("");
-        return;
+        if(temp_choice==1){
+            // will show the menu, get the choice
+            printf("inside case 1 ===\n");
+            memset(read_buffer, '\0', sizeof(read_buffer));
+            memset(write_buffer, '\0', sizeof(write_buffer));
+            // get menu and show                
+            if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+                printf("Something Went Wrong.\n");
+            }
+            printf("recv of menu loop \n============================================\n");
+            printf("Rcvd : %s\n", read_buffer);
+            // getchar();
+            // printf("%s\n", read_buffer);
+
+            // send choice
+            scanf("%s", write_buffer);
+            if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+                perror("Error sending login data");
+            }
+            printf("%s\n", write_buffer);
+            printf("sent choice \n============================================\n");
+            // getchar();
+            // continue;
+            // break;
+
+            // rcv signal to continue the loop                
+            if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+                printf("Something Went Wrong.\n");
+            }
+            printf("recv of menu loop \n============================================\n");
+            printf("Rcvd : %s\n", read_buffer);
+            if(read_buffer=="10") continue;
+        }
+        else if(temp_choice==2){
+            // will just print the recived msg
+            printf("inside case 2 ===\n");
+            memset(read_buffer, '\0', sizeof(read_buffer));
+            memset(write_buffer, '\0', sizeof(write_buffer));
+            // get menu and show                
+            if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+                printf("Something Went Wrong.\n");
+            }
+            printf("recv of messagcontinue signale \n============================================\n");
+            printf("Rcvd : %s\n", read_buffer);
+
+            // rcv signal to continue the loop                
+            if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+                printf("Something Went Wrong.\n");
+            }
+            printf("recv of menu loop \n============================================\n");
+            printf("Rcvd : %s\n", read_buffer);
+            if(read_buffer=="10") continue;
+        }
+        printf("outside switch case \n");
+        // break;
     }
-    return;
 }

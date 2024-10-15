@@ -11,7 +11,7 @@ void create_admin_user(struct Admin a){
     int fd;
 
     // open file in read write file
-    fd = open("DATABASE/admin.txt",O_RDWR);
+    fd = open("../DATABASE/admin.txt",O_RDWR);
     if(fd==-1){
         perror("");
         return;
@@ -30,7 +30,7 @@ void create_manager_user(struct Manager m){
     int fd;
 
     // open file in read write file
-    fd = open("DATABASE/manager.txt",O_RDWR);
+    fd = open("../DATABASE/manager.txt",O_RDWR);
     if(fd==-1){
         perror("");
         return;
@@ -49,7 +49,7 @@ void create_employee_user(struct Employee e){
     int fd;
 
     // open file in read write file
-    fd = open("DATABASE/employee.txt",O_RDWR);
+    fd = open("../DATABASE/employee.txt",O_RDWR);
     if(fd==-1){
         perror("");
         return;
@@ -68,7 +68,7 @@ void create_customer_user(struct Customer c){
     int fd;
 
     // open file in read write file
-    fd = open("DATABASE/customer.txt",O_RDWR);
+    fd = open("../DATABASE/customer.txt",O_RDWR);
     if(fd==-1){
         perror("");
         return;
@@ -107,16 +107,97 @@ void create_customer_user(struct Customer c){
     return ;
 }
 
-void create_new_user(int type){
+void create_new_user(int acpt, int type){
+    char buffer[500];
+    printf("=============================== inside create new user ===============================\n");
+
+    // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    // recv signal
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd of ready sig \n============================================\n");
+    // getchar();
+
+    // send signal
+    strcpy(buffer, "1"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send of TYPE sig \n============================================\n");
+    // getchar();
+
+    // case 1(type of op = 1)
+    // send menu
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Admin\n2. Managers\n3. Employees\n4. Customers\nEnter your choice :");
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("sent menu \n============================================\n");
+    // getchar();
+
+    // recv choice
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd choice \n============================================\n");
+    // getchar();
+
+    // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    type = atoi(buffer);
+
     switch(type){
         case 1:
-            {
+            {   
+                // recv signal
+                if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+                    printf("Error\n");
+                }
+                printf("%s\n", buffer);
+                printf("recvd of ready sig \n============================================\n");
+                // getchar();
+
+                // send signal
+                strcpy(buffer, "2"); // type 1
+                if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                    perror("Error sending login data");
+                }
+                printf("%s\n", buffer);
+                printf("send of TYPE sig \n=====");
+
                 struct Admin a;
                 strcpy(a.u.username, "Maitri");
                 hashPassword( "1234", a.u.password);
                 a.u.userid = show_user_id_by_one()+1;
                 create_admin_user(a);
                 update_user_id_by_one();
+                return;
+
+                // send message
+                strcpy(buffer, "Admin user created successfully\n");
+                if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                    perror("Error sending login data");
+                }
+                printf("%s\n", buffer);
+                printf("sent msg \n============================================\n");
                 return;
             }
         case 2:
@@ -173,25 +254,8 @@ void create_new_user(int type){
                 printf("Enter Customer's Password : ");
                 scanf("%s", temp_password);
 
-                // printf("Enter Customer's Account Number : ");
-                // scanf("%d", &c.account_no);
-
                 printf("Enter Customer's Account Balance : ");
                 scanf("%f", &c.account_balance);
-
-                // char temp_loan[5];
-                // printf("Has this customer taken loan?\nType 'Yes or Y or yes or y or 1' if taken anf 'No or no or n or 0' if not taken : ");
-                // scanf("%s", temp_loan);
-                // if(temp_loan=="Yes" || temp_loan=="Y" || temp_loan=="yes" || temp_loan=="y" || temp_loan=="1" ){
-                //     c.loan_taken = true;
-                //     printf("Enter Customer's Loan's Loan ID : ");
-                //     scanf("%d", &c.loan_id);
-                // }
-                // else{
-                //     c.loan_taken = false;
-                //     c.loan_id = -1;
-                // }
-
                 strcpy(c.u.username, temp_name);
                 hashPassword( temp_password, c.u.password);
                 c.u.userid = show_user_id_by_one()+1;

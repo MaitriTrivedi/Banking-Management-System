@@ -9,7 +9,7 @@ void main(int argc, char *argv[]){
         printf("Enter Type of User You want to add :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n");
         scanf("%d", &type);
     }
-    create_new_user(type);
+    // create_new_user(acpt, type);
     return;
 }
 

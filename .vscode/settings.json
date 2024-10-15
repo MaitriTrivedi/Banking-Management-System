@@ -13,6 +13,8 @@
         "admin.h": "c",
         "inet.h": "c",
         "stdio.h": "c",
-        "last_used_user_id.h": "c"
+        "last_used_user_id.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c"
     }
 }

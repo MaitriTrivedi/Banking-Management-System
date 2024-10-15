@@ -66,16 +66,19 @@ int login_customer(struct Customer a){
 }
 
 int login(struct User u, int type){
-    printf("=================\n");
-    printf("===== LOGIN =====\n");
-    printf("=================\n");
+    // printf("=================\n");
+    // printf("===== LOGIN =====\n");
+    // printf("=================\n");
+    printf("Type %d\n", type);
+    printf("Uname %s\n", u.username);
+    printf("Password %s\n", u.password);
     switch (type){
         case 1:
             {
                 struct Admin a;
                 a.u = u;
                 int t= login_admin(a);
-                // printf("Inside switch : %d\n", t);
+                printf("Inside switch admin login : %d\n", t);
                 return t;
             }
         case 2:

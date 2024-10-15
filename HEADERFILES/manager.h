@@ -9,7 +9,7 @@ void assign_loan_applications_to_emp(){
     
 }
 
-void manager_handler(){
+void manager_handler(int acpt){
     printf("==========================================\n");
     printf("Select Your Option :\n1. Add a New User.\n2. View Loans\n3.Assign Loan Application to Employee\n4. View Employees\n5. View Customers\n");
     printf("Enter your choice :");
@@ -22,7 +22,7 @@ void manager_handler(){
             int temp_type;
             printf("Enter type : ");
             scanf("%d", &temp_type);
-            create_new_user(temp_type);
+            create_new_user(acpt, temp_type);
         }
         case 2:
         {
