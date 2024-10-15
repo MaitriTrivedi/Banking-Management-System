@@ -40,16 +40,21 @@ void main(int argc, char *argv[])
         memset(read_buffer, '\0', sizeof(read_buffer));
         memset(write_buffer, '\0', sizeof(write_buffer));
         
-        printf("===============>>>>>\n");
         // login
         // choice reading
+
+        strcpy(write_buffer, "1");
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data\n");
+        }
+
         if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
             // error
             printf("Something Went Wrong.\n");
         }
         
         printf("%s\n", read_buffer);
-        printf("===============>>>>>22222222222222\n");
+
         scanf("%s", write_buffer);
         if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
             perror("Error sending login data\n");
@@ -77,6 +82,7 @@ void main(int argc, char *argv[])
         }
 
         // login success or failure
+        int tempp;
         if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
             // error
             printf("Something Went Wrong.\n");
@@ -84,7 +90,7 @@ void main(int argc, char *argv[])
         // printf("===%s\n", read_buffer);
         if(atoi(read_buffer) == 0) {
             printf("Login Unsuccesful\n");
-            // continue;
+            continue;
             }
         else {
             printf("Login Succesful\n============================================\n");

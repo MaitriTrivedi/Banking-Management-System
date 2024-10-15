@@ -50,13 +50,19 @@
             memset(read_buffer, '\0', sizeof(read_buffer));
             memset(write_buffer, '\0', sizeof(write_buffer));
             memset(msg, '\0', sizeof(msg));
-            printf("===============>>>>>\n");
+
+            if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
+                perror("Error receiving login choice");
+                close(acpt);
+                pthread_exit(NULL);
+            }
+
             strcpy(msg, "====================================================================\n===== WELCOME TO XYZ BANK =====\n====================================================================\nIN WHICH MODE YOU WANT TO LOGIN ?\nSELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n==========================================\nEnter your choice : ");
             if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
                 perror("Error sending login data");
                 // continue;
             }
-            printf("===============>>>>>22222222222222\n");
+
             if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
                 perror("Error receiving login choice");
                 close(acpt);
