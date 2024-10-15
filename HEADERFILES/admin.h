@@ -28,6 +28,8 @@ void list_of_managers(){
     return ;    
 }
 
+
+
 void list_of_employees(){
     int fd;
 
@@ -80,7 +82,8 @@ void list_of_customers(){
 
     return ;
 }
-void admin_handler(int acpt, int login_success_user_id) {
+
+int admin_handler(int acpt, int login_success_user_id) {
     char buffer[200];
     int choice;
     printf("================== in admin handler ==================\n");
@@ -131,7 +134,7 @@ void admin_handler(int acpt, int login_success_user_id) {
     switch (temp_choice) {
         case 1:
             printf("Case 1: Adding a new user\n");
-            create_new_user(acpt, temp_choice);  // Function to add a new user
+            return create_new_user(acpt, temp_choice);  // Function to add a new user
             break;
         case 2:
             printf("Case 2: Viewing managers\n");
@@ -147,10 +150,11 @@ void admin_handler(int acpt, int login_success_user_id) {
             break;
         case 5:
             printf("Case 5: Exiting the admin handler\n");
-            return;  // Exit the admin handler
+            return 0;  // Exit the admin handler
         default:
             printf("Invalid choice. Please select a valid option.\n");
             break;
     }
     printf("================== End of admin handler ==================\n");
+    return 0;
 }

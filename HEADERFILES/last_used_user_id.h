@@ -3,9 +3,9 @@ void update_user_id_by_one(){
     struct stat file_stat;
 
     // open file in read write file
-    fd = open("../DATABASE/last_used_user_id.txt",O_RDWR);
+    fd = open("DATABASE/last_used_user_id.txt",O_RDWR);
     if(fd==-1){
-        perror("");
+        perror("update_user_id_by_one : ");
         return;
     }
 
@@ -43,9 +43,9 @@ int show_user_id_by_one(){
     struct stat file_stat;
 
     // open file in read write file
-    fd = open("../DATABASE/last_used_user_id.txt",O_RDWR);
+    fd = open("DATABASE/last_used_user_id.txt",O_RDWR);
     if(fd==-1){
-        perror("");
+        perror("show_user_id_by_one : ");
         return t;
     }
 

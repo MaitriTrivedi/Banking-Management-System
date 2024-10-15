@@ -170,16 +170,17 @@ void main(int argc, char *argv[])
             memset(write_buffer, '\0', sizeof(write_buffer));
             // get menu and show                
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
-                printf("Something Went Wrong.\n");
+                perror("Something Went Wrong.\n");
             }
-            printf("recv of messagcontinue signale \n============================================\n");
+            printf("recvd msg \n============================================\n");
             printf("Rcvd : %s\n", read_buffer);
 
-            // rcv signal to continue the loop                
+            // rcv signal to continue the loop   
+            printf("Ready to recv CONTI sig \n============================================\n");             
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
-                printf("Something Went Wrong.\n");
+                perror("Something Went Wrong.\n");
             }
-            printf("recv of menu loop \n============================================\n");
+            printf("recv continue sig \n============================================\n");
             printf("Rcvd : %s\n", read_buffer);
             if(read_buffer=="10") continue;
         }

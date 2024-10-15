@@ -6,14 +6,15 @@
 #include<fcntl.h>
 #include <sys/stat.h>
 #include "last_used_user_id.h"
+#include "common_functions.c"
 
 void create_admin_user(struct Admin a){
     int fd;
 
     // open file in read write file
-    fd = open("../DATABASE/admin.txt",O_RDWR);
+    fd = open("DATABASE/admin.txt",O_RDWR);
     if(fd==-1){
-        perror("");
+        perror("create_admin_user : ");
         return;
     }
     // write data to the file
@@ -107,7 +108,15 @@ void create_customer_user(struct Customer c){
     return ;
 }
 
-void create_new_user(int acpt, int type){
+void take_username(){
+    
+}
+
+void take_password(){
+    
+}
+
+int create_new_user(int acpt, int type){
     char buffer[500];
     printf("=============================== inside create new user ===============================\n");
 
@@ -153,7 +162,7 @@ void create_new_user(int acpt, int type){
     printf("%s\n", buffer);
     printf("recvd choice \n============================================\n");
     // getchar();
-
+    type = atoi(buffer);
     // send loop continue signal
     strcpy(buffer, "10"); // type 1
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
@@ -162,8 +171,8 @@ void create_new_user(int acpt, int type){
     printf("%s\n", buffer);
     printf("send CONTINUE sig \n============================================\n");
 
-    type = atoi(buffer);
-
+    
+    printf("==========type============= %d\n", type);
     switch(type){
         case 1:
             {   
@@ -189,7 +198,7 @@ void create_new_user(int acpt, int type){
                 a.u.userid = show_user_id_by_one()+1;
                 create_admin_user(a);
                 update_user_id_by_one();
-                return;
+                // return;
 
                 // send message
                 strcpy(buffer, "Admin user created successfully\n");
@@ -198,7 +207,15 @@ void create_new_user(int acpt, int type){
                 }
                 printf("%s\n", buffer);
                 printf("sent msg \n============================================\n");
-                return;
+
+                // send loop continue signal
+                // strcpy(buffer, "10"); // type 1
+                // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                //     perror("Error sending login data");
+                // }
+                // printf("%s\n", buffer);
+                // printf("send CONTINUE sig \n============================================\n");
+                return continuee(acpt);
             }
         case 2:
             {
@@ -216,7 +233,7 @@ void create_new_user(int acpt, int type){
                 m.u.userid = show_user_id_by_one()+1;
                 create_manager_user(m);
                 update_user_id_by_one();
-                return;
+                return 0;
             }
 
         case 3:
@@ -241,7 +258,7 @@ void create_new_user(int acpt, int type){
                 e.u.userid = show_user_id_by_one()+1;
                 create_employee_user(e);
                 update_user_id_by_one();
-                return;
+                return 0;
             }
         case 4:
             {
@@ -261,14 +278,15 @@ void create_new_user(int acpt, int type){
                 c.u.userid = show_user_id_by_one()+1;
                 create_customer_user(c);
                 update_user_id_by_one();
-                return;
+                return 0;
             }
         default:
             {
                 printf("Invalid Choice...\n");
-                return;
+                return 0;
             }
     }
+    return 0;
 }
 
 
