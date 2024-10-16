@@ -279,7 +279,7 @@ void main(int argc, char *argv[])
         }
         else if(temp_choice==3){
             printf("---------------------------3-------------------------\n");
-            // will just print the recived msg and get the input
+            // will print the recived msg and get the input
             printf("inside case 2 ===\n");
             memset(read_buffer, '\0', sizeof(read_buffer));
             memset(write_buffer, '\0', sizeof(write_buffer));

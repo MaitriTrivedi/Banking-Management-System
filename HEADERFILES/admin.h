@@ -137,11 +137,13 @@ int admin_handler(int acpt, int login_success_user_id) {
             return create_new_user(acpt, temp_choice);  // Function to add a new user
             // break;
         case 2:
-            printf("Case 2: Viewing managers\n");
+            printf("Case 2: Modify Customer Details\n");
+            return modify_customer(acpt, temp_choice); 
             // Logic for viewing managers here
             break;
         case 3:
-            printf("Case 3: Viewing employees\n");
+            printf("Case 3: Modify Employee Details\n");
+            return modify_employee(acpt, temp_choice); 
             // Logic for viewing employees here
             break;
         case 4:

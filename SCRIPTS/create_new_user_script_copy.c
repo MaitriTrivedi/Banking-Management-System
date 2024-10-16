@@ -106,6 +106,8 @@ void main(int argc, char *argv[]){
     struct Admin a;
     strcpy(a.u.username, "Maitri");
     hashPassword( "1234", a.u.password);
+    a.u.is_active = true;
+    a.u.is_logged_in = false;
     a.u.userid = show_user_id_by_one_own()+1;
     create_admin_user_own(a);
     update_user_id_by_one_own();

@@ -74,7 +74,7 @@ void create_customer_user(struct Customer c){
     int fd;
 
     // open file in read write file
-    fd = open("../DATABASE/customer.txt",O_RDWR);
+    fd = open("DATABASE/customer.txt",O_RDWR);
     if(fd==-1){
         perror("");
         return;
@@ -105,14 +105,14 @@ void create_customer_user(struct Customer c){
 
     // write data to the file
     write(fd, &c, sizeof(c));
+    perror("");
     lseek(fd, 0, SEEK_SET);
     read(fd, &c, sizeof(c));
-
+    perror("");
     close(fd); 
 
     return ;
 }
-
 
 int create_new_user(int acpt, int type){
     char buffer[500];
@@ -196,6 +196,8 @@ int create_new_user(int acpt, int type){
                 strcpy(a.u.username, "Maitri");
                 hashPassword( "1234", a.u.password);
                 a.u.userid = show_user_id_by_one()+1;
+                a.u.is_active = true;
+                a.u.is_logged_in = false;
                 create_admin_user(a);
                 update_user_id_by_one();
                 // return;
@@ -224,6 +226,8 @@ int create_new_user(int acpt, int type){
                 strcpy(m.u.username, temp_username);
                 hashPassword( temp_password, m.u.password);
                 m.u.userid = show_user_id_by_one()+1;
+                m.u.is_active = true;
+                m.u.is_logged_in = false;
                 create_manager_user(m);
                 update_user_id_by_one();
                 strcpy(buffer, "Manger User Added Successfully.\n");
@@ -250,6 +254,8 @@ int create_new_user(int acpt, int type){
                 strcpy(e.u.username, temp_username);
                 hashPassword( temp_password, e.u.password);
                 e.u.userid = show_user_id_by_one()+1;
+                e.u.is_active = true;
+                e.u.is_logged_in = false;
                 e.salary = temp_salary;
                 create_employee_user(e);
                 update_user_id_by_one();
@@ -270,8 +276,8 @@ int create_new_user(int acpt, int type){
                 take_password(acpt, temp_password, NULL);
 
                 c.account_balance = 1000;
-                c.is_active = true;
-                c.is_logged_in = false;
+                c.u.is_active = true;
+                c.u.is_logged_in = false;
                 c.loan_taken = false;
 
                 strcpy(c.u.username, temp_username);
@@ -292,4 +298,190 @@ int create_new_user(int acpt, int type){
     return 0;
 }
 
+int modify_customer(int acpt, int type){
+    char buffer[500];
+    printf("=============================== inside create new user ===============================\n");
+
+    sleep(1);
+    // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    // recv signal
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd of ready sig \n============================================\n");
+    // getchar();
+
+    // send signal
+    strcpy(buffer, "1"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send of TYPE sig \n============================================\n");
+    // getchar();
+
+    // case 1(type of op = 1)
+    // send menu
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Username\n2. Balance\n3. Loan Taken\nEnter your choice :");
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("sent menu \n============================================\n");
+    // getchar();
+
+    // recv choice
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd choice \n============================================\n");
+    // getchar();
+    type = atoi(buffer);
+    // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    
+    printf("==========type============= %d\n", type);
+    switch(type){
+        case 1:
+            {  
+                struct Customer m;
+                char temp_username[30]; 
+                char temp_userid[5];
+                take_username(acpt, temp_userid);
+                printf("=================== change username ====================\n");
+                change_username_common(acpt, atoi(temp_userid), 4);
+                return continuee(acpt);
+            }
+        case 2:
+            {
+                struct Customer m;
+                char temp_username[30]; 
+                char temp_userid[5];
+                take_username(acpt, temp_userid);
+                printf("=================== change balance ====================\n");
+                change_customer_balance(acpt, atoi(temp_userid));
+                return continuee(acpt);
+            }
+
+        case 3:
+            {
+                struct Customer m;
+                char temp_username[30]; 
+                char temp_userid[5];
+                take_username(acpt, temp_userid);
+                printf("=================== loan taken ====================\n");
+                change_customer_loan_status(acpt, atoi(temp_userid));
+                return continuee(acpt);
+            }
+        default:
+            {
+                printf("Invalid Choice...\n");
+                return 0;
+            }
+    }
+    return 0;
+}
+
+int modify_employee(int acpt, int type){
+    char buffer[500];
+    printf("=============================== inside modify employee ===============================\n");
+
+    sleep(1);
+    // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    // recv signal
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd of ready sig \n============================================\n");
+    // getchar();
+
+    // send signal
+    strcpy(buffer, "1"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send of TYPE sig \n============================================\n");
+    // getchar();
+
+    // case 1(type of op = 1)
+    // send menu
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Username\n2. Balance\n3. Loan Taken\nEnter your choice :");
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("sent menu \n============================================\n");
+    // getchar();
+
+    // recv choice
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd choice \n============================================\n");
+    // getchar();
+    type = atoi(buffer);
+    // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    
+    printf("==========type============= %d\n", type);
+    switch(type){
+        case 1:
+            {  
+                struct Employee m;
+                char temp_username[30]; 
+                char temp_userid[5];
+                take_username(acpt, temp_userid);
+                printf("=================== change username ====================\n");
+                change_username_common(acpt, atoi(temp_userid), 3);
+                return continuee(acpt);
+            }
+        case 2:
+            {
+                struct Employee m;
+                char temp_username[30]; 
+                char temp_userid[5];
+                take_username(acpt, temp_userid);
+                printf("=================== change balance ====================\n");
+                change_salary(acpt, atoi(temp_userid));
+                return continuee(acpt);
+            }
+        default:
+            {
+                printf("Invalid Choice...\n");
+                return 0;
+            }
+    }
+    return 0;
+}
 

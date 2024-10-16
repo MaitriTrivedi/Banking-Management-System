@@ -10,6 +10,8 @@ struct User{
     char username[30];
     unsigned char password[SHA256_DIGEST_LENGTH];
     int userid;
+    bool is_logged_in;
+    bool is_active;
 };
 
 struct Customer{
@@ -17,8 +19,6 @@ struct Customer{
     int account_no;
     float account_balance;
     bool loan_taken;
-    bool is_logged_in;
-    bool is_active;
 };
 
 struct Employee{
