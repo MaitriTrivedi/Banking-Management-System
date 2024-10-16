@@ -196,27 +196,7 @@ void *handleClient(void *client_socket)
                             brk=1;
                             break; 
                         }
-                        // else if(conti==6){
-                        //     brk=1;
-                        //     sleep(1);
-                        //     // // send loop-inner continue signal
-                        //     strcpy(read_buffer, "6"); // type 1
-                        //     if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
-                        //         perror("Error sending login data");
-                        //     }
-                        //     printf("%s\n", read_buffer);
-                        //     printf("send CONTINUE sig \n============================================\n");
-                        //     printf("=============================== client connection closed ===============================\n\n");
-                        //     close(acpt);
-                        //     pthread_exit(NULL);
-                        //     break;
-                        // }
-                        // else if(conti==7){
-                        //     // sleep(1);
-                        //     printf("Returning to login menu...\n");
-                        //     t1 = 2;
-                        //     break; 
-                        // }
+        
                     }
                     break;
                 }
