@@ -301,7 +301,7 @@ void take_balance(int acpt, char *temp_balance){
     printf("%s\n", buffer);
     printf("recvd input \n============================================\n");
 
-    *temp_balance = buffer;
+    strcpy(temp_balance, buffer);
 }
 
 void take_loan_status(int acpt, char *temp_loan_status){
@@ -350,7 +350,7 @@ void take_loan_status(int acpt, char *temp_loan_status){
     printf("%s\n", buffer);
     printf("recvd input \n============================================\n");
 
-    *temp_loan_status = buffer;
+    strcpy(temp_loan_status ,buffer);
 }
 
 void show_msg_get_data(int acpt, char* temp_buffer, char *s){
@@ -760,9 +760,10 @@ int change_customer_balance(int acpt, int uid){
         printf("%d %d \n",tempCustomer.u.userid,uid );
         if(tempCustomer.u.userid==uid){
             printf("====in if\n");
-            float balance;
-            take_balance(acpt, &balance);
-            tempCustomer.account_balance = balance;
+            char balance[20];
+            take_balance(acpt, balance);
+            float balanceValue = atof(balance);
+            tempCustomer.account_balance = balanceValue; 
             lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
             if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                 perror("Error writing updated customer");

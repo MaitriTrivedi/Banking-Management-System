@@ -114,11 +114,7 @@ void *handleClient(void *client_socket)
             if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
                 perror("Sent login data");
             }
-            // printf("senttt %s\n", msg);
-            // getchar();
-            // printf("============= Login Successful =============\n");
-            // getchar();
-            // printf("88888888888888888\n");
+            printf("============= Login Successful =============\n");
         }
 
         
