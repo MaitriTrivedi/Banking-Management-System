@@ -17,6 +17,8 @@ struct Customer{
     int account_no;
     float account_balance;
     bool loan_taken;
+    bool is_logged_in;
+    bool is_active;
 };
 
 struct Employee{

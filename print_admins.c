@@ -26,7 +26,7 @@ int main() {
         // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
         // printf("%s %s\n",a.u.username, a.u.password);
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
-        printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
+        printf("%d %s %s\n", tempAdmin.u.userid, tempAdmin.u.username, tempAdmin.u.password);
     }
 
     close(fd);

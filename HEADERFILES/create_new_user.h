@@ -218,7 +218,7 @@ int create_new_user(int acpt, int type){
 
                 char temp_password[30];
                 // printf("Enter Manager's Password : ");
-                take_password(acpt, temp_password);
+                take_password(acpt, temp_password, NULL);
 
                 strcpy(m.u.username, temp_username);
                 hashPassword( temp_password, m.u.password);
@@ -240,7 +240,7 @@ int create_new_user(int acpt, int type){
 
                 char temp_password[30];
                 // printf("Enter Manager's Password : ");
-                take_password(acpt, temp_password);
+                take_password(acpt, temp_password, NULL);
 
                 float temp_salary;
                 // printf("Enter Manager's Password : ");

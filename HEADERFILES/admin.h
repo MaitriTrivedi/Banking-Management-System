@@ -108,7 +108,7 @@ int admin_handler(int acpt, int login_success_user_id) {
     printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the admin menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User\n2. View Managers\n3. View Employees\n4. View Customers\n5. Exit\nEnter your choice: ");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User\n2. View Managers\n3. View Employees\n4. View Customers\n5. Change Password\n6. Exit\n7. Logout\nEnter your choice: ");
     printf("Sending admin menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
@@ -135,7 +135,7 @@ int admin_handler(int acpt, int login_success_user_id) {
         case 1:
             printf("Case 1: Adding a new user\n");
             return create_new_user(acpt, temp_choice);  // Function to add a new user
-            break;
+            // break;
         case 2:
             printf("Case 2: Viewing managers\n");
             // Logic for viewing managers here
@@ -149,8 +149,15 @@ int admin_handler(int acpt, int login_success_user_id) {
             // Logic for viewing customers here
             break;
         case 5:
-            printf("Case 5: Exiting the admin handler\n");
+            printf("Case 5: Change Password\n");
+            return change_password_common(acpt, login_success_user_id, 1);
             return 0;  // Exit the admin handler
+        case 6:
+            printf("Case 6: Exiting the admin handler\n");
+            return 6;  // Exit the admin handler
+        case 7:
+            printf("Case 7: Logout\n");
+            return 7;  // Exit the admin handler
         default:
             printf("Invalid choice. Please select a valid option.\n");
             break;

@@ -20,7 +20,7 @@
 static volatile int keep_running = 1;
 int server_socket;
 
-void signalHandler(int signal_num){
+void serverSignalHandler(int signal_num){
     int cls = close(server_socket);
     if (cls == -1)
     {
@@ -30,6 +30,7 @@ void signalHandler(int signal_num){
     printf("======================= CLOSED SERVER SOCKET ============================\n");
     exit(1);
 }
+
 
 void *handleClient(void *client_socket)
 {
@@ -44,8 +45,10 @@ void *handleClient(void *client_socket)
     int choice;
     struct User u;
     char msg[500];
-
+    int brk=0;
+    int c=0;
     while(1){
+        printf("=========== %d ==============\n", c);
         // Receive login data from client
         memset(read_buffer, '\0', sizeof(read_buffer));
         memset(write_buffer, '\0', sizeof(write_buffer));
@@ -110,8 +113,8 @@ void *handleClient(void *client_socket)
             printf("============= Login Successful =============\n");
         }
 
+        
         // handle further :
-        login_success_user_id = u.userid;
         int t1=1;
         while(t1!=2){
             switch (choice){
@@ -120,11 +123,34 @@ void *handleClient(void *client_socket)
                     printf("In admin handler\n");
                     while(1){
                         int conti = admin_handler(acpt,login_success_user_id);
+                        // printf("contiiii============== %d\n",conti);
                         if(conti==1){
                             continue;
                         }
-                        else{
+                        else if(conti==0){
                             t1=2;
+                            break;
+                        }
+                        else if(conti==6){
+                            // printf("contiiii brk brk brk\n");
+                            brk=1;
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(read_buffer, "6"); // type 1
+                            if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", read_buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+                            printf("=============================== client connection closed ===============================\n\n");
+                            close(acpt);
+                            pthread_exit(NULL);
+                            break;
+                        }
+                        else if(conti==7){
+                            printf("Returning to login menu...\n");
+                            t1 = 2;
+                            break; 
                         }
                     }
                     break;
@@ -145,14 +171,11 @@ void *handleClient(void *client_socket)
                     break;
                 }
             }
-            printf("Do you want to continue or logout?\n1.Continue\n2.Logout\n");
-            // scanf("%d",&t1);
-            printf("==========================================\n");
-            break;
+            if(brk==1) break;
         }
-        break;
+        c++;
     }
-
+    
     printf("=============================== client connection closed ===============================\n\n");
     close(acpt);
     pthread_exit(NULL);
@@ -197,7 +220,7 @@ int main(int argc, char const *argv[])
         return 0;
     }
     
-    signal(SIGINT, signalHandler);
+    signal(SIGINT,serverSignalHandler);
 
     while (keep_running)
     {
