@@ -250,6 +250,7 @@ void main(int argc, char *argv[])
             printf("recv of menu loop \n============================================\n");
             printf("Rcvd2 : %s\n", read_buffer);
             if(read_buffer=="10") continue;
+            else if(read_buffer=="-10") raise(SIGINT);
             // else break;
         }
         else if(temp_choice==2){
@@ -273,6 +274,7 @@ void main(int argc, char *argv[])
             printf("recv continue sig \n============================================\n");
             printf("Rcvd4 : %s\n", read_buffer);
             if(read_buffer=="10") continue;
+            else if(read_buffer=="-10") raise(SIGINT);
             // else break;
         }
         else if(temp_choice==3){
@@ -303,6 +305,7 @@ void main(int argc, char *argv[])
             printf("recv continue sig \n============================================\n");
             printf("Rcvdddd : %s\n", read_buffer);
             if(read_buffer=="10") continue;
+            else if(read_buffer=="-10") raise(SIGINT);
             // else break;
         }
         else if(temp_choice==4){
@@ -316,8 +319,8 @@ void main(int argc, char *argv[])
             printf("recv continue sig \n============================================\n");
             printf("Rcvd8 : %s\n", read_buffer);
             if(read_buffer=="10") continue;
+            else if(read_buffer=="-10") raise(SIGINT);
 
-            printf("llllllllllllllllll \n============================================\n");
             login_logout_handler(sct);
         }
     }

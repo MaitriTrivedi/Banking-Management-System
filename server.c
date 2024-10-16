@@ -144,7 +144,7 @@ void *handleClient(void *client_socket)
                             brk=1;
                             sleep(1);
                             // // send loop continue signal
-                            strcpy(read_buffer, "6"); // type 1
+                            strcpy(read_buffer, "-10"); // type 1
                             if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
