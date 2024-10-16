@@ -24,7 +24,7 @@ int login_admin(struct Admin a){
         if(strcmp(tempAdmin.u.username, a.u.username)==0){
             if( (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 close(fd);
-                printf("===========login_admin %d ============\n",tempAdmin.u.userid);
+                // printf("===========login_admin %d ============\n",tempAdmin.u.userid);
                 return tempAdmin.u.userid;
             }
         }
@@ -141,7 +141,7 @@ int login(struct User u, int type){
                 struct Admin a;
                 a.u = u;
                 int t= login_admin(a);
-                printf("Inside switch admin login : %d\n", t);
+                // printf("Inside switch admin login : %d\n", t);
                 return t;
             }
         case 2:

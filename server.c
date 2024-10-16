@@ -71,6 +71,7 @@ void *handleClient(void *client_socket)
             close(acpt);
             pthread_exit(NULL);
         }
+        printf("choice %s\n",read_buffer);
         choice = atoi(read_buffer);
 
         strcpy(msg, "==========================================================\n======================= LOGIN ==========================\n==========================================================\nEnter Name : ");
@@ -82,17 +83,19 @@ void *handleClient(void *client_socket)
             close(acpt);
             pthread_exit(NULL);
         }
-
+        printf("uname %s\n",u.username);
         strcpy(msg, "Enter Password : ");
         if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
             perror("Error sending login data");
         }
+        
 
         if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
             perror("Error receiving login data");
             close(acpt);
             pthread_exit(NULL);
         }
+        printf("pass %s\n",read_buffer);
         hashPassword(read_buffer, u.password);
 
         int login_success_user_id = login(u, choice);
@@ -107,10 +110,15 @@ void *handleClient(void *client_socket)
         }
         else {
             strcpy(msg, "1");
+            // getchar();
             if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
                 perror("Sent login data");
             }
-            printf("============= Login Successful =============\n");
+            // printf("senttt %s\n", msg);
+            // getchar();
+            // printf("============= Login Successful =============\n");
+            // getchar();
+            // printf("88888888888888888\n");
         }
 
         
@@ -149,7 +157,43 @@ void *handleClient(void *client_socket)
                         }
                         else if(conti==7){
                             printf("Returning to login menu...\n");
+                            char buffer[500];
+
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(buffer, "10"); // type 1
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+
+                            // recv signal
+                            if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+                                printf("Error\n");
+                            }
+                            printf("%s\n", buffer);
+                            printf("recvd of ready sig \n============================================\n");
+                            // getchar();
+
+                            // send signal
+                            strcpy(buffer, "4"); // type 4
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send of TYPE sig \n============================================\n");
+
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(buffer, "10"); // type 1
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send CONTINUE sig \n============================================\n");
                             t1 = 2;
+                            brk=1;
                             break; 
                         }
                         // else if(conti==6){
@@ -192,9 +236,13 @@ void *handleClient(void *client_socket)
                     break;
                 }
             }
-            if(brk==1) break;
+            if(brk==1) {
+                printf("----=-------------=---> inside break\n");
+                break;
+                }
         }
         c++;
+        printf("=--------=-----> %d\n", c);
     }
     
     printf("=============================== client connection closed ===============================\n\n");

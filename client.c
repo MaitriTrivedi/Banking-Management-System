@@ -21,6 +21,79 @@ void clientSignalHandler(int signal_num) {
     exit(0);
 }
 
+void login_logout_handler(int sct){
+    char read_buffer[500];
+    char write_buffer[500];
+    while(1){
+        memset(read_buffer, '\0', sizeof(read_buffer));
+        memset(write_buffer, '\0', sizeof(write_buffer));
+        
+        // login
+        // choice reading
+
+        strcpy(write_buffer, "1");
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data\n");
+        }
+
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            // error
+            printf("Something Went Wrong.\n");
+        }
+        
+        printf("%s\n", read_buffer);
+        // printf("====================================================================\n===== WELCOME TO XYZ BANK =====\n====================================================================\nIN WHICH MODE YOU WANT TO LOGIN ?\nSELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n==========================================\nEnter your choice : ");
+        // sleep(1);
+        scanf("%s", write_buffer);
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data\n");
+        }
+        // printf("sent -> %s\n", write_buffer);
+
+        // username reading
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            printf("Something Went Wrong.\n");
+        }
+        printf("%s\n", read_buffer);
+        // printf("==========================================================\n======================= LOGIN ==========================\n==========================================================\nEnter Name : ");
+        // printf("in 22222 \n============================================\n");
+        scanf("%s", write_buffer);
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data");
+        }
+
+        // password reading
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            // error
+            printf("Something Went Wrong.\n");
+        }
+        printf("%s\n", read_buffer);
+        // printf("Enter Password : ");
+        scanf("%s", write_buffer);
+        if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            perror("Error sending login data");
+        }
+
+        // login success or failure
+        int tempp;
+        if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+            // error
+            printf("Something Went Wrong.\n");
+        }
+        printf("succ or fail - %s\n", read_buffer);
+        if(atoi(read_buffer) == 0) {
+            printf("Login Unsuccesful\n");
+            continue;
+            }
+        else {
+            printf("Login Succesful\n============================================\n");
+            break;
+            }
+        printf("==========Continue ========\n");
+        // printf("in 44444 \n============================================\n");
+    }
+
+}
 
 void main(int argc, char *argv[])
 {
@@ -67,7 +140,8 @@ void main(int argc, char *argv[])
         }
         
         printf("%s\n", read_buffer);
-
+        
+        // to get choice
         scanf("%s", write_buffer);
         if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
             perror("Error sending login data\n");
@@ -230,6 +304,21 @@ void main(int argc, char *argv[])
             printf("Rcvdddd : %s\n", read_buffer);
             if(read_buffer=="10") continue;
             // else break;
+        }
+        else if(temp_choice==4){
+            
+            // once login you can continue this loop
+            // rcv signal to continue the loop   
+            printf("Ready to recv CONTI sig \n============================================\n");             
+            if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+                perror("Something Went Wrong.\n");
+            }
+            printf("recv continue sig \n============================================\n");
+            printf("Rcvd8 : %s\n", read_buffer);
+            if(read_buffer=="10") continue;
+
+            printf("llllllllllllllllll \n============================================\n");
+            login_logout_handler(sct);
         }
     }
     printf("outside switch case \n");
