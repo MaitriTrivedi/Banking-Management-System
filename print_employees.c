@@ -7,14 +7,14 @@
 #include "HEADERFILES/structures.h" // Include the structures header
 
 int main() {
-    const char *filename = "DATABASE/admin.txt"; // File containing admin data
+    const char *filename = "DATABASE/employee.txt"; // File containing admin data
 
-    struct Admin tempAdmin;
+    struct Employee tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
     // open admin database file
     int fd, bytesRead;
-    fd = open("DATABASE/admin.txt",O_RDWR);
+    fd = open("DATABASE/employee.txt",O_RDWR);
     if(fd==-1){
         perror("");
         return -1;
@@ -26,7 +26,7 @@ int main() {
         // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
         // printf("%s %s\n",a.u.username, a.u.password);
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
-        printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
+        printf("%s %s %.2f\n",tempAdmin.u.username, tempAdmin.u.password, tempAdmin.salary);
     }
 
     close(fd);

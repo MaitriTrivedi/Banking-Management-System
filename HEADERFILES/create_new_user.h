@@ -29,17 +29,21 @@ void create_admin_user(struct Admin a){
 
 void create_manager_user(struct Manager m){
     int fd;
-
+    printf("=========== adding manager user ===========\n");
     // open file in read write file
-    fd = open("../DATABASE/manager.txt",O_RDWR);
+    fd = open("DATABASE/manager.txt",O_RDWR);
+    perror("create manager user - open");
     if(fd==-1){
         perror("");
         return;
     }
     // write data to the file
+    lseek(fd, 0, SEEK_END);
     write(fd, &m, sizeof(m));
-    lseek(fd, 0, SEEK_SET);
+    perror("create manager user - write");
+    lseek(fd, -sizeof(m), SEEK_CUR);
     read(fd, &m, sizeof(m));
+    perror("create manager user - read");
 
     close(fd); 
 
@@ -50,14 +54,15 @@ void create_employee_user(struct Employee e){
     int fd;
 
     // open file in read write file
-    fd = open("../DATABASE/employee.txt",O_RDWR);
+    fd = open("DATABASE/employee.txt",O_RDWR);
     if(fd==-1){
         perror("");
         return;
     }
     // write data to the file
+    lseek(fd, 0, SEEK_END);
     write(fd, &e, sizeof(e));
-    lseek(fd, 0, SEEK_SET);
+    lseek(fd, -sizeof(e), SEEK_CUR);
     read(fd, &e, sizeof(e));
 
     close(fd); 
@@ -169,6 +174,7 @@ int create_new_user(int acpt, int type){
     switch(type){
         case 1:
             {   
+                printf("=================== inside create new user (ADMIN) ====================\n");
                 // recv signal
                 if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
                     printf("Error\n");
@@ -204,6 +210,7 @@ int create_new_user(int acpt, int type){
             }
         case 2:
             {
+                printf("=================== inside create new user (MANGER) ====================\n");
                 struct Manager m;
                 char temp_username[30];
                 // printf("Enter Manager's Name : ");
@@ -218,35 +225,43 @@ int create_new_user(int acpt, int type){
                 m.u.userid = show_user_id_by_one()+1;
                 create_manager_user(m);
                 update_user_id_by_one();
-                return continuee(acpt);;
+                strcpy(buffer, "Manger User Added Successfully.\n");
+                send_message(acpt, buffer);
+                return continuee(acpt);
             }
 
         case 3:
             {
+                printf("=================== inside create new user (EMPLOYEE) ====================\n");
                 struct Employee e ;
-                char temp_name[30];
-                printf("Enter Employee's Name : ");
-                scanf("%s", temp_name);
+                char temp_username[30];
+                // printf("Enter Manager's Name : ");
+                take_username(acpt, temp_username);
 
                 char temp_password[30];
-                printf("Enter Employee's Password : ");
-                scanf("%s", temp_password);
+                // printf("Enter Manager's Password : ");
+                take_password(acpt, temp_password);
 
-                printf("Enter Employee's Salary : ");
-                scanf("%f", &e.salary);
+                float temp_salary;
+                // printf("Enter Manager's Password : ");
+                take_salary(acpt, &temp_salary);
 
-                printf("Enter Employee's Salary : ");
-                scanf("%f", &e.salary);
-
-                strcpy(e.u.username, temp_name);
+                strcpy(e.u.username, temp_username);
                 hashPassword( temp_password, e.u.password);
                 e.u.userid = show_user_id_by_one()+1;
+                e.salary = temp_salary;
                 create_employee_user(e);
                 update_user_id_by_one();
-                return 0;
+                strcpy(buffer, "Employee User Added Successfully.\n");
+                send_message(acpt, buffer);
+                return continuee(acpt);
+
+                printf("Enter Employee's Salary : ");
+                scanf("%f", &e.salary);
             }
         case 4:
             {
+                printf("=================== inside create new user (CUSTOMER) ====================\n");
                 struct Customer c ;
                 char temp_name[30];
                 printf("Enter Customer's Name : ");
