@@ -22,18 +22,8 @@ void clientSignalHandler(int signal_num) {
 }
 
 
-int sct;
-
-void clientSignalHandler(int signal_num) {
-    printf("\n======================= CLOSING CLIENT SOCKET ============================\n");
-    close(sct);
-    exit(0);
-}
-
-
 void main(int argc, char *argv[])
 {
-    signal(SIGINT,clientSignalHandler);
     signal(SIGINT,clientSignalHandler);
     char read_buffer[500], write_buffer[500];
     size_t read_size, write_size;
@@ -155,7 +145,6 @@ void main(int argc, char *argv[])
 
         if(temp_choice==1){
             printf("---------------------------1-------------------------\n");
-            printf("---------------------------1-------------------------\n");
             // will show the menu, get the choice
             printf("inside case 1 ===\n");
             memset(read_buffer, '\0', sizeof(read_buffer));
@@ -165,7 +154,6 @@ void main(int argc, char *argv[])
                 printf("Something Went Wrong.\n");
             }
             printf("recv of menu loop \n============================================\n");
-            printf("Rcvd1 : %s\n", read_buffer);
             printf("Rcvd1 : %s\n", read_buffer);
             // getchar();
             // printf("%s\n", read_buffer);
@@ -187,12 +175,10 @@ void main(int argc, char *argv[])
             }
             printf("recv of menu loop \n============================================\n");
             printf("Rcvd2 : %s\n", read_buffer);
-            printf("Rcvd2 : %s\n", read_buffer);
             if(read_buffer=="10") continue;
             // else break;
         }
         else if(temp_choice==2){
-            printf("---------------------------2-------------------------\n");
             printf("---------------------------2-------------------------\n");
             // will just print the recived msg
             printf("inside case 2 ===\n");
@@ -204,7 +190,6 @@ void main(int argc, char *argv[])
             }
             printf("recvd msg \n============================================\n");
             printf("Rcvd3 : %s\n", read_buffer);
-            printf("Rcvd3 : %s\n", read_buffer);
 
             // rcv signal to continue the loop   
             printf("Ready to recv CONTI sig \n============================================\n");             
@@ -213,12 +198,10 @@ void main(int argc, char *argv[])
             }
             printf("recv continue sig \n============================================\n");
             printf("Rcvd4 : %s\n", read_buffer);
-            printf("Rcvd4 : %s\n", read_buffer);
             if(read_buffer=="10") continue;
             // else break;
         }
         else if(temp_choice==3){
-            printf("---------------------------3-------------------------\n");
             printf("---------------------------3-------------------------\n");
             // will just print the recived msg and get the input
             printf("inside case 2 ===\n");
@@ -229,7 +212,6 @@ void main(int argc, char *argv[])
                 perror("Something Went Wrong.\n");
             }
             printf("recvd msg \n============================================\n");
-            printf("Rcvd5 : %s\n", read_buffer);
             printf("Rcvd5 : %s\n", read_buffer);
 
             scanf("%s", write_buffer);
@@ -245,7 +227,6 @@ void main(int argc, char *argv[])
                 perror("Something Went Wrong.\n");
             }
             printf("recv continue sig \n============================================\n");
-            printf("Rcvdddd : %s\n", read_buffer);
             printf("Rcvdddd : %s\n", read_buffer);
             if(read_buffer=="10") continue;
             // else break;
