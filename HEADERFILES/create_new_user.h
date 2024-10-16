@@ -108,13 +108,6 @@ void create_customer_user(struct Customer c){
     return ;
 }
 
-void take_username(){
-    
-}
-
-void take_password(){
-    
-}
 
 int create_new_user(int acpt, int type){
     char buffer[500];
@@ -207,33 +200,25 @@ int create_new_user(int acpt, int type){
                 }
                 printf("%s\n", buffer);
                 printf("sent msg \n============================================\n");
-
-                // send loop continue signal
-                // strcpy(buffer, "10"); // type 1
-                // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
-                //     perror("Error sending login data");
-                // }
-                // printf("%s\n", buffer);
-                // printf("send CONTINUE sig \n============================================\n");
                 return continuee(acpt);
             }
         case 2:
             {
                 struct Manager m;
-                char temp_name[30];
-                printf("Enter Manager's Name : ");
-                scanf("%s", temp_name);
+                char temp_username[30];
+                // printf("Enter Manager's Name : ");
+                take_username(acpt, temp_username);
 
                 char temp_password[30];
-                printf("Enter Manager's Password : ");
-                scanf("%s", temp_password);
+                // printf("Enter Manager's Password : ");
+                take_password(acpt, temp_password);
 
-                strcpy(m.u.username, temp_name);
+                strcpy(m.u.username, temp_username);
                 hashPassword( temp_password, m.u.password);
                 m.u.userid = show_user_id_by_one()+1;
                 create_manager_user(m);
                 update_user_id_by_one();
-                return 0;
+                return continuee(acpt);;
             }
 
         case 3:

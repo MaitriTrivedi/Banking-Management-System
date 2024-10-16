@@ -66,3 +66,101 @@ int continuee(int acpt){
         }
     }
 }
+
+void take_username(int acpt, char* username_buffer){
+    char buffer[500];
+
+    // sleep(1);
+    // // // send loop continue signal
+    // strcpy(buffer, "10"); // type 1
+    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //     perror("Error sending login data");
+    // }
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
+
+    // recv signal
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd of ready sig \n============================================\n");
+    // getchar();
+
+    // send signal
+    strcpy(buffer, "3"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send of TYPE sig \n============================================\n");
+    // getchar();
+
+    // case 3(type of op = 3)
+    // send msg
+    strcpy(buffer, "Enter Username : ");
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("sent msg \n============================================\n");
+    // getchar();
+
+    // recv input
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd input \n============================================\n");
+
+    strcpy(username_buffer, buffer);
+}
+
+void take_password(int acpt, char* username_buffer){
+    char buffer[500];
+
+    sleep(1);
+    // // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    // recv signal
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd of ready sig \n============================================\n");
+    // getchar();
+
+    // send signal
+    strcpy(buffer, "3"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send of TYPE sig \n============================================\n");
+    // getchar();
+
+    // case 3(type of op = 3)
+    // send msg
+    strcpy(buffer, "Enter Password : ");
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("sent msg \n============================================\n");
+    // getchar();
+
+    // recv input
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd input \n============================================\n");
+
+    strcpy(username_buffer, buffer);
+}
