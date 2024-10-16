@@ -3,7 +3,7 @@
 #include "admin.h"
 // #include "create_new_user.h"
 
-int login_admin(struct Admin a){
+int login_admin(struct Admin a, int acpt){
     struct Admin tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
@@ -23,19 +23,27 @@ int login_admin(struct Admin a){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempAdmin.u.username, a.u.username)==0){
             if( (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
+                if(tempAdmin.u.is_logged_in) {
+                    send_message(acpt, "You are already logged in somewhere.....!");
+                    return -1;
+                } //already loggedin
+                tempAdmin.u.is_logged_in = true;
+                lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
+                if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
+                    perror("Error writing updated customer");
+                }
                 close(fd);
                 // printf("===========login_admin %d ============\n",tempAdmin.u.userid);
                 return tempAdmin.u.userid;
             }
         }
     }
-
     close(fd);
     return -1;
 
 }
 
-int login_manager(struct Manager a){
+int login_manager(struct Manager a, int acpt){
     struct Manager tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
 
@@ -55,6 +63,12 @@ int login_manager(struct Manager a){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
+                if(tempCustomer.u.is_logged_in) return -1; //already loggedin
+                tempCustomer.u.is_logged_in = true;
+                lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
+                if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
+                    perror("Error writing updated customer");
+                }
                 close(fd);
                 return tempCustomer.u.userid;
             }
@@ -66,7 +80,7 @@ int login_manager(struct Manager a){
 
 }
 
-int login_employee(struct Employee a){
+int login_employee(struct Employee a, int acpt){
     struct Employee tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
 
@@ -86,6 +100,12 @@ int login_employee(struct Employee a){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
+                if(tempCustomer.u.is_logged_in) return -1; //already loggedin
+                tempCustomer.u.is_logged_in = true;
+                lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
+                if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
+                    perror("Error writing updated customer");
+                }
                 close(fd);
                 return tempCustomer.u.userid;
             }
@@ -97,7 +117,7 @@ int login_employee(struct Employee a){
 
 }
 
-int login_customer(struct Customer a){
+int login_customer(struct Customer a, int acpt){
     struct Customer tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
 
@@ -117,6 +137,12 @@ int login_customer(struct Customer a){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
+                if(tempCustomer.u.is_logged_in) return -1; //already loggedin
+                tempCustomer.u.is_logged_in = true;
+                lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
+                if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
+                    perror("Error writing updated customer");
+                }
                 close(fd);
                 return tempCustomer.u.userid;
             }
@@ -128,7 +154,7 @@ int login_customer(struct Customer a){
 
 }
 
-int login(struct User u, int type){
+int login(struct User u, int type, int acpt){
     // printf("=================\n");
     // printf("===== LOGIN =====\n");
     // printf("=================\n");
@@ -140,7 +166,7 @@ int login(struct User u, int type){
             {
                 struct Admin a;
                 a.u = u;
-                int t= login_admin(a);
+                int t= login_admin(a, acpt);
                 // printf("Inside switch admin login : %d\n", t);
                 return t;
             }
@@ -148,7 +174,7 @@ int login(struct User u, int type){
             {
                 struct Manager mngr;
                 mngr.u = u;
-                int t= login_manager(mngr);
+                int t= login_manager(mngr, acpt);
                 // printf("Inside switch : %d\n", t);
                 return t;
             }
@@ -156,7 +182,7 @@ int login(struct User u, int type){
             {
                 struct Employee emp;
                 emp.u = u;
-                int t= login_employee(emp);
+                int t= login_employee(emp, acpt);
                 // printf("Inside switch : %d\n", t);
                 return t;
             }
@@ -164,7 +190,7 @@ int login(struct User u, int type){
             {
                 struct Customer cust;
                 cust.u = u;
-                int t= login_customer(cust);
+                int t= login_customer(cust, acpt);
                 // printf("Inside switch : %d\n", t);
                 return t
                 ;

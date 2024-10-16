@@ -98,7 +98,7 @@ void *handleClient(void *client_socket)
         printf("pass %s\n",read_buffer);
         hashPassword(read_buffer, u.password);
 
-        int login_success_user_id = login(u, choice);
+        int login_success_user_id = login(u, choice, acpt);
         if(login_success_user_id==-1){
             strcpy(msg, "0");
             if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
@@ -153,6 +153,7 @@ void *handleClient(void *client_socket)
                         }
                         else if(conti==7){
                             printf("Returning to login menu...\n");
+                            
                             char buffer[500];
 
                             sleep(1);

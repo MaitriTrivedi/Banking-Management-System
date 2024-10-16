@@ -100,6 +100,7 @@ void main(int argc, char *argv[])
     signal(SIGINT,clientSignalHandler);
     char read_buffer[500], write_buffer[500];
     size_t read_size, write_size;
+    int choice;
 
     // create socket
     sct = socket(AF_INET, SOCK_STREAM, 0);
@@ -146,6 +147,7 @@ void main(int argc, char *argv[])
         if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
             perror("Error sending login data\n");
         }
+        choice = atoi(write_buffer);
 
         // username reading
         if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){

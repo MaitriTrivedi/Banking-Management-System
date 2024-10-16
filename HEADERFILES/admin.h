@@ -28,7 +28,125 @@ void list_of_managers(){
     return ;    
 }
 
+int logout_admin(int userid){
+    struct Admin tempAdmin;
+    memset(&tempAdmin, 0, sizeof(tempAdmin));
 
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/admin.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        return -1;
+    }
+
+    // search for the availability of the Admin userx
+    // printf("Start checking for the user...\n");
+    while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
+        if(tempAdmin.u.userid==userid){
+                tempAdmin.u.is_logged_in = false;
+                lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
+                if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
+                    perror("Error writing updated customer");
+                }
+                close(fd);
+                return tempAdmin.u.userid;
+            }
+        }
+    close(fd);
+    return -1;
+
+}
+
+int logout_manager(int userid){
+    struct Manager tempAdmin;
+    memset(&tempAdmin, 0, sizeof(tempAdmin));
+
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/manager.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        return -1;
+    }
+
+    // search for the availability of the Admin userx
+    // printf("Start checking for the user...\n");
+    while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
+        if(tempAdmin.u.userid==userid){
+                tempAdmin.u.is_logged_in = false;
+                lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
+                if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
+                    perror("Error writing updated customer");
+                }
+                close(fd);
+                return tempAdmin.u.userid;
+            }
+        }
+    close(fd);
+    return -1;
+
+}
+
+int logout_employee(int userid){
+    struct Employee tempAdmin;
+    memset(&tempAdmin, 0, sizeof(tempAdmin));
+
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/employee.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        return -1;
+    }
+
+    // search for the availability of the Admin userx
+    // printf("Start checking for the user...\n");
+    while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
+        if(tempAdmin.u.userid==userid){
+                tempAdmin.u.is_logged_in = false;
+                lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
+                if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
+                    perror("Error writing updated customer");
+                }
+                close(fd);
+                return tempAdmin.u.userid;
+            }
+        }
+    close(fd);
+    return -1;
+
+}
+
+int logout_customer(int userid){
+    struct Customer tempAdmin;
+    memset(&tempAdmin, 0, sizeof(tempAdmin));
+
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/customer.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        return -1;
+    }
+
+    // search for the availability of the Admin userx
+    // printf("Start checking for the user...\n");
+    while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
+        if(tempAdmin.u.userid==userid){
+                tempAdmin.u.is_logged_in = false;
+                lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
+                if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
+                    perror("Error writing updated customer");
+                }
+                close(fd);
+                return tempAdmin.u.userid;
+            }
+        }
+    close(fd);
+    return -1;
+
+}
 
 void list_of_employees(){
     int fd;
@@ -159,6 +277,22 @@ int admin_handler(int acpt, int login_success_user_id) {
             return 6;  // Exit the admin handler
         case 7:
             printf("Case 7: Logout\n");
+            switch (choice){
+                case 1:
+                    logout_admin(login_success_user_id);
+                    break;
+                case 2:
+                    logout_manager(login_success_user_id);
+                    break;
+                case 3:
+                    logout_employee(login_success_user_id);
+                    break;
+                case 4:
+                    logout_customer(login_success_user_id);
+                    break;
+                default:
+                    break;
+            }
             return 7;  // Exit the admin handler
         default:
             printf("Invalid choice. Please select a valid option.\n");
