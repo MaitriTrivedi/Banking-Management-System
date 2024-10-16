@@ -123,7 +123,6 @@ void *handleClient(void *client_socket)
                     printf("In admin handler\n");
                     while(1){
                         int conti = admin_handler(acpt,login_success_user_id);
-<<<<<<< HEAD
                         // printf("contiiii============== %d\n",conti);
                         if(conti==1){
                             continue;
@@ -152,12 +151,6 @@ void *handleClient(void *client_socket)
                             printf("Returning to login menu...\n");
                             t1 = 2;
                             break; 
-=======
-                        if(conti==1) continue; // continue admin handler
-                        else if(conti==0){  // come out of admin handler
-                            t1=2;
-                            break;
->>>>>>> 9503300 (fixed issues)
                         }
                         // else if(conti==6){
                         //     brk=1;
