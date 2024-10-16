@@ -360,9 +360,8 @@ int modify_customer(int acpt, int type){
         case 1:
             {  
                 struct Customer m;
-                char temp_username[30]; 
                 char temp_userid[5];
-                take_username(acpt, temp_userid);
+                take_userid(acpt, temp_userid);
                 printf("=================== change username ====================\n");
                 change_username_common(acpt, atoi(temp_userid), 4);
                 return continuee(acpt);
@@ -391,10 +390,10 @@ int modify_customer(int acpt, int type){
         default:
             {
                 printf("Invalid Choice...\n");
-                return 0;
+                return continuee(acpt);
             }
     }
-    return 0;
+    return continuee(acpt);
 }
 
 int modify_employee(int acpt, int type){
@@ -479,9 +478,9 @@ int modify_employee(int acpt, int type){
         default:
             {
                 printf("Invalid Choice...\n");
-                return 0;
+                return continuee(acpt);
             }
     }
-    return 0;
+    return continuee(acpt);
 }
 

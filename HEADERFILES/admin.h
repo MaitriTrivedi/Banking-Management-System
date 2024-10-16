@@ -84,7 +84,7 @@ void list_of_customers(){
 }
 
 int admin_handler(int acpt, int login_success_user_id) {
-    char buffer[200];
+    char buffer[500];
     int choice;
     printf("================== in admin handler ==================\n");
 
@@ -108,7 +108,7 @@ int admin_handler(int acpt, int login_success_user_id) {
     printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the admin menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User\n2. View Managers\n3. View Employees\n4. View Customers\n5. Change Password\n6. Exit\n7. Logout\nEnter your choice: ");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User\n2. Modify Customer Details\n3. Modify Employee Details\n4. View Customers\n5. Change Password\n6. Exit\n7. Logout\nEnter your choice: ");
     printf("Sending admin menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");

@@ -70,14 +70,14 @@ int continuee(int acpt){
 void take_username(int acpt, char* username_buffer){
     char buffer[500];
 
-    // sleep(1);
-    // // // send loop continue signal
-    // strcpy(buffer, "10"); // type 1
-    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
-    //     perror("Error sending login data");
-    // }
-    // printf("%s\n", buffer);
-    // printf("send CONTINUE sig \n============================================\n");
+    sleep(1);
+    // // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
