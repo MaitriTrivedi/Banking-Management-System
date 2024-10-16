@@ -118,6 +118,7 @@ int create_new_user(int acpt, int type){
     char buffer[500];
     printf("=============================== inside create new user ===============================\n");
 
+    sleep(1);
     // send loop continue signal
     strcpy(buffer, "10"); // type 1
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
