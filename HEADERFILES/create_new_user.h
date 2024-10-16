@@ -256,30 +256,32 @@ int create_new_user(int acpt, int type){
                 strcpy(buffer, "Employee User Added Successfully.\n");
                 send_message(acpt, buffer);
                 return continuee(acpt);
-
-                printf("Enter Employee's Salary : ");
-                scanf("%f", &e.salary);
             }
         case 4:
             {
                 printf("=================== inside create new user (CUSTOMER) ====================\n");
                 struct Customer c ;
-                char temp_name[30];
-                printf("Enter Customer's Name : ");
-                scanf("%s", temp_name);
+                char temp_username[30];
+                // printf("Enter Manager's Name : ");
+                take_username(acpt, temp_username);
 
                 char temp_password[30];
-                printf("Enter Customer's Password : ");
-                scanf("%s", temp_password);
+                // printf("Enter Manager's Password : ");
+                take_password(acpt, temp_password, NULL);
 
-                printf("Enter Customer's Account Balance : ");
-                scanf("%f", &c.account_balance);
-                strcpy(c.u.username, temp_name);
+                c.account_balance = 1000;
+                c.is_active = true;
+                c.is_logged_in = false;
+                c.loan_taken = false;
+
+                strcpy(c.u.username, temp_username);
                 hashPassword( temp_password, c.u.password);
                 c.u.userid = show_user_id_by_one()+1;
                 create_customer_user(c);
                 update_user_id_by_one();
-                return 0;
+                strcpy(buffer, "Customer User Added Successfully.\n");
+                send_message(acpt, buffer);
+                return continuee(acpt);
             }
         default:
             {

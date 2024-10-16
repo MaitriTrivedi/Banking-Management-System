@@ -109,7 +109,7 @@ void main(int argc, char *argv[])
             printf("Login Succesful\n============================================\n");
             break;
             }
-        printf("==========Continue =====");
+        printf("==========Continue ========\n");
     }
 
 
