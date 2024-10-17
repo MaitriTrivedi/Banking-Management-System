@@ -38,10 +38,12 @@ struct Admin{
 
 struct Loan{
     struct Customer borrower;
-    struct Employee approving_employee;
+    // struct Employee approving_employee;
+    int approving_employee_id;
     int loan_id;
     float loan_amount;
     bool is_approved;
+    bool is_completed;
 };
 
 struct Transaction{

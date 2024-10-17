@@ -203,17 +203,17 @@ void *handleClient(void *client_socket)
                 }
                 case 2:
                 {
-                    manager_handler(login_success_user_id);
+                    manager_handler(acpt, login_success_user_id);
                     break;
                 }
                 case 3:
                 {
-                    employee_handler(login_success_user_id);
+                    // employee_handler(acpt, login_success_user_id);
                     break;
                 }
                 case 4:
                 {
-                    customer_handler(login_success_user_id);
+                    customer_handler(acpt, login_success_user_id);
                     break;
                 }
             }
