@@ -403,7 +403,7 @@ void show_msg_get_data(int acpt, char* temp_buffer, char *s){
     strcpy(temp_buffer, buffer);
 }
 
-void send_message(int acpt, char* write_buffer){
+void send_message(int acpt, char* write_buffer, int from_login_session){
     char buffer[500];
 
     sleep(1);
@@ -441,6 +441,17 @@ void send_message(int acpt, char* write_buffer){
     printf("%s\n", buffer);
     printf("sent msg \n============================================\n");
     // getchar();
+
+    // if(from_login_session==1){
+    //     printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+    //     // // send loop continue signal
+    //     strcpy(buffer, "10"); // type 1
+    //     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //         perror("Error sending login data");
+    //     }
+    //     printf("%s\n", buffer);
+    //     printf("send CONTINUE sig \n============================================\n");
+    // }
 }
 
 int change_password_common(int acpt, int uid, int type){
@@ -472,10 +483,10 @@ int change_password_common(int acpt, int uid, int type){
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n");
+                        send_message(acpt, "Password Changes Successfully ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n");
+                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
                     int temp = continuee(acpt);
@@ -510,10 +521,10 @@ int change_password_common(int acpt, int uid, int type){
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n");
+                        send_message(acpt, "Password Changes Successfully ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n");
+                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
                     return continuee(acpt);
@@ -545,10 +556,10 @@ int change_password_common(int acpt, int uid, int type){
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n");
+                        send_message(acpt, "Password Changes Successfully ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n");
+                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
                     return continuee(acpt);
@@ -580,10 +591,10 @@ int change_password_common(int acpt, int uid, int type){
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n");
+                        send_message(acpt, "Password Changes Successfully ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n");
+                        send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
                     return continuee(acpt);
@@ -620,10 +631,10 @@ int change_username_common(int acpt, int uid, int type){
                     lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                     if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                         perror("Error writing updated customer");
-                        send_message(acpt, "Sorry Couldn't change the username  ...\n");
+                        send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n");
+                        send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
                     int temp = continuee(acpt);
@@ -655,10 +666,10 @@ int change_username_common(int acpt, int uid, int type){
                     lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                     if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                         perror("Error writing updated customer");
-                        send_message(acpt, "Sorry Couldn't change the username  ...\n");
+                        send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n");
+                        send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
                     int temp = continuee(acpt);
@@ -690,10 +701,10 @@ int change_username_common(int acpt, int uid, int type){
                     lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                     if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                         perror("Error writing updated customer");
-                        send_message(acpt, "Sorry Couldn't change the username  ...\n");
+                        send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n");
+                        send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
                     int temp = continuee(acpt);
@@ -725,10 +736,10 @@ int change_username_common(int acpt, int uid, int type){
                     lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                     if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                         perror("Error writing updated customer");
-                        send_message(acpt, "Sorry Couldn't change the username  ...\n");
+                        send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n");
+                        send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
                     int temp = continuee(acpt);
@@ -767,10 +778,10 @@ int change_customer_balance(int acpt, int uid){
             lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
             if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                 perror("Error writing updated customer");
-                send_message(acpt, "Sorry Couldn't change the balance  ...\n");
+                send_message(acpt, "Sorry Couldn't change the balance  ...\n", 0);
             }
             else{
-                send_message(acpt, "Balance Changed Successfully ...\n");
+                send_message(acpt, "Balance Changed Successfully ...\n", 0);
             }
             close(fd);
             int temp = continuee(acpt);
@@ -806,10 +817,10 @@ int change_salary(int acpt, int uid){
             lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
             if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                 perror("Error writing updated customer");
-                send_message(acpt, "Sorry Couldn't change the salary  ...\n");
+                send_message(acpt, "Sorry Couldn't change the salary  ...\n", 0);
             }
             else{
-                send_message(acpt, "Salary Changed Successfully ...\n");
+                send_message(acpt, "Salary Changed Successfully ...\n", 0);
             }
             close(fd);
             int temp = continuee(acpt);
@@ -845,10 +856,10 @@ int change_customer_loan_status(int acpt, int uid){
             lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
             if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                 perror("Error writing updated customer");
-                send_message(acpt, "Sorry Couldn't change the Loan status  ...\n");
+                send_message(acpt, "Sorry Couldn't change the Loan status  ...\n", 0);
             }
             else{
-                send_message(acpt, "Loan Status Changed Successfully ...\n");
+                send_message(acpt, "Loan Status Changed Successfully ...\n", 0);
             }
             close(fd);
             int temp = continuee(acpt);

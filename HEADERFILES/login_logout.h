@@ -23,8 +23,10 @@ int login_admin(struct Admin a, int acpt){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempAdmin.u.username, a.u.username)==0){
             if( (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                if(tempAdmin.u.is_logged_in) {
-                    send_message(acpt, "You are already logged in somewhere.....!");
+                printf("-------------0000000000000---------- %d\n",tempAdmin.u.is_logged_in);
+                if(tempAdmin.u.is_logged_in==1) {
+                    send_message(acpt, "You are already logged in somewhere.....!",1);
+                    raise(SIGINT);
                     return -1;
                 } //already loggedin
                 tempAdmin.u.is_logged_in = true;
@@ -63,7 +65,7 @@ int login_manager(struct Manager a, int acpt){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                if(tempCustomer.u.is_logged_in) return -1; //already loggedin
+                if(tempCustomer.u.is_logged_in==1) return -1; //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                 if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
@@ -100,7 +102,7 @@ int login_employee(struct Employee a, int acpt){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                if(tempCustomer.u.is_logged_in) return -1; //already loggedin
+                if(tempCustomer.u.is_logged_in==1) return -1; //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                 if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
@@ -137,7 +139,8 @@ int login_customer(struct Customer a, int acpt){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                if(tempCustomer.u.is_logged_in) return -1; //already loggedin
+                printf("-------------0000000000000---------- %d\n",tempCustomer.u.is_logged_in);
+                if(tempCustomer.u.is_logged_in==1) return -1; //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                 if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {

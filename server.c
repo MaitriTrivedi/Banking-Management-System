@@ -53,16 +53,16 @@ void *handleClient(void *client_socket)
         memset(read_buffer, '\0', sizeof(read_buffer));
         memset(write_buffer, '\0', sizeof(write_buffer));
         memset(msg, '\0', sizeof(msg));
-
+        // printf("ready to recv login choice\n");
         if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
             perror("Error receiving login choice");
             close(acpt);
             pthread_exit(NULL);
         }
-
+        // printf("************************** = %s\n", read_buffer);
         strcpy(msg, "====================================================================\n===== WELCOME TO XYZ BANK =====\n====================================================================\nIN WHICH MODE YOU WANT TO LOGIN ?\nSELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n==========================================\nEnter your choice : ");
         if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
-            perror("Error sending login data");
+            perror("Error sendiread_bufferng login data");
             // continue;
         }
 
@@ -106,6 +106,10 @@ void *handleClient(void *client_socket)
                 // continue;
             }
             printf("Login Unsuccessful !\n");
+            // strcpy(write_buffer, "1");
+            // if (send(acpt, write_buffer, strlen(write_buffer)+1, 0) == -1) {
+            //     perror("Error sending login data\n");
+            // }
             continue;
         }
         else {
@@ -199,7 +203,7 @@ void *handleClient(void *client_socket)
                 }
                 case 2:
                 {
-                    // manager_handler(login_success_user_id);
+                    manager_handler(login_success_user_id);
                     break;
                 }
                 case 3:

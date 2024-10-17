@@ -22,6 +22,8 @@ void clientSignalHandler(int signal_num) {
 }
 
 void login_logout_handler(int sct){
+    printf("------------------------------------------------------------------------\n");
+    printf("--------------Inside login logout handler---------------------\n");
     char read_buffer[500];
     char write_buffer[500];
     while(1){
@@ -124,6 +126,7 @@ void main(int argc, char *argv[])
 
     // LOGIN HANDLING :
     while(1){
+        // printf("---------------------------starting of the login loop\n");
         memset(read_buffer, '\0', sizeof(read_buffer));
         memset(write_buffer, '\0', sizeof(write_buffer));
         
@@ -185,7 +188,7 @@ void main(int argc, char *argv[])
             printf("Login Succesful\n============================================\n");
             break;
             }
-        printf("==========Continue ========\n");
+        // printf("==========Continue ========\n");
     }
 
 
@@ -267,6 +270,7 @@ void main(int argc, char *argv[])
             }
             printf("recvd msg \n============================================\n");
             printf("Rcvd3 : %s\n", read_buffer);
+
 
             // rcv signal to continue the loop   
             printf("Ready to recv CONTI sig \n============================================\n");             

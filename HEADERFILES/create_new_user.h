@@ -162,19 +162,27 @@ int create_new_user(int acpt, int type){
     printf("recvd choice \n============================================\n");
     // getchar();
     type = atoi(buffer);
-    // send loop continue signal
-    strcpy(buffer, "10"); // type 1
-    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
-        perror("Error sending login data");
-    }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // // send loop continue signal
+    // strcpy(buffer, "10"); // type 1
+    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //     perror("Error sending login data");
+    // }
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     
     printf("==========type============= %d\n", type);
     switch(type){
         case 1:
             {   
+                // send loop continue signal
+                strcpy(buffer, "10"); // type 1
+                if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                    perror("Error sending login data");
+                }
+                printf("%s\n", buffer);
+                printf("send CONTINUE sig \n============================================\n");
+
                 printf("=================== inside create new user (ADMIN) ====================\n");
                 // recv signal
                 if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
@@ -213,6 +221,14 @@ int create_new_user(int acpt, int type){
             }
         case 2:
             {
+                // // send loop continue signal
+                // strcpy(buffer, "10"); // type 1
+                // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                //     perror("Error sending login data");
+                // }
+                // printf("%s\n", buffer);
+                // printf("send CONTINUE sig \n============================================\n");
+
                 printf("=================== inside create new user (MANGER) ====================\n");
                 struct Manager m;
                 char temp_username[30];
@@ -231,7 +247,7 @@ int create_new_user(int acpt, int type){
                 create_manager_user(m);
                 update_user_id_by_one();
                 strcpy(buffer, "Manger User Added Successfully.\n");
-                send_message(acpt, buffer);
+                send_message(acpt, buffer, 0);
                 return continuee(acpt);
             }
 
@@ -260,7 +276,7 @@ int create_new_user(int acpt, int type){
                 create_employee_user(e);
                 update_user_id_by_one();
                 strcpy(buffer, "Employee User Added Successfully.\n");
-                send_message(acpt, buffer);
+                send_message(acpt, buffer, 0);
                 return continuee(acpt);
             }
         case 4:
@@ -286,7 +302,7 @@ int create_new_user(int acpt, int type){
                 create_customer_user(c);
                 update_user_id_by_one();
                 strcpy(buffer, "Customer User Added Successfully.\n");
-                send_message(acpt, buffer);
+                send_message(acpt, buffer, 0);
                 return continuee(acpt);
             }
         default:

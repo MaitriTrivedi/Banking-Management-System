@@ -203,7 +203,7 @@ void list_of_customers(){
 
 int admin_handler(int acpt, int login_success_user_id) {
     char buffer[500];
-    int choice;
+    int choice = 1;
     printf("================== in admin handler ==================\n");
 
     // Step 1: Receive ready signal from client
@@ -276,7 +276,7 @@ int admin_handler(int acpt, int login_success_user_id) {
             printf("Case 6: Exiting the admin handler\n");
             return 6;  // Exit the admin handler
         case 7:
-            printf("Case 7: Logout\n");
+            printf("Case 7: Logout  -- %d\n", choice);
             switch (choice){
                 case 1:
                     logout_admin(login_success_user_id);
@@ -293,6 +293,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 default:
                     break;
             }
+            printf("Case 7: Logout  --ENDDD  %d\n", choice);
             return 7;  // Exit the admin handler
         default:
             printf("Invalid choice. Please select a valid option.\n");
