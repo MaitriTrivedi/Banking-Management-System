@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+
 void approve_or_disapprove_loan_applications(){
 
 }

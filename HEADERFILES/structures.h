@@ -47,7 +47,14 @@ struct Loan{
 };
 
 struct Transaction{
-    char transaction_type[30];
+    /*
+    1 = Deposite
+    2 = Withdraw
+    3 = Transfer
+    */
+    int transaction_type; 
+    int sender_uid;
+    int reciever_uid;
     float amount;
     time_t transaction_time;
 };

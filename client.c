@@ -15,6 +15,11 @@
 
 int sct;
 
+void clear_input_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 void clientSignalHandler(int signal_num) {
     printf("\n======================= CLOSING CLIENT SOCKET ============================\n");
     close(sct);
@@ -328,6 +333,45 @@ void main(int argc, char *argv[])
             else if(read_buffer=="-10") raise(SIGINT);
 
             login_logout_handler(sct);
+        }
+        else if(temp_choice==5){
+            printf("---------------------------5-------------------------\n");
+            // will print the recived msg and get the input
+            printf("inside case 2 ===\n");
+            memset(read_buffer, '\0', sizeof(read_buffer));
+            memset(write_buffer, '\0', sizeof(write_buffer));
+            // get msgand show                
+            if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+                perror("Something Went Wrong.\n");
+            }
+            printf("recvd msg \n============================================\n");
+            printf("Rcvd5 : %s\n", read_buffer);
+
+            clear_input_buffer();
+            fgets(write_buffer, sizeof(write_buffer), stdin);
+            // Remove the trailing newline character added by fgets, if any
+            write_buffer[strcspn(write_buffer, "\n")] = '\0'; 
+
+            // Send the feedback through the socket
+            if (send(sct, write_buffer, strlen(write_buffer) + 1, 0) == -1) {
+                perror("Error sending feedback");
+            } else {
+                printf("Feedback sent: %s\n", write_buffer);
+                printf("sent taken input \n============================================\n");
+}
+            printf("%s\n", write_buffer);
+            printf("sent taken input \n============================================\n");
+
+            // rcv signal to continue the loop   
+            printf("Ready to recv CONTI sig \n============================================\n");             
+            if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
+                perror("Something Went Wrong.\n");
+            }
+            printf("recv continue sig \n============================================\n");
+            printf("Rcvdddd : %s\n", read_buffer);
+            if(read_buffer=="10") continue;
+            else if(read_buffer=="-10") raise(SIGINT);
+            // else break;
         }
     }
     printf("outside switch case \n");

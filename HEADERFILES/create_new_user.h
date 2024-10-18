@@ -217,7 +217,8 @@ int create_new_user(int acpt, int type){
                 }
                 printf("%s\n", buffer);
                 printf("sent msg \n============================================\n");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
         case 2:
             {
@@ -248,7 +249,8 @@ int create_new_user(int acpt, int type){
                 update_user_id_by_one();
                 strcpy(buffer, "Manger User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
 
         case 3:
@@ -277,7 +279,8 @@ int create_new_user(int acpt, int type){
                 update_user_id_by_one();
                 strcpy(buffer, "Employee User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
         case 4:
             {
@@ -303,7 +306,8 @@ int create_new_user(int acpt, int type){
                 update_user_id_by_one();
                 strcpy(buffer, "Customer User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
         default:
             {

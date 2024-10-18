@@ -403,6 +403,57 @@ void show_msg_get_data(int acpt, char* temp_buffer, char *s){
     strcpy(temp_buffer, buffer);
 }
 
+
+void show_msg_get_whole_line_as_data(int acpt, char* temp_buffer, char *s){
+    char buffer[500];
+    if(s==NULL) s = "";
+
+    sleep(1);
+    // // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    // recv signal
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd of ready sig \n============================================\n");
+    // getchar();
+
+    // send signal
+    strcpy(buffer, "5"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send of TYPE sig \n============================================\n");
+    // getchar();
+
+    // case 3(type of op = 3)
+    // send msg
+    snprintf(buffer, sizeof(buffer), "%s", s);
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("sent msg \n============================================\n");
+    // getchar();
+
+    // recv input
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd input \n============================================\n");
+
+    strcpy(temp_buffer, buffer);
+}
+
 void send_message(int acpt, char* write_buffer, int from_login_session){
     char buffer[500];
 

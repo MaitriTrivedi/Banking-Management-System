@@ -7,14 +7,14 @@
 #include "HEADERFILES/structures.h" // Include the structures header
 
 int main() {
-    const char *filename = "DATABASE/customer.txt"; // File containing admin data
+    const char *filename = "DATABASE/loan.txt"; // File containing admin data
 
-    struct Customer tempAdmin;
-    memset(&tempAdmin, 0, sizeof(tempAdmin));
+    struct Loan loan;
+    memset(&loan, 0, sizeof(loan));
 
     // open admin database file
     int fd, bytesRead;
-    fd = open("DATABASE/customer.txt",O_RDWR);
+    fd = open("DATABASE/loan.txt",O_RDWR);
     if(fd==-1){
         perror("==");
         return -1;
@@ -22,11 +22,12 @@ int main() {
 
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
-    while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
+    while((bytesRead = read(fd, &loan, sizeof(loan))) > 0 ){
         // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
         // printf("%s %s\n",a.u.username, a.u.password);
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
-        printf("%d %s %d %d %s %.2f\n",tempAdmin.u.userid, tempAdmin.u.username, tempAdmin.u.is_active, tempAdmin.u.is_logged_in, tempAdmin.u.password, tempAdmin.account_balance);
+        printf("Loan ID: %d, Loan Amount: %.2f, Is Approved: %d, Is Completed: %d, Approving Employee ID: %d Userid: %d username %s\n", loan.loan_id, loan.loan_amount, loan.is_approved, loan.is_completed, loan.approving_employee_id, loan.borrower.u.userid, loan.borrower.u.username);
+
     }
 
     close(fd);
