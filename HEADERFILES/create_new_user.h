@@ -319,6 +319,212 @@ int create_new_user(int acpt, int type){
     return 0;
 }
 
+int create_new_customer(int acpt){
+    char buffer[500];
+    printf("=============================== inside create new CUSTOMER ===============================\n");
+
+    // sleep(1);
+    // // send loop continue signal
+    // strcpy(buffer, "10"); // type 1
+    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //     perror("Error sending login data");
+    // }
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
+
+    // // recv signal
+    // if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+    //     printf("Error\n");
+    // }
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
+    // // getchar();
+
+    // // send signal
+    // strcpy(buffer, "1"); // type 1
+    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //     perror("Error sending login data");
+    // }
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
+    // // getchar();
+
+    // // case 1(type of op = 1)
+    // // send menu
+    // strcpy(buffer, "==========================================\nSelect Your Option :\n1. Admin\n2. Managers\n3. Employees\n4. Customers\nEnter your choice :");
+    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //     perror("Error sending login data");
+    // }
+    // printf("%s\n", buffer);
+    // printf("sent menu \n============================================\n");
+    // // getchar();
+
+    // // recv choice
+    // if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+    //     printf("Error\n");
+    // }
+    // printf("%s\n", buffer);
+    // printf("recvd choice \n============================================\n");
+    // // getchar();
+    // type = atoi(buffer);
+    // // send loop continue signal
+    // strcpy(buffer, "10"); // type 1
+    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //     perror("Error sending login data");
+    // }
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
+
+    
+    // printf("==========type============= %d\n", type);
+    // switch(type){
+    //     case 1:
+    //         {   
+    //             // send loop continue signal
+    //             strcpy(buffer, "10"); // type 1
+    //             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //                 perror("Error sending login data");
+    //             }
+    //             printf("%s\n", buffer);
+    //             printf("send CONTINUE sig \n============================================\n");
+
+    //             printf("=================== inside create new user (ADMIN) ====================\n");
+    //             // recv signal
+    //             if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+    //                 printf("Error\n");
+    //             }
+    //             printf("%s\n", buffer);
+    //             printf("recvd of ready sig \n============================================\n");
+    //             // getchar();
+
+    //             // send signal
+    //             strcpy(buffer, "2"); // type 1
+    //             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //                 perror("Error sending login data");
+    //             }
+    //             printf("%s\n", buffer);
+    //             printf("send of TYPE sig \n=====");
+
+    //             struct Admin a;
+    //             strcpy(a.u.username, "Maitri");
+    //             hashPassword( "1234", a.u.password);
+    //             a.u.userid = show_user_id_by_one()+1;
+    //             a.u.is_active = true;
+    //             a.u.is_logged_in = false;
+    //             create_admin_user(a);
+    //             update_user_id_by_one();
+    //             // return;
+
+    //             // send message
+    //             strcpy(buffer, "Admin user created successfully\n");
+    //             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //                 perror("Error sending login data");
+    //             }
+    //             printf("%s\n", buffer);
+    //             printf("sent msg \n============================================\n");
+    //             // return continuee(acpt);
+    //             return 1;
+    //         }
+    //     case 2:
+    //         {
+    //             // // send loop continue signal
+    //             // strcpy(buffer, "10"); // type 1
+    //             // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //             //     perror("Error sending login data");
+    //             // }
+    //             // printf("%s\n", buffer);
+    //             // printf("send CONTINUE sig \n============================================\n");
+
+    //             printf("=================== inside create new user (MANGER) ====================\n");
+    //             struct Manager m;
+    //             char temp_username[30];
+    //             // printf("Enter Manager's Name : ");
+    //             take_username(acpt, temp_username);
+
+    //             char temp_password[30];
+    //             // printf("Enter Manager's Password : ");
+    //             take_password(acpt, temp_password, NULL);
+
+    //             strcpy(m.u.username, temp_username);
+    //             hashPassword( temp_password, m.u.password);
+    //             m.u.userid = show_user_id_by_one()+1;
+    //             m.u.is_active = true;
+    //             m.u.is_logged_in = false;
+    //             m.salary = 1000000;
+    //             create_manager_user(m);
+    //             update_user_id_by_one();
+    //             strcpy(buffer, "Manger User Added Successfully.\n");
+    //             send_message(acpt, buffer, 0);
+    //             // return continuee(acpt);
+    //             return 1;
+    //         }
+
+    //     case 3:
+    //         {
+    //             printf("=================== inside create new user (EMPLOYEE) ====================\n");
+    //             struct Employee e ;
+    //             char temp_username[30];
+    //             // printf("Enter Manager's Name : ");
+    //             take_username(acpt, temp_username);
+
+    //             char temp_password[30];
+    //             // printf("Enter Manager's Password : ");
+    //             take_password(acpt, temp_password, NULL);
+
+    //             float temp_salary;
+    //             // printf("Enter Manager's Password : ");
+    //             take_salary(acpt, &temp_salary);
+
+    //             strcpy(e.u.username, temp_username);
+    //             hashPassword( temp_password, e.u.password);
+    //             e.u.userid = show_user_id_by_one()+1;
+    //             e.u.is_active = true;
+    //             e.u.is_logged_in = false;
+    //             e.salary = temp_salary;
+    //             create_employee_user(e);
+    //             update_user_id_by_one();
+    //             strcpy(buffer, "Employee User Added Successfully.\n");
+    //             send_message(acpt, buffer, 0);
+    //             // return continuee(acpt);
+    //             return 1;
+    //         }
+    //     case 4:
+    //         {
+
+    printf("=================== inside create new user (CUSTOMER) ====================\n");
+    struct Customer c ;
+    char temp_username[30];
+    // printf("Enter Manager's Name : ");
+    take_username(acpt, temp_username);
+
+    char temp_password[30];
+    // printf("Enter Manager's Password : ");
+    take_password(acpt, temp_password, NULL);
+
+    c.account_balance = 1000;
+    c.u.is_active = true;
+    c.u.is_logged_in = false;
+    c.loan_taken = false;
+
+    strcpy(c.u.username, temp_username);
+    hashPassword( temp_password, c.u.password);
+    c.u.userid = show_user_id_by_one()+1;
+    create_customer_user(c);
+    update_user_id_by_one();
+    strcpy(buffer, "Customer User Added Successfully.\n");
+    send_message(acpt, buffer, 0);
+    // return continuee(acpt);
+    return 1;
+    //         }
+    //     default:
+    //         {
+    //             printf("Invalid Choice...\n");
+    //             return 0;
+    //         }
+    // }
+    // return 0;
+}
+
 int modify_customer(int acpt, int type){
     char buffer[500];
     printf("=============================== inside create new user ===============================\n");

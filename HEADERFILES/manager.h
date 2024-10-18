@@ -39,12 +39,60 @@ int activate_deactivate_customer_account(int acpt, int type, int activate){
     return continuee(acpt);
 }
 
-int assign_loan_applications_to_emp(int acpt, int type){
-    
+int assign_loan_applications_to_emp(int acpt, int type, int user_id){
+    struct Loan loan;
+    memset(&loan, 0, sizeof(loan));
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/loan.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        return -1;
+    }
+    char buffer[5];
+    show_msg_get_data(acpt, buffer, "Enter Loan Id You want to assign to an Employee :\n");
+    int loan_id = atoi(buffer); 
+
+    show_msg_get_data(acpt, buffer, "Enter Employee Id You want to assign this Loan Application :\n");
+    int emp_id = atoi(buffer); 
+    printf("================== %d\n", user_id);
+    while((bytesRead = read(fd, &loan, sizeof(loan))) > 0 ){
+        // printf("===inside %d %d\n", tempCustomer.u.userid, user_id);
+        if(loan.loan_id==loan_id){
+            // tempCustomer.u.is_active = tempCustomer.u.is_active ? 0 : 1;
+            loan.approving_employee_id = emp_id;
+            lseek(fd, -sizeof(loan), SEEK_CUR);
+            if (write(fd, &loan, sizeof(loan)) == -1) {
+                perror("Error writing updated customer");
+            }
+            char message[150];
+            sprintf(message, "Employee %d assigned to loan %d...\n", emp_id, loan.loan_id);
+            send_message(acpt, message, 0);
+            return continuee(acpt);
+        }
+    }
+    close(fd);
+    return continuee(acpt);
 }
 
 int review_customers_feedback(int acpt, int type){
-
+    struct Feedback feedback;
+    memset(&feedback, 0, sizeof(feedback));
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/feedback.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        return -1;
+    }
+    while((bytesRead = read(fd, &feedback, sizeof(feedback))) > 0 ){
+        // printf("===inside %d %d\n", tempCustomer.u.userid, user_id);
+        char message[500];
+        sprintf(message, "%d - %s - %d - %s", feedback.customer.u.userid, feedback.customer.u.username, feedback.rating, feedback.feedback);
+        send_message(acpt, message, 0);
+    }
+    close(fd);
+    return continuee(acpt);
 }
 
 int manager_handler(int acpt, int login_success_user_id) {
@@ -109,7 +157,7 @@ int manager_handler(int acpt, int login_success_user_id) {
             break;
         case 3:
             printf("Case 3: Assign Loan Application to Employee\n");
-            // return assign_loan_applications_to_emp(acpt, temp_choice); 
+            return assign_loan_applications_to_emp(acpt, temp_choice, login_success_user_id); 
             // Logic for viewing employees here
             break;
         case 4:

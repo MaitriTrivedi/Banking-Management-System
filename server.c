@@ -278,8 +278,78 @@ void *handleClient(void *client_socket)
                 }
                 case 3:
                 {
+                    printf("In Employee handler\n");
+                    while(1){
+                        int conti = employee_handler(acpt,login_success_user_id);
+                        // printf("contiiii============== %d\n",conti);
+                        if(conti==1){
+                            continue;
+                        }
+                        else if(conti==0){
+                            t1=2;
+                            break;
+                        }
+                        else if(conti==6){
+                            // printf("contiiii brk brk brk\n");
+                            brk=1;
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(read_buffer, "-10"); // type 1
+                            if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", read_buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("=============================== client connection closed ===============================\n\n");
+                            close(acpt);
+                            pthread_exit(NULL);
+                            break;
+                        }
+                        else if(conti==7){
+                            printf("Returning to login menu...\n");
+                            
+                            char buffer[500];
+
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(buffer, "10"); // type 1
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+
+                            // recv signal
+                            if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+                                printf("Error\n");
+                            }
+                            printf("%s\n", buffer);
+                            printf("recvd of ready sig \n============================================\n");
+                            // getchar();
+
+                            // send signal
+                            strcpy(buffer, "4"); // type 4
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send of TYPE sig \n============================================\n");
+
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(buffer, "10"); // type 1
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+                            t1 = 2;
+                            brk=1;
+                            break; 
+                        }
                     // employee_handler(acpt, login_success_user_id);
                     break;
+                    }
                 }
                 case 4:
                 {
