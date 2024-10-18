@@ -18,9 +18,6 @@ int login_admin(struct Admin a, int acpt){
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
-        // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
-        // printf("%s %s\n",a.u.username, a.u.password);
-        // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempAdmin.u.username, a.u.username)==0){
             if( (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 printf("-------------0000000000000---------- %d\n",tempAdmin.u.is_logged_in);
@@ -60,12 +57,13 @@ int login_manager(struct Manager a, int acpt){
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-        // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
-        // printf("%s %s\n",a.u.username, a.u.password);
-        // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                if(tempCustomer.u.is_logged_in==1) return -1; //already loggedin
+                if(tempCustomer.u.is_logged_in==1) {
+                    send_message(acpt, "You are already logged in somewhere.....!",1);
+                    raise(SIGINT);
+                    return -1;
+                } //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                 if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
@@ -102,7 +100,11 @@ int login_employee(struct Employee a, int acpt){
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                if(tempCustomer.u.is_logged_in==1) return -1; //already loggedin
+                if(tempCustomer.u.is_logged_in==1){
+                    send_message(acpt, "You are already logged in somewhere.....!",1);
+                    raise(SIGINT);
+                    return -1;
+                } //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                 if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
@@ -146,7 +148,11 @@ int login_customer(struct Customer a, int acpt){
             printf("%s\n",pass);
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 printf("-------------0000000000000---------- %d\n",tempCustomer.u.is_logged_in);
-                if(tempCustomer.u.is_logged_in==1) return -1; //already loggedin
+                if(tempCustomer.u.is_logged_in==1){
+                    send_message(acpt, "You are already logged in somewhere.....!",1);
+                    raise(SIGINT);
+                    return -1;
+                } //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                 if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
@@ -204,6 +210,11 @@ int login(struct User u, int type, int acpt){
                 return t
                 ;
             }
+        default:
+        {
+            send_message(acpt, "Invalid Input ...\n", 0);
+            return -1;
+        }
     }
     return -1;
 }

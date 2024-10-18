@@ -47,19 +47,21 @@ void *handleClient(void *client_socket)
     char msg[500];
     int brk=0;
     int c=0;
+    int t=0;
     while(1){
         printf("=========== %d ==============\n", c);
         // Receive login data from client
         memset(read_buffer, '\0', sizeof(read_buffer));
         memset(write_buffer, '\0', sizeof(write_buffer));
         memset(msg, '\0', sizeof(msg));
-        // printf("ready to recv login choice\n");
+
+        printf("ready to recv login choice\n");
         if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
             perror("Error receiving login choice");
             close(acpt);
             pthread_exit(NULL);
         }
-        // printf("************************** = %s\n", read_buffer);
+        printf("************************** = %s\n", read_buffer);
         strcpy(msg, "====================================================================\n===== WELCOME TO XYZ BANK =====\n====================================================================\nIN WHICH MODE YOU WANT TO LOGIN ?\nSELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n==========================================\nEnter your choice : ");
         if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
             perror("Error sendiread_bufferng login data");
@@ -106,6 +108,7 @@ void *handleClient(void *client_socket)
                 // continue;
             }
             printf("Login Unsuccessful !\n");
+            t = 1;
             // strcpy(write_buffer, "1");
             // if (send(acpt, write_buffer, strlen(write_buffer)+1, 0) == -1) {
             //     perror("Error sending login data\n");

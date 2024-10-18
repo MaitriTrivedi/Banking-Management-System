@@ -320,7 +320,7 @@ void main(int argc, char *argv[])
             // else break;
         }
         else if(temp_choice==4){
-            
+            printf("---------------------------4-------------------------\n");
             // once login you can continue this loop
             // rcv signal to continue the loop   
             printf("Ready to recv CONTI sig \n============================================\n");             
