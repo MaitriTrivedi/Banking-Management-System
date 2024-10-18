@@ -5,6 +5,7 @@
 #include<stdio.h>
 
 int view_account_balance(int acpt, int type, int userid){
+    printf("In view acc balance ---- %d\n", userid);
     struct Customer tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
     // open admin database file
@@ -258,7 +259,7 @@ int customer_handler(int acpt, int login_success_user_id) {
     printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the customer menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User.\n2. Activate or Deactivate Customer Account\n3.Assign Loan Application to Employee\n4. Review Customer's FeedBack\n5. Change Password\n");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. View My account Balance\n2. Deposite Money\n3. Withdraw Money\n4. Transfer Funds\n5. Change Password\n6. Exit\n7. Logout\n8. Apply for a loan\n9. Add Feedback\n10. View Transaction History\n");
     printf("Sending customer menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");

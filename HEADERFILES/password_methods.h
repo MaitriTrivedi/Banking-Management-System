@@ -21,4 +21,10 @@ void hashPassword(const char* password, unsigned char* hashed_password) {
     EVP_MD_CTX_free(ctx);
 }
 
+void hashedPasswordToHex(const unsigned char* hashed_password, char* hex_output, size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        sprintf(hex_output + (i * 2), "%02x", hashed_password[i]);
+    }
+    hex_output[length * 2] = '\0';  // Null-terminate the string
+}
 #endif

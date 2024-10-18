@@ -120,6 +120,8 @@ int login_employee(struct Employee a, int acpt){
 }
 
 int login_customer(struct Customer a, int acpt){
+    printf("--inside Customer login\n");
+    printf("%s %d\n", a.u.username, a.u.userid);
     struct Customer tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
 
@@ -138,6 +140,10 @@ int login_customer(struct Customer a, int acpt){
         // printf("%s %s\n",a.u.username, a.u.password);
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
+            printf("%s %d %s %s\n", a.u.username, a.u.userid, tempCustomer.u.username, tempCustomer.u.password);
+            char pass[70];
+            hashedPasswordToHex(tempCustomer.u.password, pass, SHA256_DIGEST_LENGTH);
+            printf("%s\n",pass);
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 printf("-------------0000000000000---------- %d\n",tempCustomer.u.is_logged_in);
                 if(tempCustomer.u.is_logged_in==1) return -1; //already loggedin

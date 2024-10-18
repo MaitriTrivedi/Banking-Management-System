@@ -8,11 +8,73 @@
 
 void create_admin_user_own(struct Admin a){
     int fd;
-
+    a.u.is_logged_in = false;
+    a.u.is_active = true;
     // open file in read write file
     fd = open("../DATABASE/admin.txt",O_RDWR);
     if(fd==-1){
         perror("create_admin_user : ");
+        return;
+    }
+    // write data to the file
+    write(fd, &a, sizeof(a));
+    lseek(fd, 0, SEEK_SET);
+    read(fd, &a, sizeof(a));
+
+    close(fd); 
+
+    return ;
+}
+
+void create_manager_user_own(struct Manager a){
+    int fd;
+    a.u.is_logged_in = false;
+    a.u.is_active = true;
+    // open file in read write file
+    fd = open("../DATABASE/manager.txt",O_RDWR);
+    if(fd==-1){
+        perror("create_manager_user : ");
+        return;
+    }
+    // write data to the file
+    write(fd, &a, sizeof(a));
+    lseek(fd, 0, SEEK_SET);
+    read(fd, &a, sizeof(a));
+
+    close(fd); 
+
+    return ;
+}
+
+void create_employee_user_own(struct Employee a){
+    int fd;
+    a.u.is_logged_in = false;
+    a.u.is_active = true;
+    // open file in read write file
+    fd = open("../DATABASE/employee.txt",O_RDWR);
+    if(fd==-1){
+        perror("create_employee_user : ");
+        return;
+    }
+    // write data to the file
+    write(fd, &a, sizeof(a));
+    lseek(fd, 0, SEEK_SET);
+    read(fd, &a, sizeof(a));
+
+    close(fd); 
+
+    return ;
+}
+void create_customer_user_own(struct Customer a){
+    int fd;
+    a.account_balance = 100000;
+    a.loan_taken = false;
+    a.u.is_logged_in = false;
+    a.u.is_active = true;
+    // open file in read write file
+    fd = open("../DATABASE/customer.txt",O_RDWR);
+    if(fd==-1){
+        perror("create_customere_user : ");
         return;
     }
     // write data to the file
@@ -103,14 +165,57 @@ void main(int argc, char *argv[]){
         printf("Enter Type of User You want to add :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n");
         scanf("%d", &type);
     }
-    struct Admin a;
-    strcpy(a.u.username, "Maitri");
-    hashPassword( "1234", a.u.password);
-    a.u.is_active = true;
-    a.u.is_logged_in = false;
-    a.u.userid = show_user_id_by_one_own()+1;
-    create_admin_user_own(a);
-    update_user_id_by_one_own();
+    switch(type){
+        case 1:{
+            printf("adding admin user ---------------------\n");
+            struct Admin a;
+            strcpy(a.u.username, "Maitri");
+            hashPassword( "1234", a.u.password);
+            a.u.is_active = true;
+            a.u.is_logged_in = false;
+            a.u.userid = show_user_id_by_one_own()+1;
+            create_admin_user_own(a);
+            update_user_id_by_one_own();
+            return;
+        }
+        case 2:{
+            printf("adding manager user ---------------------\n");
+            struct Manager a;
+            strcpy(a.u.username, "Maitri");
+            hashPassword( "1234", a.u.password);
+            a.u.is_active = true;
+            a.u.is_logged_in = false;
+            a.u.userid = show_user_id_by_one_own()+1;
+            create_manager_user_own(a);
+            update_user_id_by_one_own();
+            return;
+        }
+        case 3:{
+            printf("adding employee user ---------------------\n");
+            struct Employee a;
+            strcpy(a.u.username, "Maitri");
+            hashPassword( "1234", a.u.password);
+            a.u.is_active = true;
+            a.u.is_logged_in = false;
+            a.u.userid = show_user_id_by_one_own()+1;
+            create_employee_user_own(a);
+            update_user_id_by_one_own();
+            return;
+        }
+        case 4:{
+            printf("adding customer user ---------------------\n");
+            struct Customer a;
+            strcpy(a.u.username, "Maitri");
+            hashPassword( "1234", a.u.password);
+            a.u.is_active = true;
+            a.u.is_logged_in = false;
+            a.u.userid = show_user_id_by_one_own()+1;
+            create_customer_user_own(a);
+            update_user_id_by_one_own();
+            return;
+        }
+    
+    }
     return;
 }
 
