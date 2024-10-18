@@ -18,10 +18,21 @@ int activate_deactivate_customer_account(int acpt, int type, int activate){
     char buffer[5];
     show_msg_get_data(acpt, buffer, "Enter User Id You want to activate or deactivate :\n");
     int user_id = atoi(buffer); 
+    printf("================== %d\n", user_id);
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
+        printf("===inside %d %d\n", tempCustomer.u.userid, user_id);
         if(tempCustomer.u.userid==user_id){
-            tempCustomer.u.is_active = tempCustomer.u.is_active ? 0 : 1;
-            return tempCustomer.account_balance;
+            // tempCustomer.u.is_active = tempCustomer.u.is_active ? 0 : 1;
+            tempCustomer.u.is_active = activate;
+            lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
+            if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
+                perror("Error writing updated customer");
+            }
+            if(activate==1)
+                send_message(acpt, "User Activated Successfully ...\n", 0);
+            else
+                send_message(acpt, "User Deactivated Successfully ...\n", 0);
+            return continuee(acpt);
         }
     }
     close(fd);

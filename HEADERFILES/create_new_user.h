@@ -245,6 +245,7 @@ int create_new_user(int acpt, int type){
                 m.u.userid = show_user_id_by_one()+1;
                 m.u.is_active = true;
                 m.u.is_logged_in = false;
+                m.salary = 1000000;
                 create_manager_user(m);
                 update_user_id_by_one();
                 strcpy(buffer, "Manger User Added Successfully.\n");
