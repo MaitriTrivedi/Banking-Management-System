@@ -31,11 +31,13 @@ int approve_or_reject_loan_application(int acpt, int approve){
                 send_message(acpt, "Loan Approved Successfully ...\n", 0);
             else
                 send_message(acpt, "Loan Rejected Successfully ...\n", 0);
-            return continuee(acpt);
+            // return continuee(acpt);
+            return 1;
         }
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int view_assigned_loan(int acpt, int emp_id){
@@ -62,7 +64,8 @@ int view_assigned_loan(int acpt, int emp_id){
             send_message(acpt, message, 0);
         }
     }
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int view_customer_transaction_passbook(int acpt, int cust_id){
@@ -95,7 +98,8 @@ int view_customer_transaction_passbook(int acpt, int cust_id){
             send_message(acpt, message, 0);
         }
     }
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int employee_handler(int acpt, int login_success_user_id) {

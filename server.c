@@ -17,23 +17,27 @@
 #define LISTEN_BACKLOG 50
 #define MAX_CONCURRENT_CONNECTIONS 5
 
+volatile sig_atomic_t server_running = 1;
 static volatile int keep_running = 1;
 int server_socket;
 
-void serverSignalHandler(int signal_num){
-    int cls = close(server_socket);
-    if (cls == -1)
-    {
-        perror("");
-        exit(1);
+void serverSignalHandler(int signum) {
+    if (signum == SIGINT) {
+        printf("\nReceived Ctrl+C. Shutting down server...\n");
+        server_running = 0;
+        keep_running = 0;  // Use existing keep_running variable
+        
+        // Close the server socket to unblock accept()
+        if (server_socket != -1) {
+            shutdown(server_socket, SHUT_RDWR);
+            close(server_socket);
+        }
     }
-    printf("======================= CLOSED SERVER SOCKET ============================\n");
-    exit(1);
 }
-
 
 void *handleClient(void *client_socket)
 {
+    // signal(SIGINT,serverSignalHandler);
     char read_buffer[500], write_buffer[500];
     size_t read_size, write_size;
     /*
@@ -61,6 +65,17 @@ void *handleClient(void *client_socket)
             close(acpt);
             pthread_exit(NULL);
         }
+
+        // if(t==1){
+        //     printf("managed by t^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+        //     printf("ready to recv login choice\n");
+        //     if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
+        //         perror("Error receiving login choice");
+        //         close(acpt);
+        //         pthread_exit(NULL);
+        //     }
+        //     t=0;
+        // }
         printf("************************** = %s\n", read_buffer);
         strcpy(msg, "====================================================================\n===== WELCOME TO XYZ BANK =====\n====================================================================\nIN WHICH MODE YOU WANT TO LOGIN ?\nSELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n==========================================\nEnter your choice : ");
         if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
@@ -139,6 +154,7 @@ void *handleClient(void *client_socket)
                             continue;
                         }
                         else if(conti==0){
+                            t=1;
                             t1=2;
                             break;
                         }
@@ -289,6 +305,7 @@ void *handleClient(void *client_socket)
                             continue;
                         }
                         else if(conti==0){
+                            printf("====11111111111111111111111111111\n");
                             t1=2;
                             break;
                         }
@@ -364,6 +381,7 @@ void *handleClient(void *client_socket)
                             continue;
                         }
                         else if(conti==0){
+                            printf("----made t1 = 288888888888888888888888888\n");
                             t1=2;
                             logout_customer(login_success_user_id);
                             break;
@@ -432,14 +450,21 @@ void *handleClient(void *client_socket)
                 }
             }
             if(brk==1) {
+                char buffer[500];
                 printf("----=-------------=---> inside break\n");
+                strcpy(buffer, "10"); // type 1
+                if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                    perror("Error sending login data");
+                }
+                printf("%s\n", buffer);
+                printf("send CONTINUE sig \n============================================\n");
+                            
                 break;
             }
         }
         c++;
         printf("=--------=-----> %d\n", c);
     }
-    
     printf("=============================== client connection closed ===============================\n\n");
     close(acpt);
     pthread_exit(NULL);
@@ -447,6 +472,8 @@ void *handleClient(void *client_socket)
 
 int main(int argc, char const *argv[])
 {
+     // Set up SIGINT handler
+    signal(SIGINT, serverSignalHandler);
     socklen_t l;
 
     // create socket
@@ -483,8 +510,7 @@ int main(int argc, char const *argv[])
         perror("");
         return 0;
     }
-    
-    signal(SIGINT,serverSignalHandler);
+
 
     while (keep_running)
     {
@@ -510,7 +536,9 @@ int main(int argc, char const *argv[])
             perror("");
             return 0;
         }
+        
     }
+    
 
     // close
     int cls = close(server_socket);

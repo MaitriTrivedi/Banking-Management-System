@@ -29,6 +29,7 @@ void list_of_managers(){
 }
 
 int logout_admin(int userid){
+    printf("== == == == Inside Logout admin== == == == ==\n");
     struct Admin tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
@@ -50,10 +51,12 @@ int logout_admin(int userid){
                     perror("Error writing updated customer");
                 }
                 close(fd);
+                printf("== == == == end1 Logout admin== == == == ==\n");
                 return tempAdmin.u.userid;
             }
         }
     close(fd);
+    printf("== == == == end2 Logout admin== == == == ==\n");
     return -1;
 
 }
@@ -249,60 +252,68 @@ int admin_handler(int acpt, int login_success_user_id) {
     printf("Admin selected choice: %d\n", temp_choice);
 
     // Step 5: Handle the admin's choice using switch case
-    switch (temp_choice) {
-        case 1:
-            printf("Case 1: Adding a new user\n");
-            create_new_user(acpt, temp_choice);  // Function to add a new user
-            return continuee(acpt);
-            // break;
-        case 2:
-            printf("Case 2: Modify Customer Details\n");
-            return modify_customer(acpt, temp_choice); 
-            // Logic for viewing managers here
-            break;
-        case 3:
-            printf("Case 3: Modify Employee Details\n");
-            return modify_employee(acpt, temp_choice); 
-            // Logic for viewing employees here
-            break;
-        case 4:
-            printf("Case 4: Viewing customers\n");
-            // Logic for viewing customers here
-            break;
-        case 5:
-            printf("Case 5: Change Password\n");
-            int cont = change_password_common(acpt, login_success_user_id, 1);
-            // cont = continuee(acpt);  // Exit the admin handler
-            if(cont==0) return 7;
-            else return 1;
-        case 6:
-            printf("Case 6: Exiting the admin handler\n");
-            return 6;  // Exit the admin handler
-        case 7:
-            printf("Case 7: Logout  -- %d\n", choice);
-            switch (choice){
-                case 1:
-                    logout_admin(login_success_user_id);
-                    break;
-                case 2:
-                    logout_manager(login_success_user_id);
-                    break;
-                case 3:
-                    logout_employee(login_success_user_id);
-                    break;
-                case 4:
-                {
-                    logout_admin(login_success_user_id);
-                    return 7;
+    while(1){
+        printf("in while loopoooooooooooooooooooooooooooooooop\n");
+        switch (temp_choice) {
+            case 1:
+                printf("Case 1: Adding a new user\n");
+                create_new_user(acpt, temp_choice);  // Function to add a new user
+                // return continuee(acpt);
+                return 1;
+                // break;
+            case 2:
+                printf("Case 2: Modify Customer Details\n");
+                return modify_customer(acpt, temp_choice); 
+                // Logic for viewing managers here
+                break;
+            case 3:
+                printf("Case 3: Modify Employee Details\n");
+                return modify_employee(acpt, temp_choice); 
+                // Logic for viewing employees here
+                break;
+            case 4:
+                printf("Case 4: Viewing customers\n");
+                // Logic for viewing customers here
+                break;
+            case 5:
+                printf("Case 5: Change Password\n");
+                int cont = change_password_common(acpt, login_success_user_id, 1);
+                // cont = continuee(acpt);  // Exit the admin handler
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
                 }
-                default:
-                    break;
-            }
-            printf("Case 7: Logout  --ENDDD  %d\n", choice);
-            return 7;  // Exit the admin handler
-        default:
-            printf("Invalid choice. Please select a valid option.\n");
-            break;
+                else return 1;
+            case 6:
+                printf("Case 6: Exiting the admin handler\n");
+                return 6;  // Exit the admin handler
+            case 7:
+                printf("Case 7: Logout  -- %d\n", choice);
+                switch (choice){
+                    case 1:
+                        logout_admin(login_success_user_id);
+                        break;
+                    case 2:
+                        logout_manager(login_success_user_id);
+                        break;
+                    case 3:
+                        logout_employee(login_success_user_id);
+                        break;
+                    case 4:
+                    {
+                        logout_admin(login_success_user_id);
+                        return 7;
+                    }
+                    default:
+                        break;
+                }
+                printf("Case 7: Logout  --ENDDD  %d\n", choice);
+                return 7;  // Exit the admin handler
+            default:
+                printf("Invalid choice. Please select a valid option.\n");
+                break;
+        }
+        break;
     }
     printf("================== End of admin handler ==================\n");
     return 0;

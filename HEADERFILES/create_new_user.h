@@ -591,7 +591,8 @@ int modify_customer(int acpt, int type){
                 take_userid(acpt, temp_userid);
                 printf("=================== change username ====================\n");
                 change_username_common(acpt, atoi(temp_userid), 4);
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
         case 2:
             {
@@ -601,7 +602,8 @@ int modify_customer(int acpt, int type){
                 take_username(acpt, temp_userid);
                 printf("=================== change balance ====================\n");
                 change_customer_balance(acpt, atoi(temp_userid));
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
 
         case 3:
@@ -612,15 +614,18 @@ int modify_customer(int acpt, int type){
                 take_username(acpt, temp_userid);
                 printf("=================== loan taken ====================\n");
                 change_customer_loan_status(acpt, atoi(temp_userid));
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
         default:
             {
                 printf("Invalid Choice...\n");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
     }
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int modify_employee(int acpt, int type){
@@ -690,7 +695,8 @@ int modify_employee(int acpt, int type){
                 take_username(acpt, temp_userid);
                 printf("=================== change username ====================\n");
                 change_username_common(acpt, atoi(temp_userid), 3);
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
         case 2:
             {
@@ -700,14 +706,17 @@ int modify_employee(int acpt, int type){
                 take_username(acpt, temp_userid);
                 printf("=================== change balance ====================\n");
                 change_salary(acpt, atoi(temp_userid));
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
         default:
             {
                 printf("Invalid Choice...\n");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
     }
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 

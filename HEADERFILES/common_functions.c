@@ -516,7 +516,8 @@ int change_password_common(int acpt, int uid, int type){
             fd = open("DATABASE/admin.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 printf("====in while\n");
@@ -543,6 +544,7 @@ int change_password_common(int acpt, int uid, int type){
                     int temp = continuee(acpt);
                     printf("=====temp %d\n",temp);
                     return temp;
+                    // return 1;
                 }
                 printf("change password admin\n");
             }
@@ -556,7 +558,8 @@ int change_password_common(int acpt, int uid, int type){
             fd = open("DATABASE/manager.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 if(tempCustomer.u.userid==uid){
@@ -578,7 +581,8 @@ int change_password_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
-                    return continuee(acpt);
+                    // return continuee(acpt);
+                    return 1;
                 }
             }
             close(fd);
@@ -591,7 +595,8 @@ int change_password_common(int acpt, int uid, int type){
             fd = open("DATABASE/employee.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 if(tempCustomer.u.userid==uid){
@@ -613,7 +618,8 @@ int change_password_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
-                    return continuee(acpt);
+                    // return continuee(acpt);
+                    return 1;
                 }
             }
             close(fd);
@@ -626,7 +632,8 @@ int change_password_common(int acpt, int uid, int type){
             fd = open("DATABASE/customer.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 if(tempCustomer.u.userid==uid){
@@ -648,14 +655,17 @@ int change_password_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
-                    return continuee(acpt);
+                    // return continuee(acpt);
+                    return 1;
                 }
             }
             close(fd);
             break;
         }
     }
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
+
 }
 
 int change_username_common(int acpt, int uid, int type){
@@ -669,7 +679,8 @@ int change_username_common(int acpt, int uid, int type){
             fd = open("DATABASE/admin.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 printf("====in while\n");
@@ -688,9 +699,10 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
-                    int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
-                    return temp;
+                    // int temp = continuee(acpt);
+                    // printf("=====temp %d\n",temp);
+                    // return temp;
+                    return 1;
                 }
                 printf("change username admin\n");
             }
@@ -704,7 +716,8 @@ int change_username_common(int acpt, int uid, int type){
             fd = open("DATABASE/manager.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 printf("====in while\n");
@@ -723,9 +736,10 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
-                    int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
-                    return temp;
+                    // int temp = continuee(acpt);
+                    // printf("=====temp %d\n",temp);
+                    // return temp;
+                    return 1;
                 }
                 printf("change username admin\n");
             }
@@ -739,7 +753,8 @@ int change_username_common(int acpt, int uid, int type){
             fd = open("DATABASE/employee.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 printf("====in while\n");
@@ -758,9 +773,10 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
-                    int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
-                    return temp;
+                    // int temp = continuee(acpt);
+                    // printf("=====temp %d\n",temp);
+                    // return temp;
+                    return 1;
                 }
                 printf("change username admin\n");
             }
@@ -774,7 +790,8 @@ int change_username_common(int acpt, int uid, int type){
             fd = open("DATABASE/customer.txt",O_RDWR);
             if(fd==-1){
                 perror("");
-                return continuee(acpt);
+                // return continuee(acpt);
+                return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 printf("====in while\n");
@@ -793,9 +810,10 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Username Changes Successfully ...\n", 0);
                     }
                     close(fd);
-                    int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
-                    return temp;
+                    // int temp = continuee(acpt);
+                    // printf("=====temp %d\n",temp);
+                    // return temp;
+                    return 1;
                 }
                 printf("change username admin\n");
             }
@@ -803,7 +821,8 @@ int change_username_common(int acpt, int uid, int type){
             break;
         }
     }
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int change_customer_balance(int acpt, int uid){
@@ -815,7 +834,8 @@ int change_customer_balance(int acpt, int uid){
     fd = open("DATABASE/customer.txt",O_RDWR);
     if(fd==-1){
         perror("");
-        return continuee(acpt);
+        // return continuee(acpt);
+        return 1;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
         printf("====in while\n");
@@ -835,14 +855,16 @@ int change_customer_balance(int acpt, int uid){
                 send_message(acpt, "Balance Changed Successfully ...\n", 0);
             }
             close(fd);
-            int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
-            return temp;
+            // int temp = continuee(acpt);
+            // printf("=====temp %d\n",temp);
+            // return temp;
+            return 1;
         }
         printf("change balance admin\n");
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int change_salary(int acpt, int uid){
@@ -854,7 +876,8 @@ int change_salary(int acpt, int uid){
     fd = open("DATABASE/employee.txt",O_RDWR);
     if(fd==-1){
         perror("");
-        return continuee(acpt);
+        // return continuee(acpt);
+        return 1;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
         printf("====in while\n");
@@ -874,14 +897,16 @@ int change_salary(int acpt, int uid){
                 send_message(acpt, "Salary Changed Successfully ...\n", 0);
             }
             close(fd);
-            int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
-            return temp;
+            // int temp = continuee(acpt);
+            // printf("=====temp %d\n",temp);
+            // return temp;
+            return 1;
         }
         printf("change balance admin\n");
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int change_customer_loan_status(int acpt, int uid){
@@ -893,7 +918,8 @@ int change_customer_loan_status(int acpt, int uid){
     fd = open("DATABASE/customer.txt",O_RDWR);
     if(fd==-1){
         perror("");
-        return continuee(acpt);
+        // return continuee(acpt);
+        return 1;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
         printf("====in while\n");
@@ -913,12 +939,14 @@ int change_customer_loan_status(int acpt, int uid){
                 send_message(acpt, "Loan Status Changed Successfully ...\n", 0);
             }
             close(fd);
-            int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
-            return temp;
+            // int temp = continuee(acpt);
+            // printf("=====temp %d\n",temp);
+            // return temp;
+            return 1;
         }
         printf("change Loan Status admin\n");
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }

@@ -100,7 +100,8 @@ int view_account_balance(int acpt, int type, int userid){
         }
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 void add_transaction_history(int sender_uid, int reciever_uid, float amount, int type) {
@@ -260,7 +261,8 @@ int deposite_money(int acpt, int userid, size_t recordsize){
     }
 
     close(fd);
-    return continuee(acpt);  // Call continuee function if user not found
+    return 1;
+    // return continuee(acpt);  // Call continuee function if user not found
 }
 
 int withdraw_money(int acpt, int userid, size_t recordsize){
@@ -324,7 +326,8 @@ int withdraw_money(int acpt, int userid, size_t recordsize){
     }
 
     close(fd);
-    return continuee(acpt);  // Call continuee function if user not found
+    return 1;
+    // return continuee(acpt);  // Call continuee function if user not found
 }
 
 int transfer_funds(int acpt, int userid, size_t recordsize) {
@@ -447,7 +450,8 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
     // Close file descriptors if user not found
     close(fd);
     close(fd2);
-    return continuee(acpt);  // Call continuee function if user not found
+    return 1;
+    // return continuee(acpt);  // Call continuee function if user not found
 }
 
 float view_account_balance2(int user_id){
@@ -555,7 +559,8 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
     }
     printf("================>>>>");
     close(fd);
-    return continuee(acpt);  
+    return 1;
+    // return continuee(acpt);  
 }// Call continuee function if user not fou
 
 void change_password(int user_id){
@@ -691,34 +696,38 @@ int customer_handler(int acpt, int login_success_user_id) {
             show_msg_get_data(acpt, userid_buffer, "Enter your user id :");
             printf("entert uid %d\n",atoi(userid_buffer));
             view_account_balance(acpt, temp_choice, atoi(userid_buffer));  
-            if(continuee(acpt)==0){
-                return 7;
-            }
+            // if(continuee(acpt)==0){
+            //     return 7;
+            // }
+            return 1;
             return 0;
             // break;
         case 2:
             printf("Case 2: Deposite Money\n");
             deposite_money(acpt, login_success_user_id, sizeof(struct Customer));
-            if(continuee(acpt)==0){
-                return 7;
-            }
-            return 0;
+            // if(continuee(acpt)==0){
+            //     return 7;
+            // }
+            // return 0;
+            return 1;
             break;
         case 3:
             printf("Case 3: Withdraw Money\n");
             withdraw_money(acpt, login_success_user_id, sizeof(struct Customer));
-            if(continuee(acpt)==0){
-                return 7;
-            }
-            return 0;
+            // if(continuee(acpt)==0){
+            //     return 7;
+            // }
+            // return 0;
+            return 1;
             break;
         case 4:
             printf("Case 4: Transfer Funds\n");
             transfer_funds(acpt, login_success_user_id, 4);
-            if(continuee(acpt)==0){
-                return 7;
-            }
-            return 0;
+            // if(continuee(acpt)==0){
+            //     return 7;
+            // }
+            return 1;
+            // return 0;
             break;
         case 5:
             printf("Case 5: Change Password\n");
@@ -753,10 +762,11 @@ int customer_handler(int acpt, int login_success_user_id) {
         case 8:
             printf("Case 8: Apply for a loan\n");
             apply_for_a_loan(acpt, login_success_user_id, sizeof(struct Customer));
-            if(continuee(acpt)==0){
-                return 7;
-            }
-            return 0;
+            // if(continuee(acpt)==0){
+            //     return 7;
+            // }
+            // return 0;
+            return 1;
             break;
         case 9:
             printf("Case 9: Add Feedback\n");

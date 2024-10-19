@@ -32,11 +32,13 @@ int activate_deactivate_customer_account(int acpt, int type, int activate){
                 send_message(acpt, "User Activated Successfully ...\n", 0);
             else
                 send_message(acpt, "User Deactivated Successfully ...\n", 0);
-            return continuee(acpt);
+            // return continuee(acpt);
+            return 1;
         }
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int assign_loan_applications_to_emp(int acpt, int type, int user_id){
@@ -68,11 +70,12 @@ int assign_loan_applications_to_emp(int acpt, int type, int user_id){
             char message[150];
             sprintf(message, "Employee %d assigned to loan %d...\n", emp_id, loan.loan_id);
             send_message(acpt, message, 0);
-            return continuee(acpt);
+            // return continuee(acpt);
         }
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int review_customers_feedback(int acpt, int type){
@@ -92,7 +95,8 @@ int review_customers_feedback(int acpt, int type){
         send_message(acpt, message, 0);
     }
     close(fd);
-    return continuee(acpt);
+    // return continuee(acpt);
+    return 1;
 }
 
 int manager_handler(int acpt, int login_success_user_id) {
