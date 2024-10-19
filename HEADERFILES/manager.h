@@ -124,7 +124,7 @@ int manager_handler(int acpt, int login_success_user_id) {
     printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the manager menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User.\n2. Activate or Deactivate Customer Account\n3.Assign Loan Application to Employee\n4. Review Customer's FeedBack\n5. Change Password\n");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User.\n2. Activate or Deactivate Customer Account\n3. Assign Loan Application to Employee\n4. Review Customer's FeedBack\n5. Change Password\nEnter Your Choice : ");
     printf("Sending MANAGER menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
@@ -150,7 +150,7 @@ int manager_handler(int acpt, int login_success_user_id) {
     switch (temp_choice) {
         case 1:
             printf("Case 1: Adding a new user\n");
-            return create_new_user(acpt, temp_choice);  // Function to add a new user
+            return create_new_user_by_manager(acpt, temp_choice);  // Function to add a new user
             // break;
         case 2:
             printf("Case 2: Activate or Deactivate Customer Account\n");

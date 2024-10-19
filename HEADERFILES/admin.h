@@ -230,7 +230,7 @@ int admin_handler(int acpt, int login_success_user_id) {
     // printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the admin menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User\n2. Modify Customer Details\n3. Modify Employee Details\n4. View Customers\n5. Change Password\n6. Exit\n7. Logout\nEnter your choice: ");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User\n2. Modify Customer Details\n3. Modify Employee Details\n4. View Customers\n5. Change Password\n6. Exit\n7. Logout\n8. Manage User Roles\nEnter your choice: ");
     // printf("Sending admin menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
@@ -269,17 +269,33 @@ int admin_handler(int acpt, int login_success_user_id) {
                 // break;
             case 2:
                 printf("Case 2: Modify Customer Details\n");
-                return modify_customer(acpt, temp_choice); 
+                conti = modify_customer(acpt, temp_choice);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
                 // Logic for viewing managers here
                 break;
             case 3:
                 printf("Case 3: Modify Employee Details\n");
-                return modify_employee(acpt, temp_choice); 
-                // Logic for viewing employees here
+                conti = modify_employee(acpt, temp_choice); 
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
                 break;
             case 4:
                 printf("Case 4: Viewing customers\n");
-                // Logic for viewing customers here
+                conti = view_customers(acpt, temp_choice); 
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
                 break;
             case 5:
                 printf("Case 5: Change Password\n");
@@ -315,6 +331,16 @@ int admin_handler(int acpt, int login_success_user_id) {
                 }
                 printf("Case 7: Logout  --ENDDD  %d\n", choice);
                 return 7;  // Exit the admin handler
+            case 8:
+                printf("Case 8: Manage User Roles\n");
+                conti = manage_user_role(acpt);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
+                break;
             default:
                 printf("Invalid choice. Please select a valid option.\n");
                 break;

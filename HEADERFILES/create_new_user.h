@@ -325,6 +325,132 @@ int create_new_user(int acpt, int type){
     return 0;
 }
 
+int create_new_user_by_manager(int acpt, int type){
+    char buffer[500];
+    printf("=============================== inside create new user ===============================\n");
+
+    sleep(1);
+    // send loop continue signal
+    strcpy(buffer, "10"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send CONTINUE sig \n============================================\n");
+
+    // recv signal
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd of ready sig \n============================================\n");
+    // getchar();
+
+    // send signal
+    strcpy(buffer, "1"); // type 1
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("send of TYPE sig \n============================================\n");
+    // getchar();
+
+    // case 1(type of op = 1)
+    // send menu
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Employees\n1. Customers\nEnter your choice :");
+    if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+        perror("Error sending login data");
+    }
+    printf("%s\n", buffer);
+    printf("sent menu \n============================================\n");
+    // getchar();
+
+    // recv choice
+    if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+        printf("Error\n");
+    }
+    printf("%s\n", buffer);
+    printf("recvd choice \n============================================\n");
+    // getchar();
+    type = atoi(buffer);
+    // // send loop continue signal
+    // strcpy(buffer, "10"); // type 1
+    // if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+    //     perror("Error sending login data");
+    // }
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
+
+    
+    printf("==========type============= %d\n", type);
+    switch(type){
+        case 1:
+            {
+                printf("=================== inside create new user (EMPLOYEE) ====================\n");
+                struct Employee e ;
+                char temp_username[30];
+                // printf("Enter Manager's Name : ");
+                take_username(acpt, temp_username);
+
+                char temp_password[30];
+                // printf("Enter Manager's Password : ");
+                take_password(acpt, temp_password, NULL);
+
+                float temp_salary;
+                // printf("Enter Manager's Password : ");
+                take_salary(acpt, &temp_salary);
+
+                strcpy(e.u.username, temp_username);
+                hashPassword( temp_password, e.u.password);
+                e.u.userid = show_user_id_by_one()+1;
+                e.u.is_active = true;
+                e.u.is_logged_in = false;
+                e.salary = temp_salary;
+                create_employee_user(e);
+                update_user_id_by_one();
+                strcpy(buffer, "Employee User Added Successfully.\n");
+                send_message(acpt, buffer, 0);
+                // return continuee(acpt);
+                return 1;
+            }
+        case 2:
+            {
+                printf("=================== inside create new user (CUSTOMER) ====================\n");
+                struct Customer c ;
+                char temp_username[30];
+                // printf("Enter Manager's Name : ");
+                take_username(acpt, temp_username);
+
+                char temp_password[30];
+                // printf("Enter Manager's Password : ");
+                take_password(acpt, temp_password, NULL);
+
+                c.account_balance = 1000;
+                c.u.is_active = true;
+                c.u.is_logged_in = false;
+                c.loan_taken = false;
+
+                strcpy(c.u.username, temp_username);
+                hashPassword( temp_password, c.u.password);
+                c.u.userid = show_user_id_by_one()+1;
+                create_customer_user(c);
+                update_user_id_by_one();
+                strcpy(buffer, "Customer User Added Successfully.\n");
+                send_message(acpt, buffer, 0);
+                // return continuee(acpt);
+                return 1;
+            }
+        default:
+            {
+                printf("Invalid Choice...\n");
+                return 0;
+            }
+    }
+    return 0;
+}
+
+
+
 int create_new_customer(int acpt){
     char buffer[500];
     printf("=============================== inside create new CUSTOMER ===============================\n");
@@ -597,19 +723,22 @@ int modify_customer(int acpt, int type){
                 take_userid(acpt, temp_userid);
                 printf("=================== change username ====================\n");
                 change_username_common(acpt, atoi(temp_userid), 4);
-                // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
         case 2:
             {
                 struct Customer m;
                 char temp_username[30]; 
                 char temp_userid[5];
-                take_username(acpt, temp_userid);
+                // take_username(acpt, temp_userid);
+                take_userid(acpt, temp_userid);
                 printf("=================== change balance ====================\n");
                 change_customer_balance(acpt, atoi(temp_userid));
-                // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
 
         case 3:
@@ -617,17 +746,20 @@ int modify_customer(int acpt, int type){
                 struct Customer m;
                 char temp_username[30]; 
                 char temp_userid[5];
-                take_username(acpt, temp_userid);
+                // take_username(acpt, temp_userid);
+                take_userid(acpt, temp_userid);
                 printf("=================== loan taken ====================\n");
                 change_customer_loan_status(acpt, atoi(temp_userid));
-                // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
         default:
             {
                 printf("Invalid Choice...\n");
-                // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
     }
     // return continuee(acpt);
@@ -666,7 +798,7 @@ int modify_employee(int acpt, int type){
 
     // case 1(type of op = 1)
     // send menu
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Username\n2. Balance\n3. Loan Taken\nEnter your choice :");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Username\n2. Salary\nEnter your choice :");
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
@@ -698,31 +830,131 @@ int modify_employee(int acpt, int type){
                 struct Employee m;
                 char temp_username[30]; 
                 char temp_userid[5];
-                take_username(acpt, temp_userid);
+                // take_username(acpt, temp_userid);
+                take_userid(acpt, temp_userid);
                 printf("=================== change username ====================\n");
                 change_username_common(acpt, atoi(temp_userid), 3);
-                // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
         case 2:
             {
                 struct Employee m;
                 char temp_username[30]; 
                 char temp_userid[5];
-                take_username(acpt, temp_userid);
+                // take_username(acpt, temp_userid);
+                take_userid(acpt, temp_userid);
                 printf("=================== change balance ====================\n");
                 change_salary(acpt, atoi(temp_userid));
-                // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
         default:
             {
                 printf("Invalid Choice...\n");
-                // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
     }
     // return continuee(acpt);
     return 1;
+}
+
+int view_customers(int acpt, int type){
+    int emp_id;
+    // char buffer[500];
+    printf("=============================== inside view customers ===============================\n");
+    char buffer[500];
+    struct Customer cust;
+    memset(&cust, 0, sizeof(cust));
+    int fd, fd2, bytesRead, bytesRead2;
+    fd = open("DATABASE/customer.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        // return continuee(acpt);
+        return 1;
+    }
+    
+    while((bytesRead = read(fd, &cust, sizeof(cust))) > 0 ){
+        char message[500];
+        sprintf(message, "%d %s %.2f %d %d\n", cust.u.userid, cust.u.username, cust.account_balance, cust.u.is_active, cust.loan_taken);
+        send_message(acpt, message, 0);
+        }
+    
+    close(fd);
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
+}
+
+
+
+int manage_user_role(int acpt){
+    int emp_id;
+    // char buffer[500];
+    printf("=============================== inside manage user roles ===============================\n");
+    char bufferr[60];
+    show_msg_get_data(acpt, bufferr, "Enter Employee Id whom you want to convert to Manager : ");
+
+    char buffer[500];
+    struct Employee employee;
+    memset(&employee, 0, sizeof(employee));
+    int fd, fd2, bytesRead, bytesRead2;
+    fd = open("DATABASE/employee.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        // return continuee(acpt);
+        return 1;
+    }
+    fd2 = open("DATABASE/manager.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        // return continuee(acpt);
+        return 1;
+    }
+    while((bytesRead = read(fd, &employee, sizeof(employee))) > 0 ){
+        printf("====in while\n");
+        // printf("%d %d \n",tempCustomer.u.userid,uid );
+        if(employee.u.userid==atoi(bufferr)){
+            employee.u.is_active = false;
+            lseek(fd, -sizeof(employee), SEEK_CUR);
+            if (write(fd, &employee, sizeof(employee)) == -1) {
+                perror("Error writing updated customer");
+                send_message(acpt, "Sorry Couldn't change the balance  ...\n", 0);
+            }
+            else{
+                send_message(acpt, "Balance Changed Successfully ...\n", 0);
+            }
+            close(fd);
+
+            struct Manager mngr;
+            mngr.salary = employee.salary;
+            mngr.u = employee.u;
+            
+            lseek(fd2, 0, SEEK_END);
+            if (write(fd2, &mngr, sizeof(mngr)) == -1) {
+                perror("Error writing updated customer");
+                send_message(acpt, "Couldn't update employee to manager  ...\n", 0);
+            }
+            else{
+                send_message(acpt, "Updated employee to manager ...\n", 0);
+            }
+            close(fd2);
+            close(fd);
+
+
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;
+            // return 1;
+        }
+    }
+    close(fd);
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
