@@ -95,9 +95,7 @@ int login_employee(struct Employee a, int acpt){
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-        // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
-        // printf("%s %s\n",a.u.username, a.u.password);
-        // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
+        printf("%d %d", tempCustomer.u.userid, a.u.userid);
         if(strcmp(tempCustomer.u.username, a.u.username)==0){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 if(tempCustomer.u.is_logged_in==1){

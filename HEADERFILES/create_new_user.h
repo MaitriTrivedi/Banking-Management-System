@@ -662,7 +662,9 @@ int create_new_customer(int acpt){
     strcpy(buffer, "Customer User Added Successfully.\n");
     send_message(acpt, buffer, 0);
     // return continuee(acpt);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
     //         }
     //     default:
     //         {

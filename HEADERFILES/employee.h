@@ -32,12 +32,16 @@ int approve_or_reject_loan_application(int acpt, int approve){
             else
                 send_message(acpt, "Loan Rejected Successfully ...\n", 0);
             // return continuee(acpt);
-            return 1;
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;
         }
     }
     close(fd);
     // return continuee(acpt);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 int view_assigned_loan(int acpt, int emp_id){
@@ -65,7 +69,9 @@ int view_assigned_loan(int acpt, int emp_id){
         }
     }
     // return continuee(acpt);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 int view_customer_transaction_passbook(int acpt, int cust_id){
@@ -99,7 +105,9 @@ int view_customer_transaction_passbook(int acpt, int cust_id){
         }
     }
     // return continuee(acpt);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 int employee_handler(int acpt, int login_success_user_id) {
@@ -127,7 +135,7 @@ int employee_handler(int acpt, int login_success_user_id) {
     printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the manager menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New Customer.\n2. Modify Customer Data\n3.Process Loan Application\n4. Approve or Reject Laon\n5. Change Password\n6. Exit\n7. Logout\n8. View Assigned Loans\n9. View Customer Transaction\n");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New Customer.\n2. Modify Customer Data\n3. Process Loan Application\n4. Approve or Reject Laon\n5. Change Password\n6. Exit\n7. Logout\n8. View Assigned Loans\n9. View Customer Transaction\nEnter Your Choice : ");
     printf("Sending MANAGER menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
@@ -148,67 +156,111 @@ int employee_handler(int acpt, int login_success_user_id) {
     // Convert choice to integer
     int temp_choice = atoi(buffer);
     printf("manager selected choice: %d\n", temp_choice);
-
+    int cont;
     // Step 5: Handle the admin's choice using switch case
-    switch (temp_choice) {
-        case 1:
-            printf("Case 1: Adding a new Customer\n");
-            return create_new_customer(acpt);  // Function to add a new user
-            // break;
-        case 2:
-            printf("Case 2: Modify Customer Data\n");
-            // Logic for viewing managers here
-            break;
-        case 3:
-            printf("Case 3: Process Loan Application\n");
-            return assign_loan_applications_to_emp(acpt, temp_choice, login_success_user_id); 
-            // Logic for viewing employees here
-            break;
-        case 4:
-            printf("Case 4: Approve or Reject Loan Application\n");
-            char activate[5];
-            show_msg_get_data(acpt, activate, "You want to approve or reject?\nEnter 1 to approve and 0 to reject :");
-            return approve_or_reject_loan_application(acpt, atoi(activate));
-            break;
-        case 5:
-            printf("Case 5: Change Password\n");
-            return change_password_common(acpt, login_success_user_id, 2);
-            return 0;  // Exit the admin handler
-        case 6:
-            printf("Case 6: Exiting the manager handler\n");
-            return 6;  // Exit the admin handler
-        case 7:
-            printf("Case 7: Logout  -- %d\n", choice);
-            switch (choice){
-                case 1:
-                    logout_admin(login_success_user_id);
+    while(1){
+        switch (temp_choice) {
+            case 1:
+                printf("Case 1: Adding a new Customer\n");
+                cont = create_new_customer(acpt);  // Function to add a new user
+                // break;
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // return continuee(acpt);
+                return 1;
+            case 2:
+                printf("Case 2: Modify Customer Details\n");
+                cont = modify_customer(acpt, temp_choice);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
+                break;
+            case 3:
+                printf("Case 3: Process Loan Application\n");
+                cont = assign_loan_applications_to_emp(acpt, temp_choice, login_success_user_id); 
+                // Logic for viewing employees here
+                // break;
+                if(cont==0) {
+                        temp_choice=7;
+                        continue;
+                    }
+                    else return 1;
+                    // Logic for viewing managers here
                     break;
-                case 2:
-                    logout_manager(login_success_user_id);
-                    break;
-                case 3:
-                    logout_employee(login_success_user_id);
-                    break;
-                case 4:
-                    logout_customer(login_success_user_id);
-                    break;
-                default:
-                    break;
-            }
-            printf("Case 7: Logout  --ENDDD  %d\n", choice);
-            return 7;  // Exit the admin handler
-        case 8:
-            printf("Case 8: View Assigned Loans\n");
-            return view_assigned_loan(acpt, login_success_user_id);
-        case 9:
-            printf("Case 9: View Customer Transaction\n");
-            char cust_id_buff[5];
-            show_msg_get_data(acpt, cust_id_buff, "Enter User Id who's Transaction History You want to see :");
-            return view_customer_transaction_passbook(acpt, atoi(cust_id_buff));
-            return 6;  // Exit the admin handler
-        default:
-            printf("Invalid choice. Please select a valid option.\n");
-            break;
+            case 4:
+                printf("Case 4: Approve or Reject Loan Application\n");
+                char activate[5];
+                show_msg_get_data(acpt, activate, "You want to approve or reject?\nEnter 1 to approve and 0 to reject :");
+                cont = approve_or_reject_loan_application(acpt, atoi(activate));
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
+            case 5:
+                printf("Case 5: Change Password\n");
+                cont = change_password_common(acpt, login_success_user_id, 3);
+                // cont = continuee(acpt);  // Exit the admin handler
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+            case 6:
+                printf("Case 6: Exiting the manager handler\n");
+                logout_employee(login_success_user_id);
+                return 6;  // Exit the admin handler
+            case 7:
+                printf("Case 7: Logout  -- %d\n", choice);
+                switch (choice){
+                    case 1:
+                        logout_admin(login_success_user_id);
+                        break;
+                    case 2:
+                        logout_manager(login_success_user_id);
+                        break;
+                    case 3:
+                        logout_employee(login_success_user_id);
+                        break;
+                    case 4:
+                        logout_customer(login_success_user_id);
+                        break;
+                    default:
+                        break;
+                }
+                printf("Case 7: Logout  --ENDDD  %d\n", choice);
+                return 7;  // Exit the admin handler
+            case 8:
+                printf("Case 8: View Assigned Loans\n");
+                cont = view_assigned_loan(acpt, login_success_user_id);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
+                break;
+            case 9:
+                printf("Case 9: View Customer Transaction\n");
+                char cust_id_buff[5];
+                show_msg_get_data(acpt, cust_id_buff, "Enter User Id who's Transaction History You want to see :");
+                cont = view_customer_transaction_passbook(acpt, atoi(cust_id_buff));
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
+                break;
+            default:
+                printf("Invalid choice. Please select a valid option.\n");
+                break;
+        }
+    break;
     }
     printf("================== End of admin handler ==================\n");
     return 0;
