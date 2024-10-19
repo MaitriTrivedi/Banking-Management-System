@@ -49,7 +49,9 @@ int logout_common(int uid, int type){
                         perror("Error writing updated customer");
                     close(fd);
                     return 0;
-                }
+                    }
+                    printf("done\n");
+
             }
             close(fd);
             break;

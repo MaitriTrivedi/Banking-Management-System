@@ -308,6 +308,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 else return 1;
             case 6:
                 printf("Case 6: Exiting the admin handler\n");
+                logout_admin(login_success_user_id);
                 return 6;  // Exit the admin handler
             case 7:
                 printf("Case 7: Logout  -- %d\n", choice);

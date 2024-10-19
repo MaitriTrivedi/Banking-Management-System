@@ -287,7 +287,10 @@ int create_new_user(int acpt, int type){
                 strcpy(buffer, "Employee User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
-                return 1;
+                 int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
+                // return 1;
             }
         case 4:
             {
@@ -314,7 +317,10 @@ int create_new_user(int acpt, int type){
                 strcpy(buffer, "Customer User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
-                return 1;
+                 int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
+                // return 1;
             }
         default:
             {
@@ -411,7 +417,10 @@ int create_new_user_by_manager(int acpt, int type){
                 strcpy(buffer, "Employee User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
-                return 1;
+                // return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
         case 2:
             {
@@ -438,15 +447,22 @@ int create_new_user_by_manager(int acpt, int type){
                 strcpy(buffer, "Customer User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
-                return 1;
+                // return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
         default:
             {
                 printf("Invalid Choice...\n");
-                return 0;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
             }
     }
-    return 0;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 

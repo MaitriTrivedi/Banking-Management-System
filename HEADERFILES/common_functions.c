@@ -582,7 +582,10 @@ int change_password_common(int acpt, int uid, int type){
                     }
                     close(fd);
                     // return continuee(acpt);
-                    return 1;
+                    // return 1;
+                    int temp = continuee(acpt);
+                    printf("=====temp %d\n",temp);
+                    return temp;
                 }
             }
             close(fd);
@@ -619,7 +622,10 @@ int change_password_common(int acpt, int uid, int type){
                     }
                     close(fd);
                     // return continuee(acpt);
-                    return 1;
+                    // return 1;
+                    int temp = continuee(acpt);
+                    printf("=====temp %d\n",temp);
+                    return temp;
                 }
             }
             close(fd);
@@ -656,7 +662,10 @@ int change_password_common(int acpt, int uid, int type){
                     }
                     close(fd);
                     // return continuee(acpt);
-                    return 1;
+                    // return 1;
+                    int temp = continuee(acpt);
+                    printf("=====temp %d\n",temp);
+                    return temp;
                 }
             }
             close(fd);

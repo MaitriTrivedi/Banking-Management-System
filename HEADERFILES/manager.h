@@ -33,12 +33,16 @@ int activate_deactivate_customer_account(int acpt, int type, int activate){
             else
                 send_message(acpt, "User Deactivated Successfully ...\n", 0);
             // return continuee(acpt);
-            return 1;
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;
         }
     }
     close(fd);
     // return continuee(acpt);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 int assign_loan_applications_to_emp(int acpt, int type, int user_id){
@@ -71,11 +75,16 @@ int assign_loan_applications_to_emp(int acpt, int type, int user_id){
             sprintf(message, "Employee %d assigned to loan %d...\n", emp_id, loan.loan_id);
             send_message(acpt, message, 0);
             // return continuee(acpt);
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;
         }
     }
     close(fd);
     // return continuee(acpt);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 int review_customers_feedback(int acpt, int type){
@@ -96,7 +105,9 @@ int review_customers_feedback(int acpt, int type){
     }
     close(fd);
     // return continuee(acpt);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 int manager_handler(int acpt, int login_success_user_id) {
@@ -124,7 +135,7 @@ int manager_handler(int acpt, int login_success_user_id) {
     printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the manager menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User.\n2. Activate or Deactivate Customer Account\n3. Assign Loan Application to Employee\n4. Review Customer's FeedBack\n5. Change Password\nEnter Your Choice : ");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. Add a New User.\n2. Activate or Deactivate Customer Account\n3. Assign Loan Application to Employee\n4. Review Customer's FeedBack\n5. Change Password\n6. Exit\n7. Logout\nEnter Your Choice : ");
     printf("Sending MANAGER menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
@@ -145,36 +156,63 @@ int manager_handler(int acpt, int login_success_user_id) {
     // Convert choice to integer
     int temp_choice = atoi(buffer);
     printf("manager selected choice: %d\n", temp_choice);
-
+    int cont;
     // Step 5: Handle the admin's choice using switch case
-    switch (temp_choice) {
+    while(1){
+        switch (temp_choice) {
         case 1:
             printf("Case 1: Adding a new user\n");
-            return create_new_user_by_manager(acpt, temp_choice);  // Function to add a new user
-            // break;
+            cont = create_new_user_by_manager(acpt, temp_choice);  // Function to add a new user
+            if(cont==0) {
+                temp_choice=7;
+                continue;
+            }
+            else return 1;
+            // return continuee(acpt);
+            return 1;
+
         case 2:
             printf("Case 2: Activate or Deactivate Customer Account\n");
             char activate[5];
             show_msg_get_data(acpt, activate, "You want to activate or deactivate?\nEnter 1 to activate and 0 to deactivate :");
-            return activate_deactivate_customer_account(acpt, temp_choice, atoi(activate)); 
-            // Logic for viewing managers here
+            cont = activate_deactivate_customer_account(acpt, temp_choice, atoi(activate)); 
+            if(cont==0) {
+                temp_choice=7;
+                continue;
+            }
+            else return 1;
             break;
         case 3:
             printf("Case 3: Assign Loan Application to Employee\n");
-            return assign_loan_applications_to_emp(acpt, temp_choice, login_success_user_id); 
-            // Logic for viewing employees here
+            cont =  assign_loan_applications_to_emp(acpt, temp_choice, login_success_user_id); 
+            if(cont==0) {
+                temp_choice=7;
+                continue;
+            }
+            else return 1;
             break;
         case 4:
             printf("Case 4: Review Customer's FeedBack\n");
-            return review_customers_feedback(acpt, temp_choice); 
+            cont = review_customers_feedback(acpt, temp_choice); 
             // Logic for viewing customers here
+            if(cont==0) {
+                temp_choice=7;
+                continue;
+            }
+            else return 1;
             break;
         case 5:
             printf("Case 5: Change Password\n");
-            return change_password_common(acpt, login_success_user_id, 2);
-            return 0;  // Exit the admin handler
+                cont = change_password_common(acpt, login_success_user_id, 2);
+                // cont = continuee(acpt);  // Exit the admin handler
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
         case 6:
             printf("Case 6: Exiting the manager handler\n");
+            logout_manager(login_success_user_id);
             return 6;  // Exit the admin handler
         case 7:
             printf("Case 7: Logout  -- %d\n", choice);
@@ -199,45 +237,9 @@ int manager_handler(int acpt, int login_success_user_id) {
         default:
             printf("Invalid choice. Please select a valid option.\n");
             break;
+        }
+        break;
     }
-    printf("================== End of admin handler ==================\n");
+    printf("================== End of manager handler ==================\n");
     return 0;
-}
-
-void manager_handler2(int acpt){
-    printf("==========================================\n");
-    printf("Select Your Option :\n1. Add a New User.\n2. View Loans\n3.Assign Loan Application to Employee\n4. View Employees\n5. View Customers\n");
-    printf("Enter your choice :");
-    int temp_choice;
-    // scanf("%d",&temp_choice);
-    switch(temp_choice){
-        case 1:
-        {   
-            printf("Select the type of user you want to add :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n");
-            int temp_type;
-            printf("Enter type : ");
-            scanf("%d", &temp_type);
-            create_new_user(acpt, temp_type);
-        }
-        case 2:
-        {
-            view_loan_applications();
-            break;
-        }
-        case 3:
-        {
-            // assign_loan_applications_to_emp();
-            break;
-        }
-        case 4:
-        {
-            list_of_employees();
-            break;
-        }
-        case 5:
-        {
-            list_of_customers();
-            break;
-        }
-    }
 }
