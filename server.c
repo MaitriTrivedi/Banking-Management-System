@@ -369,8 +369,9 @@ void *handleClient(void *client_socket)
                             break; 
                         }
                     // employee_handler(acpt, login_success_user_id);
-                    break;
+                    // break;
                     }
+                    break;
                 }
                 case 4:
                 {

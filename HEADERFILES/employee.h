@@ -112,7 +112,7 @@ int view_customer_transaction_passbook(int acpt, int cust_id){
 
 int employee_handler(int acpt, int login_success_user_id) {
     char buffer[500];
-    int choice = 2;
+    int choice = 3;
     printf("================== in employee handler ==================\n");
 
     // Step 1: Receive ready signal from client
