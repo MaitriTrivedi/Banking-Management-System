@@ -207,6 +207,7 @@ void list_of_customers(){
 int admin_handler(int acpt, int login_success_user_id) {
     char buffer[500];
     int choice = 1;
+    int conti;
     printf("================== in admin handler ==================\n");
 
     // Step 1: Receive ready signal from client
@@ -257,7 +258,12 @@ int admin_handler(int acpt, int login_success_user_id) {
         switch (temp_choice) {
             case 1:
                 printf("Case 1: Adding a new user\n");
-                create_new_user(acpt, temp_choice);  // Function to add a new user
+                int cont = create_new_user(acpt, temp_choice);  // Function to add a new user
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
                 // return continuee(acpt);
                 return 1;
                 // break;
@@ -277,7 +283,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 break;
             case 5:
                 printf("Case 5: Change Password\n");
-                int cont = change_password_common(acpt, login_success_user_id, 1);
+                cont = change_password_common(acpt, login_success_user_id, 1);
                 // cont = continuee(acpt);  // Exit the admin handler
                 if(cont==0) {
                     temp_choice=7;

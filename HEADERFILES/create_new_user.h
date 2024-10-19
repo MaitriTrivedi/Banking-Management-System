@@ -218,7 +218,10 @@ int create_new_user(int acpt, int type){
                 printf("%s\n", buffer);
                 printf("sent msg \n============================================\n");
                 // return continuee(acpt);
-                return 1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
+                // return 1;
             }
         case 2:
             {
@@ -251,6 +254,9 @@ int create_new_user(int acpt, int type){
                 strcpy(buffer, "Manger User Added Successfully.\n");
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
                 return 1;
             }
 

@@ -142,13 +142,14 @@ void *handleClient(void *client_socket)
         
         // handle further :
         int t1=1;
+        int conti;
         while(t1!=2){
             switch (choice){
                 case 1:
                 {   
                     printf("In admin handler\n");
                     while(1){
-                        int conti = admin_handler(acpt,login_success_user_id);
+                        conti = admin_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
                         if(conti==1){
                             continue;
@@ -224,7 +225,7 @@ void *handleClient(void *client_socket)
                 {   
                     printf("In manager handler\n");
                     while(1){
-                        int conti = manager_handler(acpt,login_success_user_id);
+                        conti = manager_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
                         if(conti==1){
                             continue;
@@ -299,7 +300,7 @@ void *handleClient(void *client_socket)
                 {
                     printf("In Employee handler\n");
                     while(1){
-                        int conti = employee_handler(acpt,login_success_user_id);
+                        conti = employee_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
                         if(conti==1){
                             continue;
@@ -374,7 +375,7 @@ void *handleClient(void *client_socket)
                 case 4:
                 {
                     while(1){
-                        int conti = customer_handler(acpt, login_success_user_id);
+                        conti = customer_handler(acpt, login_success_user_id);
                         printf("contiiii============== %d\nPress Enter : ",conti);
                         getchar();
                         if(conti==1){
