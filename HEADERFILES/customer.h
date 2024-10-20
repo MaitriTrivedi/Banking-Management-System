@@ -96,7 +96,9 @@ int view_account_balance(int acpt, int type, int userid){
             char message[100];
             sprintf(message, "Your Account Balance is : %.2f\n", tempCustomer.account_balance);
             send_message(acpt, message, 0);
-            return tempCustomer.account_balance;
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;
         }
     }
     close(fd);
@@ -151,8 +153,7 @@ void add_transaction_history(int sender_uid, int reciever_uid, float amount, int
     close(fd);  // Close the file descriptor
 }
 
-
-void add_feedback(int acpt, int user_id) {
+int add_feedback(int acpt, int user_id) {
     struct Feedback feedback;
     memset(&feedback, 0, sizeof(feedback));
 
@@ -162,7 +163,9 @@ void add_feedback(int acpt, int user_id) {
     fd = open("DATABASE/customer.txt",O_RDWR);
     if(fd==-1){
         perror("");
-        return;
+        int temp = continuee(acpt);
+        printf("=====temp %d\n",temp);
+        return temp;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
         if(tempCustomer.u.userid==user_id){
@@ -175,7 +178,9 @@ void add_feedback(int acpt, int user_id) {
     fd = open("DATABASE/feedback.txt", O_RDWR | O_APPEND);
     if (fd == -1) {
         perror("Error opening transaction database");
-        return;
+        int temp = continuee(acpt);
+        printf("=====temp %d\n",temp);
+        return temp;
     }
     char temp_buffer[500];
     show_msg_get_whole_line_as_data(acpt, temp_buffer, "Give Your Feedback : ");
@@ -193,10 +198,15 @@ void add_feedback(int acpt, int user_id) {
         perror("Error writing transaction");
         unlock_record(fd, 1);  // Unlock in case of error
         close(fd);
-        return;
+        int temp = continuee(acpt);
+        printf("=====temp %d\n",temp);
+        return temp;
     }
     printf("----------------------kk------------------------\n");
     close(fd);  // Close the file descriptor
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
 
 int deposite_money(int acpt, int userid, size_t recordsize){
@@ -256,12 +266,16 @@ int deposite_money(int acpt, int userid, size_t recordsize){
             }
 
             close(fd);
-            return tempAdmin.u.userid;  // Return userid on success
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;  // Return userid on success
         }
     }
 
     close(fd);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
     // return continuee(acpt);  // Call continuee function if user not found
 }
 
@@ -321,12 +335,16 @@ int withdraw_money(int acpt, int userid, size_t recordsize){
             }
 
             close(fd);
-            return tempAdmin.u.userid;  // Return userid on success
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;// Return userid on success
         }
     }
 
     close(fd);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
     // return continuee(acpt);  // Call continuee function if user not found
 }
 
@@ -441,7 +459,9 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
 
                     close(fd);
                     close(fd2);
-                    return tempAdmin.u.userid;  // Return sender's userid on success
+                    int temp = continuee(acpt);
+                    printf("=====temp %d\n",temp);
+                    return temp;  // Return sender's userid on success
                 }
             }
         }
@@ -450,7 +470,9 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
     // Close file descriptors if user not found
     close(fd);
     close(fd2);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
     // return continuee(acpt);  // Call continuee function if user not found
 }
 
@@ -506,16 +528,25 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
     while ((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0) {
         if (tempAdmin.u.userid == userid) {
             // Lock the record for writing
+            printf("Locking Record......................\n");
             if (lock_record(fd, F_WRLCK, record_size) == -1) {
                 perror("Error locking record");
                 close(fd);
-                return -1;
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;  // Return userid on success
             }
-            if (lock_record(fd2, F_WRLCK, record_size2) == -1) {
-                perror("Error locking record");
-                close(fd);
-                return -1;
-            }
+            printf("Locked Record......................\n");
+            // 
+            // printf("Locking Record......................\n");
+            // if (lock_record(fd2, F_WRLCK, record_size2) == -1) {
+            //     perror("Error locking record");
+            //     close(fd);
+            //     int temp = continuee(acpt);
+            //     printf("=====temp %d\n",temp);
+            //     return temp;  // Return userid on success
+            // }
+            // printf("Locked Record......................\n");
 
             // Update the balance
             tempAdmin.loan_taken = true;
@@ -526,7 +557,9 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
                 perror("Error writing updated customer");
                 unlock_record(fd, record_size);  // Unlock in case of error
                 close(fd);
-                return -1;
+                int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;  // Return userid on success
             }
 
             loan.approving_employee_id = -1;
@@ -541,25 +574,34 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
             if (write(fd2, &loan, sizeof(loan)) == -1) {
                 perror("Error writing updated balance");
             }
+            send_message(acpt, "Applied for Loan Successfully....\n", userid);
             
             // Unlock the record after updating
-            if (unlock_record(fd2, record_size2) == -1) {
-                perror("Error unlocking record");
-            }
+            // printf("Unlocking Record......................\n");
+            // if (unlock_record(fd2, record_size2) == -1) {
+            //     perror("Error unlocking record");
+            // }
+            // printf("Unlocked Record......................\n");
 
+            printf("Unocking Record......................\n");
             // Unlock the record after updating
             if (unlock_record(fd, record_size) == -1) {
                 perror("Error unlocking record");
             }
+            printf("Unlocked Record......................\n");
 
             close(fd);
             close(fd2);
-            return tempAdmin.u.userid;  // Return userid on success
+            int temp = continuee(acpt);
+            printf("=====temp %d\n",temp);
+            return temp;  // Return userid on success
         }
     }
     printf("================>>>>");
     close(fd);
-    return 1;
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
     // return continuee(acpt);  
 }// Call continuee function if user not fou
 
@@ -637,9 +679,42 @@ void change_password(int user_id){
 //     close(fd);
 // }
 
-void view_transaction_history(){
-    printf("View Transaction History\n");
+int view_transaction_history(int acpt, int cust_id){
+    const char *filename = "DATABASE/transaction.txt"; // File containing admin data
+
+    struct Transaction transaction;
+    char message[500];
+    memset(&transaction, 0, sizeof(transaction));
+
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/transaction.txt",O_RDWR);
+    if(fd==-1){
+        perror("==");
+        return -1;
+    }
+
+    // search for the availability of the Admin userx
+    // printf("Start checking for the user...\n");
+    while((bytesRead = read(fd, &transaction, sizeof(transaction))) > 0 ){
+        if(transaction.sender_uid==cust_id)
+        {    
+            char type_str[50];
+            char *time_str = ctime(&transaction.transaction_time);
+            time_str[strlen(time_str) - 1] = '\0'; 
+            if(transaction.transaction_type==1) strcpy(type_str, "Deposite");
+            else if(transaction.transaction_type==2) strcpy(type_str, "Withdraw");
+            else if(transaction.transaction_type==3) strcpy(type_str, "Transfer");
+            sprintf(message, "%d %d %.2f %s %d \n", transaction.sender_uid, transaction.reciever_uid, transaction.amount, time_str, transaction.transaction_type);
+            send_message(acpt, message, 0);
+        }
+    }
+    // return continuee(acpt);
+    int temp = continuee(acpt);
+    printf("=====temp %d\n",temp);
+    return temp;
 }
+
 
 int customer_handler(int acpt, int login_success_user_id) {
     char buffer[500];
@@ -666,7 +741,7 @@ int customer_handler(int acpt, int login_success_user_id) {
     printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the customer menu to the client
-    strcpy(buffer, "==========================================\nSelect Your Option :\n1. View My account Balance\n2. Deposite Money\n3. Withdraw Money\n4. Transfer Funds\n5. Change Password\n6. Exit\n7. Logout\n8. Apply for a loan\n9. Add Feedback\n10. View Transaction History\n");
+    strcpy(buffer, "==========================================\nSelect Your Option :\n1. View My account Balance\n2. Deposite Money\n3. Withdraw Money\n4. Transfer Funds\n5. Change Password\n6. Exit\n7. Logout\n8. Apply for a loan\n9. Add Feedback\n10. View Transaction History\nEnter Your Choice : ");
     printf("Sending customer menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
@@ -687,98 +762,112 @@ int customer_handler(int acpt, int login_success_user_id) {
     // Convert choice to integer
     int temp_choice = atoi(buffer);
     printf("customer selected choice: %d\n", temp_choice);
-
+    int cont;
     // Step 5: Handle the admin's choice using switch case
-    switch (temp_choice) {
-        case 1:
-            char userid_buffer[10];
-            printf("Case 1: View My Account Balance\n");
-            show_msg_get_data(acpt, userid_buffer, "Enter your user id :");
-            printf("entert uid %d\n",atoi(userid_buffer));
-            view_account_balance(acpt, temp_choice, atoi(userid_buffer));  
-            // if(continuee(acpt)==0){
-            //     return 7;
-            // }
-            return 1;
-            return 0;
-            // break;
-        case 2:
-            printf("Case 2: Deposite Money\n");
-            deposite_money(acpt, login_success_user_id, sizeof(struct Customer));
-            // if(continuee(acpt)==0){
-            //     return 7;
-            // }
-            // return 0;
-            return 1;
-            break;
-        case 3:
-            printf("Case 3: Withdraw Money\n");
-            withdraw_money(acpt, login_success_user_id, sizeof(struct Customer));
-            // if(continuee(acpt)==0){
-            //     return 7;
-            // }
-            // return 0;
-            return 1;
-            break;
-        case 4:
-            printf("Case 4: Transfer Funds\n");
-            transfer_funds(acpt, login_success_user_id, 4);
-            // if(continuee(acpt)==0){
-            //     return 7;
-            // }
-            return 1;
-            // return 0;
-            break;
-        case 5:
-            printf("Case 5: Change Password\n");
-            return change_password_common(acpt, login_success_user_id, 2);
-            return 0;  // Exit the admin handler
-        case 6:
-            printf("Case 6: Exiting the manager handler\n");
-            return 6;  // Exit the admin handler
-        case 7:
-            printf("Case 7: Logout  -- %d\n", choice);
-            switch (choice){
-                case 1:
-                    logout_admin(login_success_user_id);
-                    break;
-                case 2:
-                    logout_manager(login_success_user_id);
-                    break;
-                case 3:
-                    logout_employee(login_success_user_id);
-                    break;
-                case 4:
-                    {    printf("press enter to logout\n");
-                    getchar();
-                    logout_customer(login_success_user_id);
-                    break;
-                    }
-                default:
-                    break;
-            }
-            printf("Case 7: Logout  --ENDDD  %d\n", choice);
-            return 7;  // Exit the admin handler
-        case 8:
-            printf("Case 8: Apply for a loan\n");
-            apply_for_a_loan(acpt, login_success_user_id, sizeof(struct Customer));
-            // if(continuee(acpt)==0){
-            //     return 7;
-            // }
-            // return 0;
-            return 1;
-            break;
-        case 9:
-            printf("Case 9: Add Feedback\n");
-            add_feedback(acpt, login_success_user_id);
-            return 0;  // Exit the admin handler
-        case 10:
-            printf("Case 10: View Transaction History\n");
-            return change_password_common(acpt, login_success_user_id, 2);
-            return 0;  // Exit the admin handler
-        default:
-            printf("Invalid choice. Please select a valid option.\n");
-            break;
+    while(1){
+        switch (temp_choice) {
+            case 1:
+                char userid_buffer[10];
+                printf("Case 1: View My Account Balance\n");
+                // show_msg_get_data(acpt, userid_buffer, "Enter your user id :");
+                // printf("entert uid %d\n",atoi(userid_buffer));
+                cont = view_account_balance(acpt, temp_choice, login_success_user_id);  
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
+                break;
+            case 2:
+                printf("Case 2: Deposite Money\n");
+                cont = deposite_money(acpt, login_success_user_id, sizeof(struct Customer));
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
+                break;
+            case 3:
+                printf("Case 3: Withdraw Money\n");
+                cont = withdraw_money(acpt, login_success_user_id, sizeof(struct Customer));
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+                // Logic for viewing managers here
+                break;
+            case 4:
+                printf("Case 4: Transfer Funds\n");
+                cont = transfer_funds(acpt, login_success_user_id, 4);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+            case 5:
+                printf("Case 5: Change Password\n");
+                cont = change_password_common(acpt, login_success_user_id, 4);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+            case 6:
+                printf("Case 6: Exiting the manager handler\n");
+                logout_customer(login_success_user_id);
+                return 6;  // Exit the admin handler
+            case 7:
+                printf("Case 7: Logout  -- %d\n", choice);
+                switch (choice){
+                    case 1:
+                        logout_admin(login_success_user_id);
+                        break;
+                    case 2:
+                        logout_manager(login_success_user_id);
+                        break;
+                    case 3:
+                        logout_employee(login_success_user_id);
+                        break;
+                    case 4:
+                        logout_customer(login_success_user_id);
+                        break;
+                    default:
+                        break;
+                }
+                printf("Case 7: Logout  --ENDDD  %d\n", choice);
+                return 7;  // Exit the admin handler
+            case 8:
+                printf("Case 8: Apply for a loan\n");
+                cont = apply_for_a_loan(acpt, login_success_user_id, sizeof(struct Customer));
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+            case 9:
+                printf("Case 9: Add Feedback\n");
+                cont = add_feedback(acpt, login_success_user_id);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+            case 10:
+                printf("Case 10: View Transaction History\n");
+                cont = view_transaction_history(acpt, login_success_user_id);
+                if(cont==0) {
+                    temp_choice=7;
+                    continue;
+                }
+                else return 1;
+            default:
+                printf("Invalid choice. Please select a valid option.\n");
+                break;
+        }
+    break;
     }
     printf("================== End of customer handler ==================\n");
     return 0;

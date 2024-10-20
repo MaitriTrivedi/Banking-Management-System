@@ -368,8 +368,6 @@ void *handleClient(void *client_socket)
                             brk=1;
                             break; 
                         }
-                    // employee_handler(acpt, login_success_user_id);
-                    // break;
                     }
                     break;
                 }
@@ -377,8 +375,8 @@ void *handleClient(void *client_socket)
                 {
                     while(1){
                         conti = customer_handler(acpt, login_success_user_id);
-                        printf("contiiii============== %d\nPress Enter : ",conti);
-                        getchar();
+                        // printf("contiiii============== %d\nPress Enter : ",conti);
+                        // getchar();
                         if(conti==1){
                             continue;
                         }
