@@ -15,6 +15,8 @@ int lock_record(int fd, int type, ssize_t record_size) {
     fl.l_whence = SEEK_CUR;     
     fl.l_pid = getpid();        
 
+    printf("Waiting to acquire lock...\n");
+
     return fcntl(fd, F_SETLKW, &fl);  // Apply the lock, wait if needed
 }
 
