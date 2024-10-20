@@ -33,8 +33,8 @@ void clear_input_buffer() {
 
 void login_logout_handler(int sct){
     int choice;
-    printf("------------------------------------------------------------------------\n");
-    printf("--------------Inside login logout handler---------------------\n");
+    // printf("------------------------------------------------------------------------\n");
+    // printf("--------------Inside login logout handler---------------------\n");
     char read_buffer[500];
     char write_buffer[500];
     // LOGIN HANDLING :

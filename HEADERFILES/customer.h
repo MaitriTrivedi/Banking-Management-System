@@ -362,7 +362,7 @@ int withdraw_money(int acpt, int userid, size_t recordsize){
 }
 
 int transfer_funds(int acpt, int userid, size_t recordsize) {
-    struct Customer tempAdmin, tempAdmin_reciver;
+    struct Customer tempAdmin, tempAdmin_reciver, tempp;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
     memset(&tempAdmin_reciver, 0, sizeof(tempAdmin_reciver));
 
@@ -430,11 +430,14 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                     sprintf(message, "Current Balance of Receiver is: %.2f\n", tempAdmin_reciver.account_balance);
                     send_message(acpt, message, 0);
 
-                    tempAdmin_reciver.account_balance += amount;
+                    // tempAdmin_reciver.account_balance += amount;
 
                     // Move the file pointer back to update the receiver record
                     lseek(fd2, -sizeof(tempAdmin_reciver), SEEK_CUR);
-                    if (write(fd2, &tempAdmin_reciver, sizeof(tempAdmin_reciver)) == -1) {
+                    read(fd2, &tempp, sizeof(tempp));
+                    tempp.account_balance += amount;
+                    lseek(fd2, -sizeof(tempAdmin_reciver), SEEK_CUR);
+                    if (write(fd2, &tempp, sizeof(tempp)) == -1) {
                         perror("Error writing updated receiver data");
                         // Unlock both records in case of error
                         unlock_record(fd, recordsize);
@@ -450,10 +453,13 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                     sprintf(message, "Your Current Balance is: %.2f\n", tempAdmin.account_balance);
                     send_message(acpt, message, 0);
 
-                    tempAdmin.account_balance -= amount;
+                    // tempAdmin.account_balance -= amount;
 
                     // Move the file pointer back to update the sender record
                     lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
+                    read(fd2, &tempp, sizeof(tempp));
+                    tempp.account_balance -= amount;
+                    lseek(fd2, -sizeof(tempAdmin_reciver), SEEK_CUR);
                     if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
                         perror("Error writing updated sender data");
                         // Unlock both records in case of error

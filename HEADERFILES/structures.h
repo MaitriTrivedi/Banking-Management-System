@@ -60,12 +60,12 @@ struct Transaction{
     time_t transaction_time;
 };
 
-struct TransactionHistory{
-    struct Customer customer;
-    struct Transaction *transactions;
-    int transactions_counts;
-    int current_capacity;
-};
+// struct TransactionHistory{
+//     struct Customer customer;
+//     struct Transaction *transactions;
+//     int transactions_counts;
+//     int current_capacity;
+// };
 
 struct Feedback{
     struct Customer customer;
