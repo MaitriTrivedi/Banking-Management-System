@@ -288,6 +288,7 @@ void main(int argc, char *argv[])
             }
             // printf("recvd msg \n============================================\n");
             // printf("Rcvd3 : %s\n", read_buffer);
+            printf("%s\n", read_buffer);
             // printf("-------------1--------------\n");
 
 
@@ -298,7 +299,7 @@ void main(int argc, char *argv[])
             }
             // printf("recv continue sig \n============================================\n");
             // printf("Rcvd4 : %s\n", read_buffer);
-            printf("%s\n", read_buffer);
+            // printf("%s\n", read_buffer);
             // printf("-------------2--------------\n");
             if(read_buffer=="10") continue;
             else if(read_buffer=="-10") raise(SIGINT);

@@ -11,14 +11,14 @@ int continuee(int acpt){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
+    // printf("%s\n", buffer);
     printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
+    // printf("%s\n", buffer);
     printf("recvd of ready sig \n============================================\n");
     // getchar();
 
@@ -27,7 +27,7 @@ int continuee(int acpt){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
+    // printf("%s\n", buffer);
     printf("send of TYPE sig \n============================================\n");
     // getchar();
 
@@ -37,7 +37,7 @@ int continuee(int acpt){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
+    // printf("%s\n", buffer);
     printf("sent menu \n============================================\n");
     // getchar();
 
@@ -820,7 +820,7 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n", 0);
+                        send_message(acpt, "Username Changed Successfully ...\n", 0);
                     }
                     close(fd);
                     // int temp = continuee(acpt);

@@ -181,6 +181,7 @@ int add_feedback(int acpt, int user_id) {
     char rating[20];
     show_msg_get_data(acpt, rating, "Give Rating between 1(lowest) to 5(highest) : ");
     feedback.rating = atoi(rating);
+    feedback.customer =  tempCustomer;
 
     // Move to the end of the file
     lseek(fd, 0, SEEK_END);
