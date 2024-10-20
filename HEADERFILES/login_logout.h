@@ -23,8 +23,8 @@ int login_admin(struct Admin a, int acpt){
                 printf("-------------0000000000000---------- %d\n",tempAdmin.u.is_logged_in);
                 if(tempAdmin.u.is_logged_in==1) {
                     send_message(acpt, "You are already logged in somewhere.....!",1);
-                    raise(SIGINT);
-                    return -1;
+                    // raise(SIGINT);
+                    return -2;
                 } //already loggedin
                 tempAdmin.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
@@ -61,8 +61,8 @@ int login_manager(struct Manager a, int acpt){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 if(tempCustomer.u.is_logged_in==1) {
                     send_message(acpt, "You are already logged in somewhere.....!",1);
-                    raise(SIGINT);
-                    return -1;
+                    // raise(SIGINT);
+                    return -2;
                 } //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
@@ -100,8 +100,8 @@ int login_employee(struct Employee a, int acpt){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 if(tempCustomer.u.is_logged_in==1){
                     send_message(acpt, "You are already logged in somewhere.....!",1);
-                    raise(SIGINT);
-                    return -1;
+                    // raise(SIGINT);
+                    return -2;
                 } //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
