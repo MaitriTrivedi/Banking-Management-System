@@ -4,17 +4,17 @@
 #include <fcntl.h>
 #include <sys/file.h>
 #include<unistd.h>
-#include "HEADERFILES/structures.h" // Include the structures header
+#include "../HEADERFILES/structures.h" // Include the structures header
 
 int main() {
-    const char *filename = "DATABASE/feedback.txt"; // File containing admin data
+    const char *filename = "../DATABASE/feedback.txt"; // File containing admin data
 
     struct Feedback feedback;
     memset(&feedback, 0, sizeof(feedback));
 
     // open admin database file
     int fd, bytesRead;
-    fd = open("DATABASE/feedback.txt",O_RDWR);
+    fd = open("../DATABASE/feedback.txt",O_RDWR);
     if(fd==-1){
         perror("==");
         return -1;

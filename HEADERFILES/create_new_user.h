@@ -6,7 +6,7 @@
 #include<fcntl.h>
 #include <sys/stat.h>
 #include "last_used_user_id.h"
-#include "common_functions.c"
+#include "common_functions.h"
 
 void create_admin_user(struct Admin a){
     int fd;

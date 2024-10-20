@@ -195,7 +195,7 @@ void main(int argc, char *argv[])
         }
         // printf("===%s\n", read_buffer);
         if(atoi(read_buffer) == 0) {
-            printf("Login Unsuccesful\n");
+            printf("Login Unsuccesful\n============================================\n");
             continue;
             }
         else {
@@ -215,7 +215,7 @@ void main(int argc, char *argv[])
         // empty buffer
         memset(read_buffer, '\0', sizeof(read_buffer));
         int choice;
-        printf("Start of loop \n============================================\n");
+        // printf("Start of loop \n============================================\n");
         // getchar();
 
         // send ready recv 
@@ -223,8 +223,8 @@ void main(int argc, char *argv[])
         if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
             perror("Error sending login data");
         }
-        printf("%s\n", write_buffer);
-        printf("send ready sig \n============================================\n");
+        // printf("%s\n", write_buffer);
+        // printf("send ready sig \n============================================\n");
         // getchar();
 
         // rcv signal
@@ -233,22 +233,23 @@ void main(int argc, char *argv[])
         }
         printf("%s\n", read_buffer);
         int temp_choice = atoi(read_buffer);
-        printf("recvd TYPE of operation sig \n============================================\n");
+        // printf("recvd TYPE of operation sig \n============================================\n");
         // getchar();
 
         if(temp_choice==1){
-            printf("---------------------------1-------------------------\n");
+            // printf("---------------------------1-------------------------\n");
             // will show the menu, get the choice
-            printf("inside case 1 ===\n");
+            // printf("inside case 1 ===\n");
             memset(read_buffer, '\0', sizeof(read_buffer));
             memset(write_buffer, '\0', sizeof(write_buffer));
             // get menu and show                
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 printf("Something Went Wrong.\n");
             }
-            printf("recv of menu loop \n============================================\n");
-            printf("Rcvd1 : %s\n", read_buffer);
-            printf("-------------1--------------\n");
+            // printf("recv of menu loop \n============================================\n");
+            // printf("Rcvd1 : %s\n", read_buffer);
+            printf("%s\n", read_buffer);
+            // printf("-------------1--------------\n");
             // getchar();
             // printf("%s\n", read_buffer);
 
@@ -257,9 +258,9 @@ void main(int argc, char *argv[])
             if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
                 perror("Error sending login data");
             }
-            printf("%s\n", write_buffer);
-            printf("sent choice \n============================================\n");
-            printf("-------------2--------------\n");
+            // printf("%s\n", write_buffer);
+            // printf("sent choice \n============================================\n");
+            // printf("-------------2--------------\n");
             // getchar();
             // continue;
             // break;
@@ -268,76 +269,78 @@ void main(int argc, char *argv[])
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 printf("Something Went Wrong.\n");
             }
-            printf("recv of menu loop \n============================================\n");
-            printf("Rcvd2 : %s\n", read_buffer);
-            printf("-------------3--------------\n");
+            // printf("recv of menu loop \n============================================\n");
+            // printf("Rcvd2 : %s\n", read_buffer);
+            // printf("-------------3--------------\n");
             if(read_buffer=="10") continue;
             else if(read_buffer=="-10") raise(SIGINT);
             // else break;
         }
         else if(temp_choice==2){
-            printf("---------------------------2-------------------------\n");
+            // printf("---------------------------2-------------------------\n");
             // will just print the recived msg
-            printf("inside case 2 ===\n");
+            // printf("inside case 2 ===\n");
             memset(read_buffer, '\0', sizeof(read_buffer));
             memset(write_buffer, '\0', sizeof(write_buffer));
             // get menu and show                
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 perror("Something Went Wrong.\n");
             }
-            printf("recvd msg \n============================================\n");
-            printf("Rcvd3 : %s\n", read_buffer);
-            printf("-------------1--------------\n");
+            // printf("recvd msg \n============================================\n");
+            // printf("Rcvd3 : %s\n", read_buffer);
+            // printf("-------------1--------------\n");
 
 
             // rcv signal to continue the loop   
-            printf("Ready to recv CONTI sig \n============================================\n");             
+            // printf("Ready to recv CONTI sig \n============================================\n");             
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 perror("Something Went Wrong.\n");
             }
-            printf("recv continue sig \n============================================\n");
-            printf("Rcvd4 : %s\n", read_buffer);
-            printf("-------------2--------------\n");
+            // printf("recv continue sig \n============================================\n");
+            // printf("Rcvd4 : %s\n", read_buffer);
+            printf("%s\n", read_buffer);
+            // printf("-------------2--------------\n");
             if(read_buffer=="10") continue;
             else if(read_buffer=="-10") raise(SIGINT);
             // else break;
         }
         else if(temp_choice==3){
-            printf("---------------------------3-------------------------\n");
+            // printf("---------------------------3-------------------------\n");
             // will print the recived msg and get the input
-            printf("inside case 2 ===\n");
+            // printf("inside case 2 ===\n");
             memset(read_buffer, '\0', sizeof(read_buffer));
             memset(write_buffer, '\0', sizeof(write_buffer));
             // get msgand show                
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 perror("Something Went Wrong.\n");
             }
-            printf("recvd msg \n============================================\n");
-            printf("Rcvd5 : %s\n", read_buffer);
-            printf("-------------1--------------\n");
+            // printf("recvd msg \n============================================\n");
+            // printf("Rcvd5 : %s\n", read_buffer);
+            printf("%s\n", read_buffer);
+            // printf("-------------1--------------\n");
 
             scanf("%s", write_buffer);
             if (send(sct, write_buffer, strlen(write_buffer)+1, 0) == -1) {
                 perror("Error sending login data");
             }
-            printf("%s\n", write_buffer);
-            printf("sent taken input \n============================================\n");
-            printf("-------------2--------------\n");
+            // printf("%s\n", write_buffer);
+            // printf("sent taken input \n============================================\n");
+            // printf("-------------2--------------\n");
 
             // rcv signal to continue the loop   
-            printf("Ready to recv CONTI sig \n============================================\n");             
+            // printf("Ready to recv CONTI sig \n============================================\n");             
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 perror("Something Went Wrong.\n");
             }
-            printf("recv continue sig \n============================================\n");
-            printf("Rcvdddd : %s\n", read_buffer);
-            printf("-------------3--------------\n");
+            // printf("recv continue sig \n============================================\n");
+            // printf("Rcvdddd : %s\n", read_buffer);
+            // printf("-------------3--------------\n");
             if(read_buffer=="10") continue;
             else if(read_buffer=="-10") raise(SIGINT);
             // else break;
         }
         else if(temp_choice==4){
-            printf("---------------------------4-------------------------\n");
+            // printf("---------------------------4-------------------------\n");
             // once login you can continue this loop
             // rcv signal to continue the loop   
             // printf("Ready to recv CONTI sig \n============================================\n");             
@@ -414,7 +417,7 @@ void main(int argc, char *argv[])
                 }
                 // printf("===%s\n", read_buffer);
                 if(atoi(read_buffer) == 0) {
-                    printf("Login Unsuccesful\n");
+                    printf("Login Unsuccesful\n============================================\n");
                     continue;
                     }
                 else {
@@ -436,18 +439,19 @@ void main(int argc, char *argv[])
             continue;
         }
         else if(temp_choice==5){
-            printf("---------------------------5-------------------------\n");
+            // printf("---------------------------5-------------------------\n");
             // will print the recived msg and get the input
-            printf("inside case 5 ===\n");
+            // printf("inside case 5 ===\n");
             memset(read_buffer, '\0', sizeof(read_buffer));
             memset(write_buffer, '\0', sizeof(write_buffer));
             // get msgand show                
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 perror("Something Went Wrong.\n");
             }
-            printf("recvd msg \n============================================\n");
-            printf("Rcvd5 : %s\n", read_buffer);
-            printf("-------------1--------------\n");
+            // printf("recvd msg \n============================================\n");
+            // printf("Rcvd5 : %s\n", read_buffer);
+            printf("%s\n", read_buffer);
+            // printf("-------------1--------------\n");
 
             clear_input_buffer();
             fgets(write_buffer, sizeof(write_buffer), stdin);
@@ -458,27 +462,28 @@ void main(int argc, char *argv[])
             if (send(sct, write_buffer, strlen(write_buffer) + 1, 0) == -1) {
                 perror("Error sending feedback");
             }
-            else {
-                printf("Feedback sent: %s\n", write_buffer);
-                printf("sent taken input \n============================================\n");
-                printf("%s\n", write_buffer);
-                printf("sent taken input \n============================================\n");
-            }
-            printf("-------------2--------------\n");
+            // else {
+            //     ;
+            //     // printf("Feedback sent: %s\n", write_buffer);
+            //     // printf("sent taken input \n============================================\n");
+            //     // printf("%s\n", write_buffer);
+            //     // printf("sent taken input \n============================================\n");
+            // }
+            // printf("-------------2--------------\n");
 
             // rcv signal to continue the loop   
-            printf("Ready to recv CONTI sig \n============================================\n");             
+            // printf("Ready to recv CONTI sig \n============================================\n");             
             if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                 perror("Something Went Wrong.\n");
             }
-            printf("recv continue sig \n============================================\n");
-            printf("Rcvdddd : %s\n", read_buffer);
-            printf("-------------3--------------\n");
+            // printf("recv continue sig \n============================================\n");
+            // printf("Rcvdddd : %s\n", read_buffer);
+            // printf("-------------3--------------\n");
             if(read_buffer=="10") continue;
             else if(read_buffer=="-10") raise(SIGINT);
                 // else break;
     }}
-    printf("outside switch case \n");
+    // printf("outside switch case \n");
     // break;
     printf("\n======================= CLOSING CLIENT SOCKET ============================\n");
     close(sct);
