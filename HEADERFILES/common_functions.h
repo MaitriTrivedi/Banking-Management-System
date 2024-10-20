@@ -1,4 +1,6 @@
 #include <unistd.h>
+#include <fcntl.h>
+#include "structures.h"
 
 int continuee(int acpt){
     char buffer[500];
