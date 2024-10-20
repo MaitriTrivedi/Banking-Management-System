@@ -642,7 +642,10 @@ int change_password_common(int acpt, int uid, int type){
                 return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
+                printf("====in while\n");
+                printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
+                    printf("====in if\n");
                     char password[30];
                     take_password(acpt, password, " Old");
                     struct User tempUsr;
@@ -650,7 +653,6 @@ int change_password_common(int acpt, int uid, int type){
                     if((memcmp(tempUsr.password, tempCustomer.u.password, SHA256_DIGEST_LENGTH)) == 0){
                         take_password(acpt, password, " New");
                         hashPassword(password, tempCustomer.u.password);
-                        tempCustomer.u = tempUsr;
                         lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
@@ -661,12 +663,12 @@ int change_password_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
-                    // return continuee(acpt);
-                    // return 1;
                     int temp = continuee(acpt);
                     printf("=====temp %d\n",temp);
                     return temp;
+                    // return 1;
                 }
+                printf("change password admin\n");
             }
             close(fd);
             break;

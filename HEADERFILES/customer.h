@@ -126,14 +126,6 @@ void add_transaction_history(int sender_uid, int reciever_uid, float amount, int
     transaction.transaction_type = type; 
 
     printf("----------------------pp------------------------\n");
-    // Lock the record for writing (using custom function)
-    // if (lock_record(fd, F_WRLCK, 1) == -1) { // Assuming user type is 1 for transactions
-    //     perror("Error locking record");
-    //     close(fd);
-    //     return;
-    // }
-
-    // Move to the end of the file
     lseek(fd, 0, SEEK_END);
 
     // Write the transaction to the file
@@ -209,7 +201,7 @@ int add_feedback(int acpt, int user_id) {
     return temp;
 }
 
-int deposite_money(int acpt, int userid, size_t recordsize){
+int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
     struct Customer tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
@@ -221,10 +213,16 @@ int deposite_money(int acpt, int userid, size_t recordsize){
         return -1;
     }
     char buff[500];
-    show_msg_get_data(acpt, buff, "Enter the amount you want to deposit: ");
-    
+    float amount;
+    if(loan_amount==-1){
+        show_msg_get_data(acpt, buff, "Enter the amount you want to deposit: ");
+        amount = atof(buff);
+    }
+    else{
+        amount = loan_amount;
+    }
     // Convert the entered amount to float
-    float amount = atof(buff);
+    
 
     // Read through the file to find the user
     while ((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0) {
@@ -457,6 +455,8 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         perror("Error unlocking records");
                     }
 
+                    add_transaction_history(userid, atoi(uid_reciever), amount, 4);
+
                     close(fd);
                     close(fd2);
                     int temp = continuee(acpt);
@@ -680,6 +680,7 @@ void change_password(int user_id){
 // }
 
 int view_transaction_history(int acpt, int cust_id){
+    printf("===================inside transaction history==============\n");
     const char *filename = "DATABASE/transaction.txt"; // File containing admin data
 
     struct Transaction transaction;
@@ -697,6 +698,7 @@ int view_transaction_history(int acpt, int cust_id){
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &transaction, sizeof(transaction))) > 0 ){
+        printf("%d %d\n", transaction.sender_uid, cust_id);
         if(transaction.sender_uid==cust_id)
         {    
             char type_str[50];
@@ -705,7 +707,8 @@ int view_transaction_history(int acpt, int cust_id){
             if(transaction.transaction_type==1) strcpy(type_str, "Deposite");
             else if(transaction.transaction_type==2) strcpy(type_str, "Withdraw");
             else if(transaction.transaction_type==3) strcpy(type_str, "Transfer");
-            sprintf(message, "%d %d %.2f %s %d \n", transaction.sender_uid, transaction.reciever_uid, transaction.amount, time_str, transaction.transaction_type);
+            else if(transaction.transaction_type==4) strcpy(type_str, "Credited");
+            sprintf(message, "%d %d %.2f %s %s \n", transaction.sender_uid, transaction.reciever_uid, transaction.amount, time_str, type_str);
             send_message(acpt, message, 0);
         }
     }
@@ -781,7 +784,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 break;
             case 2:
                 printf("Case 2: Deposite Money\n");
-                cont = deposite_money(acpt, login_success_user_id, sizeof(struct Customer));
+                cont = deposite_money(acpt, login_success_user_id, sizeof(struct Customer), -1);
                 if(cont==0) {
                     temp_choice=7;
                     continue;

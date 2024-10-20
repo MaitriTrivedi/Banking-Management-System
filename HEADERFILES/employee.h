@@ -28,7 +28,10 @@ int approve_or_reject_loan_application(int acpt, int approve){
                 perror("Error writing updated customer");
             }
             if(approve==1)
-                send_message(acpt, "Loan Approved Successfully ...\n", 0);
+                {
+                    deposite_money(acpt, atoi(loan_id_buf), sizeof(struct Customer), -1);
+                    send_message(acpt, "Loan Approved Successfully ...\n", 0);
+                }
             else
                 send_message(acpt, "Loan Rejected Successfully ...\n", 0);
             // return continuee(acpt);

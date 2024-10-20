@@ -51,6 +51,7 @@ struct Transaction{
     1 = Deposite
     2 = Withdraw
     3 = Transfer
+    4 = Credited (from another user)
     */
     int transaction_type; 
     int sender_uid;
