@@ -63,13 +63,13 @@ void *handleClient(void *client_socket)
     int c=0;
     int t=0;
     while(1){
-        printf("=========== %d ==============\n", c);
+        // printf("=========== %d ==============\n", c);
         // Receive login data from client
         memset(read_buffer, '\0', sizeof(read_buffer));
         memset(write_buffer, '\0', sizeof(write_buffer));
         memset(msg, '\0', sizeof(msg));
 
-        printf("ready to recv login choice\n");
+        // printf("ready to recv login choice\n");
         if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
             perror("Error receiving login choice");
             close(acpt);
@@ -86,7 +86,7 @@ void *handleClient(void *client_socket)
         //     }
         //     t=0;
         // }
-        printf("************************** = %s\n", read_buffer);
+        // printf("************************** = %s\n", read_buffer);
         strcpy(msg, "====================================================================\n===== WELCOME TO XYZ BANK =====\n====================================================================\nIN WHICH MODE YOU WANT TO LOGIN ?\nSELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n==========================================\nEnter your choice : ");
         if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
             perror("Error sendiread_bufferng login data");
@@ -98,7 +98,7 @@ void *handleClient(void *client_socket)
             close(acpt);
             pthread_exit(NULL);
         }
-        printf("choice %s\n",read_buffer);
+        // printf("choice %s\n",read_buffer);
         choice = atoi(read_buffer);
 
         strcpy(msg, "==========================================================\n======================= LOGIN ==========================\n==========================================================\nEnter Name : ");
@@ -110,7 +110,7 @@ void *handleClient(void *client_socket)
             close(acpt);
             pthread_exit(NULL);
         }
-        printf("uname %s\n",u.username);
+        // printf("uname %s\n",u.username);
         strcpy(msg, "Enter Password : ");
         if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
             perror("Error sending login data");
@@ -122,7 +122,7 @@ void *handleClient(void *client_socket)
             close(acpt);
             pthread_exit(NULL);
         }
-        printf("pass %s\n",read_buffer);
+        // printf("pass %s\n",read_buffer);
         hashPassword(read_buffer, u.password);
 
         int login_success_user_id = login(u, choice, acpt);
@@ -131,7 +131,7 @@ void *handleClient(void *client_socket)
         // }
         // else 
         if(login_success_user_id==-2 || login_success_user_id==-1){
-            printf("==================handling multiple login tries\n");
+            // printf("==================handling multiple login tries\n");
             choice = 9;
             strcpy(msg, "0");
             // getchar();
@@ -155,7 +155,7 @@ void *handleClient(void *client_socket)
         while(t1!=2){
             switch (choice){
                  case 9:{
-                    printf("In multiple login handler\n");
+                    // printf("In multiple login handler\n");
                     while(1){
                         conti = 7;
                         // printf("contiiii============== %d\n",conti);
@@ -176,8 +176,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", read_buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", read_buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             // printf("=============================== client connection closed ===============================\n\n");
                             close(acpt);
                             pthread_exit(NULL);
@@ -194,15 +194,15 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
 
                             // recv signal
                             if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
                                 printf("Error\n");
                             }
-                            printf("%s\n", buffer);
-                            printf("recvd of ready sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("recvd of ready sig \n============================================\n");
                             // getchar();
 
                             // send signal
@@ -210,8 +210,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send of TYPE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send of TYPE sig \n============================================\n");
 
                             sleep(1);
                             // // send loop continue signal
@@ -219,8 +219,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             t1 = 2;
                             brk=1;
                             break; 
@@ -231,7 +231,7 @@ void *handleClient(void *client_socket)
                 }
                 case 1:
                 {   
-                    printf("In admin handler\n");
+                    printf("===========================In Admin Handler\n");
                     while(1){
                         conti = admin_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
@@ -252,8 +252,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", read_buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", read_buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             // printf("=============================== client connection closed ===============================\n\n");
                             close(acpt);
                             pthread_exit(NULL);
@@ -270,15 +270,15 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
 
                             // recv signal
                             if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
                                 printf("Error\n");
                             }
-                            printf("%s\n", buffer);
-                            printf("recvd of ready sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("recvd of ready sig \n============================================\n");
                             // getchar();
 
                             // send signal
@@ -286,8 +286,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send of TYPE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send of TYPE sig \n============================================\n");
 
                             sleep(1);
                             // // send loop continue signal
@@ -295,8 +295,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             t1 = 2;
                             brk=1;
                             break; 
@@ -307,7 +307,7 @@ void *handleClient(void *client_socket)
                 }
                 case 2:
                 {   
-                    printf("In manager handler\n");
+                    printf("===========================In manager handler\n");
                     while(1){
                         conti = manager_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
@@ -327,8 +327,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", read_buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", read_buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             // printf("=============================== client connection closed ===============================\n\n");
                             close(acpt);
                             pthread_exit(NULL);
@@ -345,15 +345,15 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
 
                             // recv signal
                             if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
                                 printf("Error\n");
                             }
-                            printf("%s\n", buffer);
-                            printf("recvd of ready sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("recvd of ready sig \n============================================\n");
                             // getchar();
 
                             // send signal
@@ -361,8 +361,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send of TYPE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send of TYPE sig \n============================================\n");
 
                             sleep(1);
                             // // send loop continue signal
@@ -370,8 +370,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             t1 = 2;
                             brk=1;
                             break; 
@@ -382,7 +382,7 @@ void *handleClient(void *client_socket)
                 }
                 case 3:
                 {
-                    printf("In Employee handler\n");
+                    printf("===========================In Employee handler\n");
                     while(1){
                         conti = employee_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
@@ -390,7 +390,7 @@ void *handleClient(void *client_socket)
                             continue;
                         }
                         else if(conti==0){
-                            printf("====11111111111111111111111111111\n");
+                            // printf("====11111111111111111111111111111\n");
                             t1=2;
                             break;
                         }
@@ -403,8 +403,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", read_buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", read_buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             // printf("=============================== client connection closed ===============================\n\n");
                             close(acpt);
                             pthread_exit(NULL);
@@ -421,15 +421,15 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
 
                             // recv signal
                             if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
                                 printf("Error\n");
                             }
-                            printf("%s\n", buffer);
-                            printf("recvd of ready sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("recvd of ready sig \n============================================\n");
                             // getchar();
 
                             // send signal
@@ -437,8 +437,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send of TYPE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send of TYPE sig \n============================================\n");
 
                             sleep(1);
                             // // send loop continue signal
@@ -446,8 +446,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             t1 = 2;
                             brk=1;
                             break; 
@@ -456,7 +456,8 @@ void *handleClient(void *client_socket)
                     break;
                 }
                 case 4:
-                {
+                {   
+                    printf("===========================In Customer handler\n");
                     while(1){
                         conti = customer_handler(acpt, login_success_user_id);
                         // printf("contiiii============== %d\nPress Enter : ",conti);
@@ -465,7 +466,7 @@ void *handleClient(void *client_socket)
                             continue;
                         }
                         else if(conti==0){
-                            printf("----made t1 = 288888888888888888888888888\n");
+                            // printf("----made t1 = 288888888888888888888888888\n");
                             t1=2;
                             logout_customer(login_success_user_id);
                             break;
@@ -479,9 +480,9 @@ void *handleClient(void *client_socket)
                             if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", read_buffer);
-                            printf("send CONTINUE sig \n============================================\n");
-                            printf("=============================== client connection closed ===============================\n\n");
+                            // printf("%s\n", read_buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
+                            // printf("=============================== client connection closed ===============================\n\n");
                             close(acpt);
                             pthread_exit(NULL);
                             break;
@@ -497,15 +498,15 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
 
                             // recv signal
                             if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
                                 printf("Error\n");
                             }
-                            printf("%s\n", buffer);
-                            printf("recvd of ready sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("recvd of ready sig \n============================================\n");
                             // getchar();
 
                             // send signal
@@ -513,8 +514,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send of TYPE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send of TYPE sig \n============================================\n");
 
                             sleep(1);
                             // // send loop continue signal
@@ -522,8 +523,8 @@ void *handleClient(void *client_socket)
                             if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                                 perror("Error sending login data");
                             }
-                            printf("%s\n", buffer);
-                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("%s\n", buffer);
+                            // printf("send CONTINUE sig \n============================================\n");
                             t1 = 2;
                             brk=1;
                             break; 
@@ -535,19 +536,19 @@ void *handleClient(void *client_socket)
             }
             if(brk==1) {
                 char buffer[500];
-                printf("----=-------------=---> inside break\n");
+                // printf("----=-------------=---> inside break\n");
                 strcpy(buffer, "10"); // type 1
                 if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                     perror("Error sending login data");
                 }
-                printf("%s\n", buffer);
-                printf("send CONTINUE sig \n============================================\n");
+                // printf("%s\n", buffer);
+                // printf("send CONTINUE sig \n============================================\n");
                             
                 break;
             }
         }
         c++;
-        printf("=--------=-----> %d\n", c);
+        // printf("=--------=-----> %d\n", c);
     }
     printf("=============================== client connection closed ===============================\n\n");
     close(acpt);
@@ -621,7 +622,7 @@ int main(int argc, char const *argv[])
             perror("");
             return 0;
         }
-        printf("-########################testing\n");
+        // printf("-########################testing\n");
     }
     
 
