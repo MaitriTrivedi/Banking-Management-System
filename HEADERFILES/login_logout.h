@@ -163,7 +163,7 @@ int login_customer(struct Customer a, int acpt){
     }
 
     close(fd);
-    return -1;
+    return -2;
 
 }
 

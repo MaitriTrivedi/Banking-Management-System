@@ -22,11 +22,12 @@ int main() {
 
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
+    printf("UID ACTIVE LOGGEDIN USERNAME ACC_NO   BALANCE   LOAN_TAKEN            PASSWORD\n");
     while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
         // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
         // printf("%s %s\n",a.u.username, a.u.password);
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
-        printf("%d %s %d %d %s %.2f %d %d \n",tempAdmin.u.userid, tempAdmin.u.username, tempAdmin.u.is_active, tempAdmin.u.is_logged_in, tempAdmin.u.password, tempAdmin.account_balance, tempAdmin.loan_taken, tempAdmin.account_no);
+        printf("%d      %d       %d        %s      %d     %.2f      %d          %s\n", tempAdmin.u.userid, tempAdmin.u.is_active, tempAdmin.u.is_logged_in, tempAdmin.u.username, tempAdmin.account_no, tempAdmin.account_balance, tempAdmin.loan_taken, tempAdmin.u.password);
     }
 
     close(fd);

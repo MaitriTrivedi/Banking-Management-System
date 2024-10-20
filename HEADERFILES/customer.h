@@ -415,12 +415,8 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         send_message(acpt, message, 0);
 
                         // Unlock both records before returning
-                        printf("Unlocking Record......................\n");
                         unlock_record(fd, recordsize);
-                        printf("Unlocked Record......................\n");
-                        printf("Unlocking Record......................\n");
                         unlock_record(fd2, recordsize);
-                        printf("Unlocked Record......................\n");
                         close(fd);
                         close(fd2);
                         int temp = continuee(acpt);
@@ -441,12 +437,8 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                     if (write(fd2, &tempAdmin_reciver, sizeof(tempAdmin_reciver)) == -1) {
                         perror("Error writing updated receiver data");
                         // Unlock both records in case of error
-                        printf("Unlocking Record......................\n");
                         unlock_record(fd, recordsize);
-                        printf("Unlocked Record......................\n");
-                        printf("Unlocking Record......................\n");
                         unlock_record(fd2, recordsize);
-                        printf("Unlocked Record......................\n");
                         close(fd);
                         close(fd2);
                         int temp = continuee(acpt);
@@ -488,11 +480,11 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                     add_transaction_history(userid, atoi(uid_reciever), amount, 3);
 
                     // Unlock both records after updating
-                    printf("Unlocking Record...........together...........\n");
+                    printf("Unlocking Record......................\n");
                     if (unlock_record(fd, recordsize) == -1 || unlock_record(fd2, recordsize) == -1) {
                         perror("Error unlocking records");
                     }
-                    printf("Unlocked Record........together..............\n");
+                    printf("Unlocked Record......................\n");
 
                     // add_transaction_history(userid, atoi(uid_reciever), amount, 4);
 
@@ -513,6 +505,27 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
     printf("=====temp %d\n",temp);
     return temp;
     // return continuee(acpt);  // Call continuee function if user not found
+}
+
+float view_account_balance2(int user_id){
+    struct Customer tempCustomer;
+    memset(&tempCustomer, 0, sizeof(tempCustomer));
+    // open admin database file
+    int fd, bytesRead;
+    fd = open("DATABASE/customer.txt",O_RDWR);
+    if(fd==-1){
+        perror("");
+        return -1;
+    }
+
+    while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
+        if(tempCustomer.u.userid==user_id){
+            return tempCustomer.account_balance;
+        }
+    }
+
+    close(fd);
+    return -1;
 }
 
 int apply_for_a_loan(int acpt, int userid, size_t record_size){

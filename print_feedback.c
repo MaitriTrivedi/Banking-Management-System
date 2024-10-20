@@ -22,8 +22,9 @@ int main() {
 
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
+    printf("UID USERNAME RATING              FEEDBACK\n");
     while((bytesRead = read(fd, &feedback, sizeof(feedback))) > 0 ){
-        printf("%d %s %d %s\n", feedback.customer.u.userid, feedback.customer.u.username, feedback.rating, feedback.feedback);
+        printf("%d     %s    %d    %s\n", feedback.customer.u.userid, feedback.customer.u.username, feedback.rating, feedback.feedback);
     }
     close(fd);
     return 0;

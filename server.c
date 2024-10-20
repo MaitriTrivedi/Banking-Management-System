@@ -126,10 +126,11 @@ void *handleClient(void *client_socket)
         hashPassword(read_buffer, u.password);
 
         int login_success_user_id = login(u, choice, acpt);
-        if(login_success_user_id==-1){
-            continue;
-        }
-        else if(login_success_user_id==-2){
+        // if(login_success_user_id==-1){
+        //     continue;
+        // }
+        // else 
+        if(login_success_user_id==-2 || login_success_user_id==-1){
             printf("==================handling multiple login tries\n");
             choice = 9;
             strcpy(msg, "0");
