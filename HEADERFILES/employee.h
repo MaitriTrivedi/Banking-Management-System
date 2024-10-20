@@ -5,7 +5,7 @@
 #include<stdio.h>
 
 
-int approve_or_reject_loan_application(int acpt, int approve){
+int approve_or_reject_loan_application(int acpt, int approve, int emp_id){
     struct Loan loan;
     memset(&loan, 0, sizeof(loan));
     // open admin database file
@@ -19,21 +19,36 @@ int approve_or_reject_loan_application(int acpt, int approve){
     show_msg_get_data(acpt, loan_id_buf, "Enter Loan Id You want to approve or reject :\n"); 
     // printf("================== %d\n", user_id);
     while((bytesRead = read(fd, &loan, sizeof(loan))) > 0 ){
-        // printf("===inside %d %d\n", tempCustomer.u.userid, user_id);
+        printf("===inside %d %d\n", loan.loan_id, atoi(loan_id_buf));
         if(loan.loan_id==atoi(loan_id_buf)){
+            printf("loan approval----------------------\n");
             // tempCustomer.u.is_active = tempCustomer.u.is_active ? 0 : 1;
+            if(loan.approving_employee_id!=emp_id){
+                send_message(acpt, "You are not authorised to approve this loan ...\n", 0);
+                int temp = continuee(acpt);
+                printf("=====temp %d\n",temp);
+                return temp;
+            }
+            printf("loan approval------2----------------\n");
             loan.is_approved = approve;
             lseek(fd, -sizeof(loan), SEEK_CUR);
             if (write(fd, &loan, sizeof(loan)) == -1) {
                 perror("Error writing updated customer");
             }
+            printf("loan approval-----3-----------------\n");
             if(approve==1)
                 {
-                    deposite_money(acpt, atoi(loan_id_buf), sizeof(struct Customer), -1);
+                    printf("loan approval----4------------------\n");
+                    deposite_money(acpt, loan.borrower.u.userid, sizeof(struct Customer), loan.loan_amount);
+                    printf("loan approval----4-----1-------------\n");
                     send_message(acpt, "Loan Approved Successfully ...\n", 0);
+                    printf("loan approval----4-----2-------------\n");
                 }
-            else
+            else{
+                printf("loan approval---------5-------------\n");
                 send_message(acpt, "Loan Rejected Successfully ...\n", 0);
+            }
+            printf("loan approval--------6--------------\n");
             // return continuee(acpt);
             int temp = continuee(acpt);
             printf("=====temp %d\n",temp);
@@ -86,7 +101,7 @@ int view_customer_transaction_passbook(int acpt, int cust_id){
 
     // open admin database file
     int fd, bytesRead;
-    fd = open("DATABASE/loan.txt",O_RDWR);
+    fd = open("DATABASE/transaction.txt",O_RDWR);
     if(fd==-1){
         perror("==");
         return -1;
@@ -95,7 +110,7 @@ int view_customer_transaction_passbook(int acpt, int cust_id){
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &transaction, sizeof(transaction))) > 0 ){
-        if(transaction.sender_uid==cust_id)
+        if(transaction.sender_uid==cust_id || transaction.reciever_uid==cust_id)
         {    
             char type_str[50];
             char *time_str = ctime(&transaction.transaction_time);
@@ -103,7 +118,8 @@ int view_customer_transaction_passbook(int acpt, int cust_id){
             if(transaction.transaction_type==1) strcpy(type_str, "Deposite");
             else if(transaction.transaction_type==2) strcpy(type_str, "Withdraw");
             else if(transaction.transaction_type==3) strcpy(type_str, "Transfer");
-            sprintf(message, "%d %d %.2f %s %d \n", transaction.sender_uid, transaction.reciever_uid, transaction.amount, time_str, transaction.transaction_type);
+            else if(transaction.transaction_type==4) strcpy(type_str, "Credited");
+            sprintf(message, "%d %d %.2f %s %s \n", transaction.sender_uid, transaction.reciever_uid, transaction.amount, time_str, type_str);
             send_message(acpt, message, 0);
         }
     }
@@ -200,10 +216,14 @@ int employee_handler(int acpt, int login_success_user_id) {
                 printf("Case 4: Approve or Reject Loan Application\n");
                 char activate[5];
                 show_msg_get_data(acpt, activate, "You want to approve or reject?\nEnter 1 to approve and 0 to reject :");
-                cont = approve_or_reject_loan_application(acpt, atoi(activate));
-                int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
-                return temp;
+                cont = approve_or_reject_loan_application(acpt, atoi(activate), login_success_user_id);
+                if(cont==0) {
+                        temp_choice=7;
+                        continue;
+                    }
+                    else return 1;
+                    // Logic for viewing managers here
+                    break;
             case 5:
                 printf("Case 5: Change Password\n");
                 cont = change_password_common(acpt, login_success_user_id, 3);
@@ -251,6 +271,7 @@ int employee_handler(int acpt, int login_success_user_id) {
                 printf("Case 9: View Customer Transaction\n");
                 char cust_id_buff[5];
                 show_msg_get_data(acpt, cust_id_buff, "Enter User Id who's Transaction History You want to see :");
+                printf("%d-----------------\n", atoi(cust_id_buff));
                 cont = view_customer_transaction_passbook(acpt, atoi(cust_id_buff));
                 if(cont==0) {
                     temp_choice=7;

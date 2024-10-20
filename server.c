@@ -21,19 +21,29 @@ volatile sig_atomic_t server_running = 1;
 static volatile int keep_running = 1;
 int server_socket;
 
-void serverSignalHandler(int signum) {
-    if (signum == SIGINT) {
-        printf("\nReceived Ctrl+C. Shutting down server...\n");
-        server_running = 0;
-        keep_running = 0;  // Use existing keep_running variable
-        
-        // Close the server socket to unblock accept()
-        if (server_socket != -1) {
-            shutdown(server_socket, SHUT_RDWR);
-            close(server_socket);
-        }
-    }
+void ignoreSIGINT(int signum) {
+    printf("\nServer received SIGINT, ignoring...\n");
 }
+
+// void handle_sigterm(int sig) {
+//     printf("Caught SIGTERM signal. Cleaning up and exiting...\n");
+//     // Perform cleanup if needed
+//     exit(0);
+// }
+
+// void serverSignalHandler(int signum) {
+//     if (signum == SIGINT) {
+//         printf("\nReceived Ctrl+C. Shutting down server...\n");
+//         server_running = 0;
+//         keep_running = 0;  // Use existing keep_running variable
+        
+//         // Close the server socket to unblock accept()
+//         if (server_socket != -1) {
+//             shutdown(server_socket, SHUT_RDWR);
+//             close(server_socket);
+//         }
+//     }
+// }
 
 void *handleClient(void *client_socket)
 {
@@ -117,18 +127,16 @@ void *handleClient(void *client_socket)
 
         int login_success_user_id = login(u, choice, acpt);
         if(login_success_user_id==-1){
-            strcpy(msg, "0");
-            if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
-                perror("Error sending login data");
-                // continue;
-            }
-            printf("Login Unsuccessful !\n");
-            t = 1;
-            // strcpy(write_buffer, "1");
-            // if (send(acpt, write_buffer, strlen(write_buffer)+1, 0) == -1) {
-            //     perror("Error sending login data\n");
-            // }
             continue;
+        }
+        else if(login_success_user_id==-2){
+            printf("==================handling multiple login tries\n");
+            choice = 9;
+            strcpy(msg, "0");
+            // getchar();
+            if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
+                perror("Sent login data");
+            }
         }
         else {
             strcpy(msg, "1");
@@ -145,6 +153,81 @@ void *handleClient(void *client_socket)
         int conti;
         while(t1!=2){
             switch (choice){
+                 case 9:{
+                    printf("In multiple login handler\n");
+                    while(1){
+                        conti = 7;
+                        // printf("contiiii============== %d\n",conti);
+                        if(conti==1){
+                            continue;
+                        }
+                        else if(conti==0){
+                            t=1;
+                            t1=2;
+                            break;
+                        }
+                        else if(conti==6){
+                            // printf("contiiii brk brk brk\n");
+                            brk=1;
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(read_buffer, "-10"); // type 1
+                            if (send(acpt, read_buffer, strlen(read_buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", read_buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+                            // printf("=============================== client connection closed ===============================\n\n");
+                            close(acpt);
+                            pthread_exit(NULL);
+                            break;
+                        }
+                        else if(conti==7){
+                            printf("Returning to login menu...\n");
+                            
+                            char buffer[500];
+
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(buffer, "10"); // type 1
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+
+                            // recv signal
+                            if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
+                                printf("Error\n");
+                            }
+                            printf("%s\n", buffer);
+                            printf("recvd of ready sig \n============================================\n");
+                            // getchar();
+
+                            // send signal
+                            strcpy(buffer, "4"); // type 4
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send of TYPE sig \n============================================\n");
+
+                            sleep(1);
+                            // // send loop continue signal
+                            strcpy(buffer, "10"); // type 1
+                            if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
+                                perror("Error sending login data");
+                            }
+                            printf("%s\n", buffer);
+                            printf("send CONTINUE sig \n============================================\n");
+                            t1 = 2;
+                            brk=1;
+                            break; 
+                        }
+                    }
+                    // manager_handler(acpt, login_success_user_id);
+                    break;
+                }
                 case 1:
                 {   
                     printf("In admin handler\n");
@@ -473,7 +556,8 @@ void *handleClient(void *client_socket)
 int main(int argc, char const *argv[])
 {
      // Set up SIGINT handler
-    signal(SIGINT, serverSignalHandler);
+    // signal(SIGINT, ignoreSIGINT);
+    // signal(SIGTERM, ignoreSIGINT);
     socklen_t l;
 
     // create socket
@@ -536,7 +620,7 @@ int main(int argc, char const *argv[])
             perror("");
             return 0;
         }
-        
+        printf("-########################testing\n");
     }
     
 

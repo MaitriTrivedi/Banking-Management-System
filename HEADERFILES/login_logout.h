@@ -148,8 +148,8 @@ int login_customer(struct Customer a, int acpt){
                 printf("-------------0000000000000---------- %d\n",tempCustomer.u.is_logged_in);
                 if(tempCustomer.u.is_logged_in==1){
                     send_message(acpt, "You are already logged in somewhere.....!",1);
-                    raise(SIGINT);
-                    return -1;
+                    // raise(SIGINT);
+                    return -2;
                 } //already loggedin
                 tempCustomer.u.is_logged_in = true;
                 lseek(fd, -sizeof(tempCustomer), SEEK_CUR);

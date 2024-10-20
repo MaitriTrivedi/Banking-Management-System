@@ -219,6 +219,7 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
         amount = atof(buff);
     }
     else{
+        printf("----------loan amt------------------------------------\n");
         amount = loan_amount;
     }
     // Convert the entered amount to float
@@ -226,6 +227,7 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
 
     // Read through the file to find the user
     while ((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0) {
+        printf("%d %d\n", tempAdmin.u.userid, userid);
         if (tempAdmin.u.userid == userid) {
             printf("----------------------------------------------\n");
             // Lock the record for writing
@@ -264,6 +266,10 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
             }
 
             close(fd);
+            if(loan_amount!=-1){
+                printf("loan approval---------99999-------------\n");
+                return 0;
+            }
             int temp = continuee(acpt);
             printf("=====temp %d\n",temp);
             return temp;  // Return userid on success
@@ -271,6 +277,7 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
     }
 
     close(fd);
+
     int temp = continuee(acpt);
     printf("=====temp %d\n",temp);
     return temp;
@@ -386,7 +393,9 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         perror("Error locking records");
                         close(fd);
                         close(fd2);
-                        return -1;
+                        int temp = continuee(acpt);
+                        printf("=====temp %d\n",temp);
+                        return temp;
                     }
 
                     // Check if sender has enough balance
@@ -400,7 +409,9 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         unlock_record(fd2, recordsize);
                         close(fd);
                         close(fd2);
-                        return -1;
+                        int temp = continuee(acpt);
+                        printf("=====temp %d\n",temp);
+                        return temp;
                     }
 
 
@@ -420,7 +431,9 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         unlock_record(fd2, recordsize);
                         close(fd);
                         close(fd2);
-                        return -1;
+                        int temp = continuee(acpt);
+                        printf("=====temp %d\n",temp);
+                        return temp;
                     }
 
                     // Update the sender's balance
@@ -438,7 +451,9 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         unlock_record(fd2, recordsize);
                         close(fd);
                         close(fd2);
-                        return -1;
+                        int temp = continuee(acpt);
+                        printf("=====temp %d\n",temp);
+                        return temp;
                     }
 
                     // Send the updated balances to both the sender and receiver
@@ -455,7 +470,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         perror("Error unlocking records");
                     }
 
-                    add_transaction_history(userid, atoi(uid_reciever), amount, 4);
+                    // add_transaction_history(userid, atoi(uid_reciever), amount, 4);
 
                     close(fd);
                     close(fd2);
@@ -568,6 +583,7 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
             loan.is_approved = false;
             loan.loan_amount = amount;
             loan.loan_id = show_user_id_by_one() + 1;
+            update_user_id_by_one();
 
             lseek(fd2, 0, SEEK_END);
 
@@ -699,7 +715,7 @@ int view_transaction_history(int acpt, int cust_id){
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &transaction, sizeof(transaction))) > 0 ){
         printf("%d %d\n", transaction.sender_uid, cust_id);
-        if(transaction.sender_uid==cust_id)
+        if(transaction.sender_uid==cust_id || transaction.reciever_uid==cust_id)
         {    
             char type_str[50];
             char *time_str = ctime(&transaction.transaction_time);

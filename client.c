@@ -97,6 +97,9 @@ void login_logout_handler(int sct){
             printf("Login Unsuccesful\n");
             continue;
             }
+        else if(atoi(read_buffer) == 9){
+            
+        }
         else {
             printf("Login Succesful\n============================================\n");
             break;
