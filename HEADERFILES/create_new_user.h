@@ -29,10 +29,10 @@ void create_admin_user(struct Admin a){
 
 void create_manager_user(struct Manager m){
     int fd;
-    printf("=========== adding manager user ===========\n");
+    printf("----------------------------- adding manager user\n");
     // open file in read write file
     fd = open("DATABASE/manager.txt",O_RDWR);
-    perror("create manager user - open");
+    // perror("create manager user - open");
     if(fd==-1){
         perror("");
         return;
@@ -40,10 +40,10 @@ void create_manager_user(struct Manager m){
     // write data to the file
     lseek(fd, 0, SEEK_END);
     write(fd, &m, sizeof(m));
-    perror("create manager user - write");
+    // perror("create manager user - write");
     lseek(fd, -sizeof(m), SEEK_CUR);
     read(fd, &m, sizeof(m));
-    perror("create manager user - read");
+    // perror("create manager user - read");
 
     close(fd); 
 
@@ -89,7 +89,7 @@ void create_customer_user(struct Customer c){
     int filesize = fileState.st_size;
     int number_of_account_holder = filesize/sizeof(c);
 
-    printf("Number of acc holders = %d\n",number_of_account_holder);
+    // printf("Number of acc holders = %d\n",number_of_account_holder);
 
     // go to last customer to get the last account number
     if(number_of_account_holder!=0){
@@ -105,10 +105,10 @@ void create_customer_user(struct Customer c){
 
     // write data to the file
     write(fd, &c, sizeof(c));
-    perror("");
+    // perror("");
     lseek(fd, 0, SEEK_SET);
     read(fd, &c, sizeof(c));
-    perror("");
+    // perror("");
     close(fd); 
 
     return ;
@@ -116,7 +116,7 @@ void create_customer_user(struct Customer c){
 
 int create_new_user(int acpt, int type){
     char buffer[500];
-    printf("=============================== inside create new user ===============================\n");
+    printf("----------------------------- inside create new user\n");
 
     sleep(1);
     // send loop continue signal
@@ -124,15 +124,15 @@ int create_new_user(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -150,16 +150,16 @@ int create_new_user(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent menu \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent menu \n============================================\n");
     // getchar();
 
     // recv choice
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd choice \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd choice \n============================================\n");
     // getchar();
     type = atoi(buffer);
     // // send loop continue signal
@@ -171,7 +171,7 @@ int create_new_user(int acpt, int type){
     // printf("send CONTINUE sig \n============================================\n");
 
     
-    printf("==========type============= %d\n", type);
+    // printf("==========type============= %d\n", type);
     switch(type){
         case 1:
             {   
@@ -180,16 +180,16 @@ int create_new_user(int acpt, int type){
                 if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                     perror("Error sending login data");
                 }
-                printf("%s\n", buffer);
-                printf("send CONTINUE sig \n============================================\n");
+                // printf("%s\n", buffer);
+                // printf("send CONTINUE sig \n============================================\n");
 
-                printf("=================== inside create new user (ADMIN) ====================\n");
+                printf("----------------------------- inside create new user (ADMIN)\n");
                 // recv signal
                 if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
                     printf("Error\n");
                 }
-                printf("%s\n", buffer);
-                printf("recvd of ready sig \n============================================\n");
+                // printf("%s\n", buffer);
+                // printf("recvd of ready sig \n============================================\n");
                 // getchar();
 
                 // send signal
@@ -219,7 +219,7 @@ int create_new_user(int acpt, int type){
                 // printf("sent msg \n============================================\n");
                 // return continuee(acpt);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
                 // return 1;
             }
@@ -233,7 +233,7 @@ int create_new_user(int acpt, int type){
                 // printf("%s\n", buffer);
                 // printf("send CONTINUE sig \n============================================\n");
 
-                printf("=================== inside create new user (MANGER) ====================\n");
+                printf("----------------------------- inside create new user (MANGER) \n");
                 struct Manager m;
                 char temp_username[30];
                 // printf("Enter Manager's Name : ");
@@ -255,14 +255,14 @@ int create_new_user(int acpt, int type){
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
                 return 1;
             }
 
         case 3:
             {
-                printf("=================== inside create new user (EMPLOYEE) ====================\n");
+                printf("----------------------------- inside create new user (EMPLOYEE)\n");
                 struct Employee e ;
                 char temp_username[30];
                 // printf("Enter Manager's Name : ");
@@ -288,13 +288,13 @@ int create_new_user(int acpt, int type){
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
                  int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
                 // return 1;
             }
         case 4:
             {
-                printf("=================== inside create new user (CUSTOMER) ====================\n");
+                printf("----------------------------- inside create new user (CUSTOMER)\n");
                 struct Customer c ;
                 char temp_username[30];
                 // printf("Enter Manager's Name : ");
@@ -318,13 +318,13 @@ int create_new_user(int acpt, int type){
                 send_message(acpt, buffer, 0);
                 // return continuee(acpt);
                  int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
                 // return 1;
             }
         default:
             {
-                printf("Invalid Choice...\n");
+                send_message(acpt, "Invalid Choice...\n",0);
                 return 0;
             }
     }
@@ -333,7 +333,7 @@ int create_new_user(int acpt, int type){
 
 int create_new_user_by_manager(int acpt, int type){
     char buffer[500];
-    printf("=============================== inside create new user ===============================\n");
+    printf("----------------------------- inside create new user \n");
 
     sleep(1);
     // send loop continue signal
@@ -341,15 +341,15 @@ int create_new_user_by_manager(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -367,16 +367,16 @@ int create_new_user_by_manager(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent menu \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent menu \n============================================\n");
     // getchar();
 
     // recv choice
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd choice \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd choice \n============================================\n");
     // getchar();
     type = atoi(buffer);
     // // send loop continue signal
@@ -388,11 +388,11 @@ int create_new_user_by_manager(int acpt, int type){
     // printf("send CONTINUE sig \n============================================\n");
 
     
-    printf("==========type============= %d\n", type);
+    // printf("==========type============= %d\n", type);
     switch(type){
         case 1:
             {
-                printf("=================== inside create new user (EMPLOYEE) ====================\n");
+                printf("----------------------------- inside create new user (EMPLOYEE)\n");
                 struct Employee e ;
                 char temp_username[30];
                 // printf("Enter Manager's Name : ");
@@ -419,12 +419,12 @@ int create_new_user_by_manager(int acpt, int type){
                 // return continuee(acpt);
                 // return 1;
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
         case 2:
             {
-                printf("=================== inside create new user (CUSTOMER) ====================\n");
+                printf("----------------------------- inside create new user (CUSTOMER)\n");
                 struct Customer c ;
                 char temp_username[30];
                 // printf("Enter Manager's Name : ");
@@ -449,19 +449,19 @@ int create_new_user_by_manager(int acpt, int type){
                 // return continuee(acpt);
                 // return 1;
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
         default:
             {
-                printf("Invalid Choice...\n");
+                send_message(acpt, "Invalid Choice...\n", 0);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
     }
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 
@@ -469,7 +469,7 @@ int create_new_user_by_manager(int acpt, int type){
 
 int create_new_customer(int acpt){
     char buffer[500];
-    printf("=============================== inside create new CUSTOMER ===============================\n");
+    printf("----------------------------- inside create new CUSTOMER\n");
 
     // sleep(1);
     // // send loop continue signal
@@ -639,7 +639,7 @@ int create_new_customer(int acpt){
     //     case 4:
     //         {
 
-    printf("=================== inside create new user (CUSTOMER) ====================\n");
+    printf("----------------------------- inside create new user (CUSTOMER)\n");
     struct Customer c ;
     char temp_username[30];
     // printf("Enter Manager's Name : ");
@@ -663,7 +663,7 @@ int create_new_customer(int acpt){
     send_message(acpt, buffer, 0);
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
     //         }
     //     default:
@@ -677,7 +677,7 @@ int create_new_customer(int acpt){
 
 int modify_customer(int acpt, int type){
     char buffer[500];
-    printf("=============================== inside create new user ===============================\n");
+    printf("----------------------------- inside create new user\n");
 
     sleep(1);
     // send loop continue signal
@@ -685,15 +685,15 @@ int modify_customer(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -711,16 +711,16 @@ int modify_customer(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent menu \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent menu \n============================================\n");
     // getchar();
 
     // recv choice
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd choice \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd choice \n============================================\n");
     // getchar();
     type = atoi(buffer);
     // send loop continue signal
@@ -728,21 +728,21 @@ int modify_customer(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     
-    printf("==========type============= %d\n", type);
+    // printf("==========type============= %d\n", type);
     switch(type){
         case 1:
             {  
                 struct Customer m;
                 char temp_userid[5];
                 take_userid(acpt, temp_userid);
-                printf("=================== change username ====================\n");
+                // printf("----------------------------- change username\n");
                 change_username_common(acpt, atoi(temp_userid), 4);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
         case 2:
@@ -752,10 +752,10 @@ int modify_customer(int acpt, int type){
                 char temp_userid[5];
                 // take_username(acpt, temp_userid);
                 take_userid(acpt, temp_userid);
-                printf("=================== change balance ====================\n");
+                printf("----------------------------- change balance\n");
                 change_customer_balance(acpt, atoi(temp_userid));
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
 
@@ -766,17 +766,17 @@ int modify_customer(int acpt, int type){
                 char temp_userid[5];
                 // take_username(acpt, temp_userid);
                 take_userid(acpt, temp_userid);
-                printf("=================== loan taken ====================\n");
+                printf("-----------------------------loan taken\n");
                 change_customer_loan_status(acpt, atoi(temp_userid));
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
         default:
             {
-                printf("Invalid Choice...\n");
+                send_message(acpt, "Invalid Choice...\n", 0);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
     }
@@ -786,7 +786,7 @@ int modify_customer(int acpt, int type){
 
 int modify_employee(int acpt, int type){
     char buffer[500];
-    printf("=============================== inside modify employee ===============================\n");
+    printf("----------------------------- inside modify employee\n");
 
     sleep(1);
     // send loop continue signal
@@ -794,15 +794,15 @@ int modify_employee(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -820,16 +820,16 @@ int modify_employee(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent menu \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent menu \n============================================\n");
     // getchar();
 
     // recv choice
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd choice \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd choice \n============================================\n");
     // getchar();
     type = atoi(buffer);
     // send loop continue signal
@@ -837,11 +837,11 @@ int modify_employee(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     
-    printf("==========type============= %d\n", type);
+    // printf("==========type============= %d\n", type);
     switch(type){
         case 1:
             {  
@@ -850,10 +850,10 @@ int modify_employee(int acpt, int type){
                 char temp_userid[5];
                 // take_username(acpt, temp_userid);
                 take_userid(acpt, temp_userid);
-                printf("=================== change username ====================\n");
+                // printf("----------------------------- change username \n");
                 change_username_common(acpt, atoi(temp_userid), 3);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
         case 2:
@@ -863,17 +863,17 @@ int modify_employee(int acpt, int type){
                 char temp_userid[5];
                 // take_username(acpt, temp_userid);
                 take_userid(acpt, temp_userid);
-                printf("=================== change balance ====================\n");
+                printf("----------------------------- change balance\n");
                 change_salary(acpt, atoi(temp_userid));
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
         default:
             {
                 printf("Invalid Choice...\n");
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
     }
@@ -884,7 +884,7 @@ int modify_employee(int acpt, int type){
 int view_customers(int acpt, int type){
     int emp_id;
     // char buffer[500];
-    printf("=============================== inside view customers ===============================\n");
+    printf("----------------------------- inside view customer\n");
     char buffer[500];
     struct Customer cust;
     memset(&cust, 0, sizeof(cust));
@@ -895,10 +895,10 @@ int view_customers(int acpt, int type){
         // return continuee(acpt);
         return 1;
     }
-    
+    send_message(acpt, "UserID  Username Balance IsActive LoanTaken", 0);
     while((bytesRead = read(fd, &cust, sizeof(cust))) > 0 ){
         char message[500];
-        sprintf(message, "%d %s %.2f %d %d\n", cust.u.userid, cust.u.username, cust.account_balance, cust.u.is_active, cust.loan_taken);
+        sprintf(message, "  %d     %s      %.2f      %d      %d", cust.u.userid, cust.u.username, cust.account_balance, cust.u.is_active, cust.loan_taken);
         send_message(acpt, message, 0);
         }
     
@@ -913,7 +913,7 @@ int view_customers(int acpt, int type){
 int manage_user_role(int acpt){
     int emp_id;
     // char buffer[500];
-    printf("=============================== inside manage user roles ===============================\n");
+    printf("----------------------------- inside manage user roles\n");
     char bufferr[60];
     show_msg_get_data(acpt, bufferr, "Enter Employee Id whom you want to convert to Manager : ");
 
@@ -934,7 +934,7 @@ int manage_user_role(int acpt){
         return 1;
     }
     while((bytesRead = read(fd, &employee, sizeof(employee))) > 0 ){
-        printf("====in while\n");
+        // printf("====in while\n");
         // printf("%d %d \n",tempCustomer.u.userid,uid );
         if(employee.u.userid==atoi(bufferr)){
             employee.u.is_active = false;
@@ -965,14 +965,14 @@ int manage_user_role(int acpt){
 
 
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;
             // return 1;
         }
     }
     close(fd);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 

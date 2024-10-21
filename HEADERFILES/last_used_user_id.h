@@ -22,7 +22,7 @@ void update_user_id_by_one(){
         // write data to the file
         lseek(fd, 0, SEEK_SET);
         read(fd, &t, sizeof(t));
-        printf("Last Used User Id : %d\n", t);
+        // printf("Last Used User Id : %d\n", t);
         t = t+1;
         
         lseek(fd, 0, SEEK_SET);
@@ -30,7 +30,7 @@ void update_user_id_by_one(){
 
         lseek(fd, 0, SEEK_SET);
         read(fd, &t, sizeof(t));
-        printf("Updated User Id : %d\n", t);
+        // printf("Updated User Id : %d\n", t);
     }
 
     close(fd); 
@@ -54,13 +54,13 @@ int show_user_id_by_one(){
     if(file_stat.st_size == 0){
         // file is empty, initialize with 0
         int init_val = 0;
-        printf("Last Used User Id : %d\n", t);
+        // printf("Last Used User Id : %d\n", t);
     }
     else{
         
         lseek(fd, 0, SEEK_SET);
         read(fd, &t, sizeof(t));
-        printf("Last Used User Id : %d\n", t);
+        // printf("Last Used User Id : %d\n", t);
     }
 
     close(fd); 

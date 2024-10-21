@@ -12,14 +12,14 @@ int continuee(int acpt){
         perror("Error sending login data");
     }
     // printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
     // printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -38,15 +38,15 @@ int continuee(int acpt){
         perror("Error sending login data");
     }
     // printf("%s\n", buffer);
-    printf("sent menu \n============================================\n");
+    // printf("sent menu \n============================================\n");
     // getchar();
 
     // recv choice
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd choice \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd choice \n============================================\n");
     // getchar();
     int choice = atoi(buffer);
     // send loop continue signal
@@ -54,11 +54,11 @@ int continuee(int acpt){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     
-    printf("========== choice ============= %d\n", choice);
+    // printf("========== choice ============= %d\n", choice);
     switch(choice){
         case 1:{
             return 1;
@@ -78,15 +78,15 @@ void take_username(int acpt, char* username_buffer){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -112,8 +112,8 @@ void take_username(int acpt, char* username_buffer){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     strcpy(username_buffer, buffer);
 }
@@ -152,8 +152,8 @@ void take_userid(int acpt, char* userid_buffer){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     strcpy(userid_buffer, buffer);
 }
@@ -168,15 +168,15 @@ void take_password(int acpt, char* username_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -202,8 +202,8 @@ void take_password(int acpt, char* username_buffer, char *s){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     strcpy(username_buffer, buffer);
 }
@@ -217,15 +217,15 @@ void take_salary(int acpt, float *temp_salary){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -251,8 +251,8 @@ void take_salary(int acpt, float *temp_salary){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     *temp_salary = atof(buffer);
 }
@@ -266,15 +266,15 @@ void take_balance(int acpt, char *temp_balance){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -300,8 +300,8 @@ void take_balance(int acpt, char *temp_balance){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     strcpy(temp_balance, buffer);
 }
@@ -315,15 +315,15 @@ void take_loan_status(int acpt, char *temp_loan_status){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -349,8 +349,8 @@ void take_loan_status(int acpt, char *temp_loan_status){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     strcpy(temp_loan_status ,buffer);
 }
@@ -365,15 +365,15 @@ void show_msg_get_data(int acpt, char* temp_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -399,8 +399,8 @@ void show_msg_get_data(int acpt, char* temp_buffer, char *s){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     strcpy(temp_buffer, buffer);
 }
@@ -416,15 +416,15 @@ void show_msg_get_whole_line_as_data(int acpt, char* temp_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -450,8 +450,8 @@ void show_msg_get_whole_line_as_data(int acpt, char* temp_buffer, char *s){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd input \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd input \n============================================\n");
 
     strcpy(temp_buffer, buffer);
 }
@@ -465,15 +465,15 @@ void send_message(int acpt, char* write_buffer, int from_login_session){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send CONTINUE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send CONTINUE sig \n============================================\n");
 
     // recv signal
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -508,7 +508,7 @@ void send_message(int acpt, char* write_buffer, int from_login_session){
 }
 
 int change_password_common(int acpt, int uid, int type){
-    printf("change password\n");
+    printf("----------------------------- inside change password\n");
     char buffer[500];
     switch(type){
         case 1:{
@@ -522,10 +522,10 @@ int change_password_common(int acpt, int uid, int type){
                 return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-                printf("====in while\n");
+                // printf("====in while\n");
                 printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
-                    printf("====in if\n");
+                    // printf("====in if\n");
                     char password[30];
                     take_password(acpt, password, " Old");
                     struct User tempUsr;
@@ -548,7 +548,7 @@ int change_password_common(int acpt, int uid, int type){
                     return temp;
                     // return 1;
                 }
-                printf("change password admin\n");
+                // printf("change password admin\n");
             }
             close(fd);
             break;
@@ -586,7 +586,7 @@ int change_password_common(int acpt, int uid, int type){
                     // return continuee(acpt);
                     // return 1;
                     int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
+                    // printf("=====temp %d\n",temp);
                     return temp;
                 }
             }
@@ -626,7 +626,7 @@ int change_password_common(int acpt, int uid, int type){
                     // return continuee(acpt);
                     // return 1;
                     int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
+                    // printf("=====temp %d\n",temp);
                     return temp;
                 }
             }
@@ -644,10 +644,10 @@ int change_password_common(int acpt, int uid, int type){
                 return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-                printf("====in while\n");
+                // printf("====in while\n");
                 printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
-                    printf("====in if\n");
+                    // printf("====in if\n");
                     char password[30];
                     take_password(acpt, password, " Old");
                     struct User tempUsr;
@@ -666,11 +666,11 @@ int change_password_common(int acpt, int uid, int type){
                     }
                     close(fd);
                     int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
+                    // printf("=====temp %d\n",temp);
                     return temp;
                     // return 1;
                 }
-                printf("change password admin\n");
+                // printf("change password admin\n");
             }
             close(fd);
             break;
@@ -682,7 +682,7 @@ int change_password_common(int acpt, int uid, int type){
 }
 
 int change_username_common(int acpt, int uid, int type){
-    printf("change username\n");
+    printf("----------------------------- inside change username\n");
     char buffer[500];
     switch(type){
         case 1:{
@@ -696,10 +696,10 @@ int change_username_common(int acpt, int uid, int type){
                 return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-                printf("====in while\n");
+                // printf("====in while\n");
                 printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
-                    printf("====in if\n");
+                    // printf("====in if\n");
                     char username[30];
                     take_username(acpt, username);
                     strcpy(tempCustomer.u.username, username);
@@ -717,7 +717,7 @@ int change_username_common(int acpt, int uid, int type){
                     // return temp;
                     return 1;
                 }
-                printf("change username admin\n");
+                // printf("change username admin\n");
             }
             close(fd);
             break;
@@ -733,10 +733,10 @@ int change_username_common(int acpt, int uid, int type){
                 return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-                printf("====in while\n");
+                // printf("====in while\n");
                 printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
-                    printf("====in if\n");
+                    // printf("====in if\n");
                     char username[30];
                     take_username(acpt, username);
                     strcpy(tempCustomer.u.username, username);
@@ -754,7 +754,7 @@ int change_username_common(int acpt, int uid, int type){
                     // return temp;
                     return 1;
                 }
-                printf("change username admin\n");
+                // printf("change username admin\n");
             }
             close(fd);
             break;
@@ -770,10 +770,10 @@ int change_username_common(int acpt, int uid, int type){
                 return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-                printf("====in while\n");
+                // printf("====in while\n");
                 printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
-                    printf("====in if\n");
+                    // printf("====in if\n");
                     char username[30];
                     take_username(acpt, username);
                     strcpy(tempCustomer.u.username, username);
@@ -791,7 +791,7 @@ int change_username_common(int acpt, int uid, int type){
                     // return temp;
                     return 1;
                 }
-                printf("change username admin\n");
+                // printf("change username admin\n");
             }
             close(fd);
             break;
@@ -807,10 +807,10 @@ int change_username_common(int acpt, int uid, int type){
                 return 1;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-                printf("====in while\n");
+                // printf("====in while\n");
                 printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
-                    printf("====in if\n");
+                    // printf("====in if\n");
                     char username[30];
                     take_username(acpt, username);
                     strcpy(tempCustomer.u.username, username);
@@ -828,7 +828,7 @@ int change_username_common(int acpt, int uid, int type){
                     // return temp;
                     return 1;
                 }
-                printf("change username admin\n");
+                // printf("change username admin\n");
             }
             close(fd);
             break;
@@ -839,7 +839,7 @@ int change_username_common(int acpt, int uid, int type){
 }
 
 int change_customer_balance(int acpt, int uid){
-    printf("change username\n");
+    printf("----------------------------- inside change username\n");
     char buffer[500];
     struct Customer tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
@@ -851,10 +851,10 @@ int change_customer_balance(int acpt, int uid){
         return 1;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-        printf("====in while\n");
+        // printf("====in while\n");
         printf("%d %d \n",tempCustomer.u.userid,uid );
         if(tempCustomer.u.userid==uid){
-            printf("====in if\n");
+            // printf("====in if\n");
             char balance[20];
             take_balance(acpt, balance);
             float balanceValue = atof(balance);
@@ -873,7 +873,7 @@ int change_customer_balance(int acpt, int uid){
             // return temp;
             return 1;
         }
-        printf("change balance admin\n");
+        // printf("change balance admin\n");
     }
     close(fd);
     // return continuee(acpt);
@@ -881,7 +881,7 @@ int change_customer_balance(int acpt, int uid){
 }
 
 int change_salary(int acpt, int uid){
-    printf("change salary\n");
+    printf("----------------------------- inside change salary\n");
     char buffer[500];
     struct Employee tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
@@ -893,10 +893,10 @@ int change_salary(int acpt, int uid){
         return 1;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-        printf("====in while\n");
+        // printf("====in while\n");
         printf("%d %d \n",tempCustomer.u.userid,uid );
         if(tempCustomer.u.userid==uid){
-            printf("====in if\n");
+            // printf("====in if\n");
             float balance;
             take_salary(acpt, &balance);
             char balance_str[20];
@@ -915,7 +915,7 @@ int change_salary(int acpt, int uid){
             // return temp;
             return 1;
         }
-        printf("change balance admin\n");
+        // printf("change balance admin\n");
     }
     close(fd);
     // return continuee(acpt);
@@ -923,7 +923,7 @@ int change_salary(int acpt, int uid){
 }
 
 int change_customer_loan_status(int acpt, int uid){
-    printf("change loan status\n");
+    printf("----------------------------- inside change loan status\n");
     char buffer[500];
     struct Customer tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
@@ -935,10 +935,10 @@ int change_customer_loan_status(int acpt, int uid){
         return 1;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-        printf("====in while\n");
+        // printf("====in while\n");
         printf("%d %d \n",tempCustomer.u.userid,uid );
         if(tempCustomer.u.userid==uid){
-            printf("====in if\n");
+            // printf("====in if\n");
             char loan_status[30];
             take_loan_status(acpt, loan_status);
             int loanValue = atoi(loan_status);
@@ -957,7 +957,7 @@ int change_customer_loan_status(int acpt, int uid){
             // return temp;
             return 1;
         }
-        printf("change Loan Status admin\n");
+        // printf("change Loan Status admin\n");
     }
     close(fd);
     // return continuee(acpt);

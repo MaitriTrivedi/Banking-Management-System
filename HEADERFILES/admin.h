@@ -258,7 +258,7 @@ int admin_handler(int acpt, int login_success_user_id) {
         // printf("in while loopoooooooooooooooooooooooooooooooop\n");
         switch (temp_choice) {
             case 1:
-                printf("Case 1: Adding a new user\n");
+                // printf("Case 1: Adding a new user\n");
                 int cont = create_new_user(acpt, temp_choice);  // Function to add a new user
                 if(cont==0) {
                     temp_choice=7;
@@ -269,7 +269,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 return 1;
                 // break;
             case 2:
-                printf("Case 2: Modify Customer Details\n");
+                // printf("Case 2: Modify Customer Details\n");
                 cont = modify_customer(acpt, temp_choice);
                 if(cont==0) {
                     temp_choice=7;
@@ -279,7 +279,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 // Logic for viewing managers here
                 break;
             case 3:
-                printf("Case 3: Modify Employee Details\n");
+                // printf("Case 3: Modify Employee Details\n");
                 cont = modify_employee(acpt, temp_choice); 
                 if(cont==0) {
                     temp_choice=7;
@@ -289,7 +289,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 // Logic for viewing managers here
                 break;
             case 4:
-                printf("Case 4: Viewing customers\n");
+                // printf("Case 4: Viewing customers\n");
                 cont = view_customers(acpt, temp_choice); 
                 if(cont==0) {
                     temp_choice=7;
@@ -299,7 +299,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 // Logic for viewing managers here
                 break;
             case 5:
-                printf("Case 5: Change Password\n");
+                // printf("Case 5: Change Password\n");
                 cont = change_password_common(acpt, login_success_user_id, 1);
                 // cont = continuee(acpt);  // Exit the admin handler
                 if(cont==0) {
@@ -308,7 +308,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 }
                 else return 1;
             case 6:
-                printf("Case 6: Exiting the admin handler\n");
+                // printf("Case 6: Exiting the admin handler\n");
                 logout_admin(login_success_user_id);
                 return 6;  // Exit the admin handler
             case 7:
@@ -331,10 +331,10 @@ int admin_handler(int acpt, int login_success_user_id) {
                     default:
                         break;
                 }
-                printf("Case 7: Logout  --ENDDD  %d\n", choice);
+                // printf("Case 7: Logout  --ENDDD  %d\n", choice);
                 return 7;  // Exit the admin handler
             case 8:
-                printf("Case 8: Manage User Roles\n");
+                // printf("Case 8: Manage User Roles\n");
                 conti = manage_user_role(acpt);
                 if(cont==0) {
                     temp_choice=7;
@@ -344,7 +344,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 // Logic for viewing managers here
                 break;
             default:
-                printf("Invalid choice. Please select a valid option.\n");
+                send_message(acpt, "Invalid choice. Please select a valid option.\n",0);
                 break;
         }
         break;

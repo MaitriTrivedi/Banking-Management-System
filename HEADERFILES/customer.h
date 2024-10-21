@@ -32,7 +32,7 @@ void update_loan_id_by_one(){
         // write data to the file
         lseek(fd, 0, SEEK_SET);
         read(fd, &t, sizeof(t));
-        printf("Last Used User Id : %d\n", t);
+        // printf("Last Used User Id : %d\n", t);
         t = t+1;
         
         lseek(fd, 0, SEEK_SET);
@@ -40,7 +40,7 @@ void update_loan_id_by_one(){
 
         lseek(fd, 0, SEEK_SET);
         read(fd, &t, sizeof(t));
-        printf("Updated User Id : %d\n", t);
+        // printf("Updated User Id : %d\n", t);
     }
 
     close(fd); 
@@ -64,13 +64,13 @@ int show_loan_id_by_one(){
     if(file_stat.st_size == 0){
         // file is empty, initialize with 0
         int init_val = 0;
-        printf("Last Used User Id : %d\n", t);
+        // printf("Last Used User Id : %d\n", t);
     }
     else{
         
         lseek(fd, 0, SEEK_SET);
         read(fd, &t, sizeof(t));
-        printf("Last Used User Id : %d\n", t);
+        // printf("Last Used User Id : %d\n", t);
     }
 
     close(fd); 
@@ -91,13 +91,13 @@ int view_account_balance(int acpt, int type, int userid){
     char buffer[50];
     // int user_id = atoi(buffer); 
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-        printf("%d %d----------------\n", userid, tempCustomer.u.userid);
+        // printf("%d %d----------------\n", userid, tempCustomer.u.userid);
         if(tempCustomer.u.userid==userid){
             char message[100];
             sprintf(message, "Your Account Balance is : %.2f\n", tempCustomer.account_balance);
             send_message(acpt, message, 0);
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;
         }
     }
@@ -156,7 +156,7 @@ int add_feedback(int acpt, int user_id) {
     if(fd==-1){
         perror("");
         int temp = continuee(acpt);
-        printf("=====temp %d\n",temp);
+        // printf("=====temp %d\n",temp);
         return temp;
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
@@ -171,7 +171,7 @@ int add_feedback(int acpt, int user_id) {
     if (fd == -1) {
         perror("Error opening transaction database");
         int temp = continuee(acpt);
-        printf("=====temp %d\n",temp);
+        // printf("=====temp %d\n",temp);
         return temp;
     }
     char temp_buffer[500];
@@ -192,13 +192,13 @@ int add_feedback(int acpt, int user_id) {
         unlock_record(fd, 1);  // Unlock in case of error
         close(fd);
         int temp = continuee(acpt);
-        printf("=====temp %d\n",temp);
+        // printf("=====temp %d\n",temp);
         return temp;
     }
-    printf("----------------------kk------------------------\n");
+    // printf("----------------------kk------------------------\n");
     close(fd);  // Close the file descriptor
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 
@@ -220,7 +220,7 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
         amount = atof(buff);
     }
     else{
-        printf("----------loan amt------------------------------------\n");
+        // printf("----------loan amt------------------------------------\n");
         amount = loan_amount;
     }
     // Convert the entered amount to float
@@ -230,7 +230,7 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
     while ((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0) {
         printf("%d %d\n", tempAdmin.u.userid, userid);
         if (tempAdmin.u.userid == userid) {
-            printf("----------------------------------------------\n");
+            // printf("----------------------------------------------\n");
             // Lock the record for writing
             printf("Locking Record......................\n");
             if (lock_record(fd, F_WRLCK, recordsize) == -1) {
@@ -272,11 +272,11 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
 
             close(fd);
             if(loan_amount!=-1){
-                printf("loan approval---------99999-------------\n");
+                // printf("loan approval---------99999-------------\n");
                 return 0;
             }
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;  // Return userid on success
         }
     }
@@ -284,7 +284,7 @@ int deposite_money(int acpt, int userid, size_t recordsize, int loan_amount){
     close(fd);
 
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
     // return continuee(acpt);  // Call continuee function if user not found
 }
@@ -350,14 +350,14 @@ int withdraw_money(int acpt, int userid, size_t recordsize){
 
             close(fd);
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;// Return userid on success
         }
     }
 
     close(fd);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
     // return continuee(acpt);  // Call continuee function if user not found
 }
@@ -404,7 +404,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         close(fd);
                         close(fd2);
                         int temp = continuee(acpt);
-                        printf("=====temp %d\n",temp);
+                        // printf("=====temp %d\n",temp);
                         return temp;
                     }
                     printf("Locked Record......................\n");
@@ -421,7 +421,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         close(fd);
                         close(fd2);
                         int temp = continuee(acpt);
-                        printf("=====temp %d\n",temp);
+                        // printf("=====temp %d\n",temp);
                         return temp;
                     }
 
@@ -446,7 +446,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         close(fd);
                         close(fd2);
                         int temp = continuee(acpt);
-                        printf("=====temp %d\n",temp);
+                        // printf("=====temp %d\n",temp);
                         return temp;
                     }
 
@@ -473,7 +473,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                         close(fd);
                         close(fd2);
                         int temp = continuee(acpt);
-                        printf("=====temp %d\n",temp);
+                        // printf("=====temp %d\n",temp);
                         return temp;
                     }
 
@@ -498,7 +498,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                     close(fd);
                     close(fd2);
                     int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
+                    // printf("=====temp %d\n",temp);
                     return temp;  // Return sender's userid on success
                 }
             }
@@ -509,7 +509,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
     close(fd);
     close(fd2);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
     // return continuee(acpt);  // Call continuee function if user not found
 }
@@ -571,7 +571,7 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
                 perror("Error locking record");
                 close(fd);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;  // Return userid on success
             }
             printf("Locked Record......................\n");
@@ -596,7 +596,7 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
                 unlock_record(fd, record_size);  // Unlock in case of error
                 close(fd);
                 int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;  // Return userid on success
             }
 
@@ -632,14 +632,14 @@ int apply_for_a_loan(int acpt, int userid, size_t record_size){
             close(fd);
             close(fd2);
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;  // Return userid on success
         }
     }
-    printf("================>>>>");
+    // printf("================>>>>");
     close(fd);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
     // return continuee(acpt);  
 }// Call continuee function if user not fou
@@ -753,7 +753,7 @@ int view_transaction_history(int acpt, int cust_id){
     }
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 

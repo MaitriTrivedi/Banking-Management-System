@@ -34,14 +34,14 @@ int activate_deactivate_customer_account(int acpt, int type, int activate){
                 send_message(acpt, "User Deactivated Successfully ...\n", 0);
             // return continuee(acpt);
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;
         }
     }
     close(fd);
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 
@@ -76,14 +76,14 @@ int assign_loan_applications_to_emp(int acpt, int type, int user_id){
             send_message(acpt, message, 0);
             // return continuee(acpt);
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;
         }
     }
     close(fd);
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 
@@ -106,7 +106,7 @@ int review_customers_feedback(int acpt, int type){
     close(fd);
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 

@@ -19,46 +19,46 @@ int approve_or_reject_loan_application(int acpt, int approve, int emp_id){
     show_msg_get_data(acpt, loan_id_buf, "Enter Loan Id You want to approve or reject :\n"); 
     // printf("================== %d\n", user_id);
     while((bytesRead = read(fd, &loan, sizeof(loan))) > 0 ){
-        printf("===inside %d %d\n", loan.loan_id, atoi(loan_id_buf));
+        // printf("===inside %d %d\n", loan.loan_id, atoi(loan_id_buf));
         if(loan.loan_id==atoi(loan_id_buf)){
-            printf("loan approval----------------------\n");
+            // printf("loan approval----------------------\n");
             // tempCustomer.u.is_active = tempCustomer.u.is_active ? 0 : 1;
             if(loan.approving_employee_id!=emp_id){
                 send_message(acpt, "You are not authorised to approve this loan ...\n", 0);
                 int temp = continuee(acpt);
-                printf("=====temp %d\n",temp);
+                // printf("=====temp %d\n",temp);
                 return temp;
             }
-            printf("loan approval------2----------------\n");
+            // printf("loan approval------2----------------\n");
             loan.is_approved = approve;
             lseek(fd, -sizeof(loan), SEEK_CUR);
             if (write(fd, &loan, sizeof(loan)) == -1) {
                 perror("Error writing updated customer");
             }
-            printf("loan approval-----3-----------------\n");
+            // printf("loan approval-----3-----------------\n");
             if(approve==1)
                 {
-                    printf("loan approval----4------------------\n");
+                    // printf("loan approval----4------------------\n");
                     deposite_money(acpt, loan.borrower.u.userid, sizeof(struct Customer), loan.loan_amount);
-                    printf("loan approval----4-----1-------------\n");
+                    // printf("loan approval----4-----1-------------\n");
                     send_message(acpt, "Loan Approved Successfully ...\n", 0);
-                    printf("loan approval----4-----2-------------\n");
+                    // printf("loan approval----4-----2-------------\n");
                 }
             else{
-                printf("loan approval---------5-------------\n");
+                // printf("loan approval---------5-------------\n");
                 send_message(acpt, "Loan Rejected Successfully ...\n", 0);
             }
-            printf("loan approval--------6--------------\n");
+            // printf("loan approval--------6--------------\n");
             // return continuee(acpt);
             int temp = continuee(acpt);
-            printf("=====temp %d\n",temp);
+            // printf("=====temp %d\n",temp);
             return temp;
         }
     }
     close(fd);
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 
@@ -88,7 +88,7 @@ int view_assigned_loan(int acpt, int emp_id){
     }
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 
@@ -125,7 +125,7 @@ int view_customer_transaction_passbook(int acpt, int cust_id){
     }
     // return continuee(acpt);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 
