@@ -53,7 +53,7 @@ void *handleClient(void *client_socket)
     /*
     This is called after creating new thread for each new client when a new client sends the request to handle each client concurrently.
     */
-    printf("\n=============================== a new client connected ===============================\n");
+    printf("\n----------------------------- a new client connected\n");
     int acpt = *(int *)client_socket;
 
     int choice;
@@ -131,7 +131,7 @@ void *handleClient(void *client_socket)
         // }
         // else 
         if(login_success_user_id==-2 || login_success_user_id==-1){
-            // printf("==================handling multiple login tries\n");
+            printf("----------------------------- handling multiple login tries\n");
             choice = 9;
             strcpy(msg, "0");
             // getchar();
@@ -145,7 +145,8 @@ void *handleClient(void *client_socket)
             if (send(acpt, msg, strlen(msg)+1, 0) == -1) {
                 perror("Sent login data");
             }
-            printf("============= Login Successful =============\n");
+            printf("----------------------------- Login Successful\n");
+            // continue;
         }
 
         
@@ -184,7 +185,8 @@ void *handleClient(void *client_socket)
                             break;
                         }
                         else if(conti==7){
-                            printf("Returning to login menu...\n");
+                            // printf("Returning to login menu...\n");
+                            printf("----------------------------- Logged Out\n");
                             
                             char buffer[500];
 
@@ -231,7 +233,7 @@ void *handleClient(void *client_socket)
                 }
                 case 1:
                 {   
-                    printf("===========================In Admin Handler\n");
+                    
                     while(1){
                         conti = admin_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
@@ -260,7 +262,8 @@ void *handleClient(void *client_socket)
                             break;
                         }
                         else if(conti==7){
-                            printf("Returning to login menu...\n");
+                            // printf("Returning to login menu...\n");
+                            printf("----------------------------- Logged Out\n");
                             
                             char buffer[500];
 
@@ -335,7 +338,8 @@ void *handleClient(void *client_socket)
                             break;
                         }
                         else if(conti==7){
-                            printf("Returning to login menu...\n");
+                            // printf("Returning to login menu...\n");
+                            printf("----------------------------- Logged Out\n");
                             
                             char buffer[500];
 
@@ -411,7 +415,8 @@ void *handleClient(void *client_socket)
                             break;
                         }
                         else if(conti==7){
-                            printf("Returning to login menu...\n");
+                            // printf("Returning to login menu...\n");
+                            printf("----------------------------- Logged Out\n");
                             
                             char buffer[500];
 
@@ -488,7 +493,8 @@ void *handleClient(void *client_socket)
                             break;
                         }
                         else if(conti==7){
-                            printf("Returning to login menu...\n");
+                            // printf("Returning to login menu...\n");
+                            printf("----------------------------- Logged Out\n");
                             
                             char buffer[500];
 

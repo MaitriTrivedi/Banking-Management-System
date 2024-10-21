@@ -140,7 +140,7 @@ void main(int argc, char *argv[])
 
     // LOGIN HANDLING :
     while(client_running){
-        // printf("---------------------------starting of the login loop\n");
+        // printf("--------------------------- starting of the login loop\n");
         memset(read_buffer, '\0', sizeof(read_buffer));
         memset(write_buffer, '\0', sizeof(write_buffer));
         
@@ -231,7 +231,7 @@ void main(int argc, char *argv[])
         if(recv(sct, &read_buffer, sizeof(read_buffer), 0)==-1){
             perror("");
         }
-        printf("%s\n", read_buffer);
+        // printf("%s\n", read_buffer);
         int temp_choice = atoi(read_buffer);
         // printf("recvd TYPE of operation sig \n============================================\n");
         // getchar();
@@ -387,7 +387,7 @@ void main(int argc, char *argv[])
                 if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){
                     printf("Something Went Wrong.\n");
                 }
-                printf("%s\n", read_buffer);
+                // printf("%s\n", read_buffer);
 
                 // username reading
                 if(recv(sct, read_buffer, sizeof(read_buffer), 0)==-1){

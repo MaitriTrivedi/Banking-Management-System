@@ -140,8 +140,8 @@ int create_new_user(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 1(type of op = 1)
@@ -197,8 +197,8 @@ int create_new_user(int acpt, int type){
                 if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                     perror("Error sending login data");
                 }
-                printf("%s\n", buffer);
-                printf("send of TYPE sig \n=====");
+                // printf("%s\n", buffer);
+                // printf("send of TYPE sig \n=====");
 
                 struct Admin a;
                 strcpy(a.u.username, "Maitri");
@@ -211,12 +211,12 @@ int create_new_user(int acpt, int type){
                 // return;
 
                 // send message
-                strcpy(buffer, "Admin user created successfully\n");
+                strcpy(buffer, "Admin user created successfully");
                 if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
                     perror("Error sending login data");
                 }
-                printf("%s\n", buffer);
-                printf("sent msg \n============================================\n");
+                // printf("%s\n", buffer);
+                // printf("sent msg \n============================================\n");
                 // return continuee(acpt);
                 int temp = continuee(acpt);
                 printf("=====temp %d\n",temp);
@@ -357,8 +357,8 @@ int create_new_user_by_manager(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 1(type of op = 1)
@@ -701,8 +701,8 @@ int modify_customer(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 1(type of op = 1)
@@ -810,8 +810,8 @@ int modify_employee(int acpt, int type){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 1(type of op = 1)
@@ -904,7 +904,7 @@ int view_customers(int acpt, int type){
     
     close(fd);
     int temp = continuee(acpt);
-    printf("=====temp %d\n",temp);
+    // printf("=====temp %d\n",temp);
     return temp;
 }
 

@@ -4,6 +4,7 @@
 // #include "create_new_user.h"
 
 int login_admin(struct Admin a, int acpt){
+    printf("----------------------------- Inside Admin Login\n");
     struct Admin tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
@@ -14,13 +15,15 @@ int login_admin(struct Admin a, int acpt){
         perror("");
         return -1;
     }
-
+    // printf("-------2---------------------- Inside Admin Login\n");
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
+        // printf("-----------------3------------ Inside Admin Login\n");
         if(strcmp(tempAdmin.u.username, a.u.username)==0){
+            // printf("------------------4----------- Inside Admin Login\n");
             if( (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                printf("-------------0000000000000---------- %d\n",tempAdmin.u.is_logged_in);
+                // printf("-------------0000000000000---------- %d\n",tempAdmin.u.is_logged_in);
                 if(tempAdmin.u.is_logged_in==1) {
                     send_message(acpt, "You are already logged in somewhere.....!",1);
                     // raise(SIGINT);
@@ -36,7 +39,9 @@ int login_admin(struct Admin a, int acpt){
                 return tempAdmin.u.userid;
             }
         }
+        // printf("----------5------------------- Inside Admin Login\n");
     }
+    // printf("-------------6---------------- Inside Admin Login\n");
     close(fd);
     return -1;
 
@@ -145,7 +150,7 @@ int login_customer(struct Customer a, int acpt){
             // hashedPasswordToHex(tempCustomer.u.password, pass, SHA256_DIGEST_LENGTH);
             printf("%s\n",pass);
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
-                printf("-------------0000000000000---------- %d\n",tempCustomer.u.is_logged_in);
+                // printf("-------------0000000000000---------- %d\n",tempCustomer.u.is_logged_in);
                 if(tempCustomer.u.is_logged_in==1){
                     send_message(acpt, "You are already logged in somewhere.....!",1);
                     // raise(SIGINT);
@@ -168,12 +173,13 @@ int login_customer(struct Customer a, int acpt){
 }
 
 int login(struct User u, int type, int acpt){
+    printf("----------------------------- Inside Login\n");
     // printf("=================\n");
     // printf("===== LOGIN =====\n");
     // printf("=================\n");
-    printf("Type %d\n", type);
-    printf("Uname %s\n", u.username);
-    printf("Password %s\n", u.password);
+    // printf("Type %d\n", type);
+    // printf("Uname %s\n", u.username);
+    // printf("Password %s\n", u.password);
     switch (type){
         case 1:
             {

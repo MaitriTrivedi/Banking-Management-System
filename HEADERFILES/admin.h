@@ -29,7 +29,7 @@ void list_of_managers(){
 }
 
 int logout_admin(int userid){
-    printf("== == == == Inside Logout admin== == == == ==\n");
+    printf("----------------------------Inside Logout Admin\n");
     struct Admin tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
@@ -51,12 +51,12 @@ int logout_admin(int userid){
                     perror("Error writing updated customer");
                 }
                 close(fd);
-                printf("== == == == end1 Logout admin== == == == ==\n");
+                // printf("== == == == end1 Logout admin== == == == ==\n");
                 return tempAdmin.u.userid;
             }
         }
     close(fd);
-    printf("== == == == end2 Logout admin== == == == ==\n");
+    // printf("== == == == end2 Logout admin== == == == ==\n");
     return -1;
 
 }
@@ -208,14 +208,15 @@ int admin_handler(int acpt, int login_success_user_id) {
     char buffer[500];
     int choice = 1;
     int conti;
-    printf("================== in admin handler ==================\n");
+    printf("----------------------------- In Admin Handler\n");
+    // printf("================== in admin handler ==================\n");
 
     // Step 1: Receive ready signal from client
     // printf("Waiting to receive ready signal from client...\n");
     if (recv(acpt, buffer, sizeof(buffer), 0) == -1) {
         perror("Error receiving ready signal");
     } else {
-        printf("Ready signal received: %s\n", buffer);
+        // printf("Ready signal received: %s\n", buffer);
     }
     // printf("Received ready signal from client \n============================================\n");
 
@@ -225,7 +226,7 @@ int admin_handler(int acpt, int login_success_user_id) {
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending type signal");
     } else {
-        printf("Type signal sent: %s\n", buffer);
+        // printf("Type signal sent: %s\n", buffer);
     }
     // printf("Sent type signal to client \n============================================\n");
 
@@ -235,7 +236,7 @@ int admin_handler(int acpt, int login_success_user_id) {
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
     } else {
-        printf("Admin menu sent: %s\n", buffer);
+        printf("----------------------------- Admin Menu Sent\n");
     }
     // printf("Sent admin menu \n============================================\n");
 
@@ -244,17 +245,17 @@ int admin_handler(int acpt, int login_success_user_id) {
     if (recv(acpt, buffer, sizeof(buffer), 0) == -1) {
         perror("Error receiving admin's choice");
     } else {
-        printf("Admin's choice received: %s\n", buffer);
+        // printf("Admin's choice received: %s\n", buffer);
     }
     // printf("Received admin's choice \n============================================\n");
 
     // Convert choice to integer
     int temp_choice = atoi(buffer);
-    printf("Admin selected choice: %d\n", temp_choice);
+    // printf("Admin selected choice: %d\n", temp_choice);
 
     // Step 5: Handle the admin's choice using switch case
     while(1){
-        printf("in while loopoooooooooooooooooooooooooooooooop\n");
+        // printf("in while loopoooooooooooooooooooooooooooooooop\n");
         switch (temp_choice) {
             case 1:
                 printf("Case 1: Adding a new user\n");
@@ -269,7 +270,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 // break;
             case 2:
                 printf("Case 2: Modify Customer Details\n");
-                conti = modify_customer(acpt, temp_choice);
+                cont = modify_customer(acpt, temp_choice);
                 if(cont==0) {
                     temp_choice=7;
                     continue;
@@ -279,7 +280,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 break;
             case 3:
                 printf("Case 3: Modify Employee Details\n");
-                conti = modify_employee(acpt, temp_choice); 
+                cont = modify_employee(acpt, temp_choice); 
                 if(cont==0) {
                     temp_choice=7;
                     continue;
@@ -289,7 +290,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 break;
             case 4:
                 printf("Case 4: Viewing customers\n");
-                conti = view_customers(acpt, temp_choice); 
+                cont = view_customers(acpt, temp_choice); 
                 if(cont==0) {
                     temp_choice=7;
                     continue;
@@ -311,7 +312,7 @@ int admin_handler(int acpt, int login_success_user_id) {
                 logout_admin(login_success_user_id);
                 return 6;  // Exit the admin handler
             case 7:
-                printf("Case 7: Logout  -- %d\n", choice);
+                // printf("Case 7: Logout  -- %d\n", choice);
                 switch (choice){
                     case 1:
                         logout_admin(login_success_user_id);

@@ -28,7 +28,7 @@ int continuee(int acpt){
         perror("Error sending login data");
     }
     // printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 1(type of op = 1)
@@ -94,8 +94,8 @@ void take_username(int acpt, char* username_buffer){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -104,8 +104,8 @@ void take_username(int acpt, char* username_buffer){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -134,8 +134,8 @@ void take_userid(int acpt, char* userid_buffer){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -144,8 +144,8 @@ void take_userid(int acpt, char* userid_buffer){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -184,8 +184,8 @@ void take_password(int acpt, char* username_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -194,8 +194,8 @@ void take_password(int acpt, char* username_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -233,8 +233,8 @@ void take_salary(int acpt, float *temp_salary){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -243,8 +243,8 @@ void take_salary(int acpt, float *temp_salary){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -282,8 +282,8 @@ void take_balance(int acpt, char *temp_balance){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -292,8 +292,8 @@ void take_balance(int acpt, char *temp_balance){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -331,8 +331,8 @@ void take_loan_status(int acpt, char *temp_loan_status){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -341,8 +341,8 @@ void take_loan_status(int acpt, char *temp_loan_status){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -381,8 +381,8 @@ void show_msg_get_data(int acpt, char* temp_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -391,8 +391,8 @@ void show_msg_get_data(int acpt, char* temp_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -432,8 +432,8 @@ void show_msg_get_whole_line_as_data(int acpt, char* temp_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 3(type of op = 3)
@@ -442,8 +442,8 @@ void show_msg_get_whole_line_as_data(int acpt, char* temp_buffer, char *s){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // recv input
@@ -481,8 +481,8 @@ void send_message(int acpt, char* write_buffer, int from_login_session){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("send of TYPE sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("send of TYPE sig \n============================================\n");
     // getchar();
 
     // case 2(type of op = 2)
@@ -491,8 +491,8 @@ void send_message(int acpt, char* write_buffer, int from_login_session){
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
-    printf("%s\n", buffer);
-    printf("sent msg \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("sent msg \n============================================\n");
     // getchar();
 
     // if(from_login_session==1){
@@ -544,7 +544,7 @@ int change_password_common(int acpt, int uid, int type){
                     }
                     close(fd);
                     int temp = continuee(acpt);
-                    printf("=====temp %d\n",temp);
+                    // printf("=====temp %d\n",temp);
                     return temp;
                     // return 1;
                 }

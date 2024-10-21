@@ -768,7 +768,7 @@ int customer_handler(int acpt, int login_success_user_id) {
     if (recv(acpt, buffer, sizeof(buffer), 0) == -1) {
         perror("Error receiving ready signal");
     } else {
-        printf("Ready signal received: %s\n", buffer);
+        // printf("Ready signal received: %s\n", buffer);
     }
     printf("Received ready signal from client \n============================================\n");
 
@@ -778,7 +778,7 @@ int customer_handler(int acpt, int login_success_user_id) {
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending type signal");
     } else {
-        printf("Type signal sent: %s\n", buffer);
+        // printf("Type signal sent: %s\n", buffer);
     }
     printf("Sent type signal to client \n============================================\n");
 
@@ -862,7 +862,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 logout_customer(login_success_user_id);
                 return 6;  // Exit the admin handler
             case 7:
-                printf("Case 7: Logout  -- %d\n", choice);
+                // printf("Case 7: Logout  -- %d\n", choice);
                 switch (choice){
                     case 1:
                         logout_admin(login_success_user_id);
