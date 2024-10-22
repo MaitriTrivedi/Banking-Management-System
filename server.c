@@ -69,7 +69,7 @@ void *handleClient(void *client_socket)
         memset(write_buffer, '\0', sizeof(write_buffer));
         memset(msg, '\0', sizeof(msg));
 
-        // printf("ready to recv login choice\n");
+        printf("ready to recv login choice\n");
         if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
             perror("Error receiving login choice");
             close(acpt);
@@ -186,7 +186,7 @@ void *handleClient(void *client_socket)
                         }
                         else if(conti==7){
                             // printf("Returning to login menu...\n");
-                            printf("----------------------------- Logged Out\n");
+                            printf("------------t----------------- Logged Out\n");
                             
                             char buffer[500];
 
@@ -256,7 +256,7 @@ void *handleClient(void *client_socket)
                             }
                             // printf("%s\n", read_buffer);
                             // printf("send CONTINUE sig \n============================================\n");
-                            // printf("=============================== client connection closed ===============================\n\n");
+                            printf("============================ CLIENT CONNECTION CLOSED ============================\n");
                             close(acpt);
                             pthread_exit(NULL);
                             break;
@@ -310,7 +310,7 @@ void *handleClient(void *client_socket)
                 }
                 case 2:
                 {   
-                    printf("===========================In manager handler\n");
+                    printf("----------------------------- In manager handler\n");
                     while(1){
                         conti = manager_handler(acpt,login_success_user_id);
                         // printf("contiiii============== %d\n",conti);
@@ -559,6 +559,7 @@ void *handleClient(void *client_socket)
     printf("=============================== client connection closed ===============================\n\n");
     close(acpt);
     pthread_exit(NULL);
+    exit(0);
 }
 
 int main(int argc, char const *argv[])
@@ -575,7 +576,7 @@ int main(int argc, char const *argv[])
         perror("");
         return 0;
     }
-    printf("======================= CRAETED SERVER SOCKET ============================\n");
+    printf("============================ CRAETED SERVER SOCKET ============================");
 
     int opt = 1;
     if (setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1) {
@@ -628,7 +629,7 @@ int main(int argc, char const *argv[])
             perror("");
             return 0;
         }
-        // printf("-########################testing\n");
+        printf("-########################testing\n");
     }
     
 

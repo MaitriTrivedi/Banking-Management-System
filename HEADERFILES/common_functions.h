@@ -125,8 +125,8 @@ void take_userid(int acpt, char* userid_buffer){
     if(recv(acpt, &buffer, sizeof(buffer), 0)==-1){
         printf("Error\n");
     }
-    printf("%s\n", buffer);
-    printf("recvd of ready sig \n============================================\n");
+    // printf("%s\n", buffer);
+    // printf("recvd of ready sig \n============================================\n");
     // getchar();
 
     // send signal
@@ -337,7 +337,7 @@ void take_loan_status(int acpt, char *temp_loan_status){
 
     // case 3(type of op = 3)
     // send msg
-    strcpy(buffer, "Enter Salary : ");
+    strcpy(buffer, "Enter Loan Status : ");
     if (send(acpt, buffer, strlen(buffer)+1, 0) == -1) {
         perror("Error sending login data");
     }
@@ -523,7 +523,7 @@ int change_password_common(int acpt, int uid, int type){
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 // printf("====in while\n");
-                printf("%d %d \n",tempCustomer.u.userid,uid );
+                // printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
                     // printf("====in if\n");
                     char password[30];
@@ -537,7 +537,7 @@ int change_password_common(int acpt, int uid, int type){
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n", 0);
+                        send_message(acpt, "Password Changed Successfully ...\n", 0);
                     }
                     else{
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
@@ -565,6 +565,7 @@ int change_password_common(int acpt, int uid, int type){
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 if(tempCustomer.u.userid==uid){
+                    // printf("====in if\n");
                     char password[30];
                     take_password(acpt, password, " Old");
                     struct User tempUsr;
@@ -572,22 +573,20 @@ int change_password_common(int acpt, int uid, int type){
                     if((memcmp(tempUsr.password, tempCustomer.u.password, SHA256_DIGEST_LENGTH)) == 0){
                         take_password(acpt, password, " New");
                         hashPassword(password, tempCustomer.u.password);
-                        tempCustomer.u = tempUsr;
                         lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n", 0);
+                        send_message(acpt, "Password Changed Successfully ...\n", 0);
                     }
                     else{
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
-                    // return continuee(acpt);
-                    // return 1;
                     int temp = continuee(acpt);
                     // printf("=====temp %d\n",temp);
                     return temp;
+                    // return 1;
                 }
             }
             close(fd);
@@ -605,6 +604,7 @@ int change_password_common(int acpt, int uid, int type){
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 if(tempCustomer.u.userid==uid){
+                    // printf("====in if\n");
                     char password[30];
                     take_password(acpt, password, " Old");
                     struct User tempUsr;
@@ -612,22 +612,20 @@ int change_password_common(int acpt, int uid, int type){
                     if((memcmp(tempUsr.password, tempCustomer.u.password, SHA256_DIGEST_LENGTH)) == 0){
                         take_password(acpt, password, " New");
                         hashPassword(password, tempCustomer.u.password);
-                        tempCustomer.u = tempUsr;
                         lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n", 0);
+                        send_message(acpt, "Password Changed Successfully ...\n", 0);
                     }
                     else{
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
                     }
                     close(fd);
-                    // return continuee(acpt);
-                    // return 1;
                     int temp = continuee(acpt);
                     // printf("=====temp %d\n",temp);
                     return temp;
+                    // return 1;
                 }
             }
             close(fd);
@@ -659,7 +657,7 @@ int change_password_common(int acpt, int uid, int type){
                         if (write(fd, &tempCustomer, sizeof(tempCustomer)) == -1) {
                             perror("Error writing updated customer");
                         }
-                        send_message(acpt, "Password Changes Successfully ...\n", 0);
+                        send_message(acpt, "Password Changed Successfully ...\n", 0);
                     }
                     else{
                         send_message(acpt, "Sorry You cannot change the password because You have entered WRONG Password ...\n", 0);
@@ -697,7 +695,7 @@ int change_username_common(int acpt, int uid, int type){
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 // printf("====in while\n");
-                printf("%d %d \n",tempCustomer.u.userid,uid );
+                // printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
                     // printf("====in if\n");
                     char username[30];
@@ -709,7 +707,7 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n", 0);
+                        send_message(acpt, "Username Changed Successfully ...\n", 0);
                     }
                     close(fd);
                     // int temp = continuee(acpt);
@@ -734,7 +732,7 @@ int change_username_common(int acpt, int uid, int type){
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 // printf("====in while\n");
-                printf("%d %d \n",tempCustomer.u.userid,uid );
+                // printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
                     // printf("====in if\n");
                     char username[30];
@@ -746,7 +744,7 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n", 0);
+                        send_message(acpt, "Username Changed Successfully ...\n", 0);
                     }
                     close(fd);
                     // int temp = continuee(acpt);
@@ -771,7 +769,7 @@ int change_username_common(int acpt, int uid, int type){
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 // printf("====in while\n");
-                printf("%d %d \n",tempCustomer.u.userid,uid );
+                // printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
                     // printf("====in if\n");
                     char username[30];
@@ -783,7 +781,7 @@ int change_username_common(int acpt, int uid, int type){
                         send_message(acpt, "Sorry Couldn't change the username  ...\n", 0);
                     }
                     else{
-                        send_message(acpt, "Username Changes Successfully ...\n", 0);
+                        send_message(acpt, "Username Changed Successfully ...\n", 0);
                     }
                     close(fd);
                     // int temp = continuee(acpt);
@@ -808,7 +806,7 @@ int change_username_common(int acpt, int uid, int type){
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
                 // printf("====in while\n");
-                printf("%d %d \n",tempCustomer.u.userid,uid );
+                // printf("%d %d \n",tempCustomer.u.userid,uid );
                 if(tempCustomer.u.userid==uid){
                     // printf("====in if\n");
                     char username[30];
@@ -852,7 +850,7 @@ int change_customer_balance(int acpt, int uid){
     }
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
         // printf("====in while\n");
-        printf("%d %d \n",tempCustomer.u.userid,uid );
+        // printf("%d %d \n",tempCustomer.u.userid,uid );
         if(tempCustomer.u.userid==uid){
             // printf("====in if\n");
             char balance[20];

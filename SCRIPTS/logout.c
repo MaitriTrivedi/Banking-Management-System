@@ -42,6 +42,7 @@ int logout_common(int uid, int type){
                 return 0;
             }
             while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
+                printf("%d %d\n", tempCustomer.u.userid, uid);
                 if(tempCustomer.u.userid==uid){
                     tempCustomer.u.is_logged_in = false;
                     lseek(fd, -sizeof(tempCustomer), SEEK_CUR);
@@ -51,7 +52,8 @@ int logout_common(int uid, int type){
                     return 0;
                     }
                     printf("done\n");
-
+                    break;
+                    }
             }
             close(fd);
             break;
@@ -72,6 +74,8 @@ int logout_common(int uid, int type){
                         perror("Error writing updated customer");
                     close(fd);
                     return 0;
+                    }
+                    break;
                 }
             }
             close(fd);
@@ -108,7 +112,7 @@ int logout_common(int uid, int type){
         }
     }
     return 0;
-}}}}}
+}}}
 
 
 void main(int argc, char *argv[]){

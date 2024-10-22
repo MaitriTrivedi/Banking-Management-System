@@ -871,7 +871,7 @@ int modify_employee(int acpt, int type){
             }
         default:
             {
-                printf("Invalid Choice...\n");
+                send_message(acpt, "Invalid Choice...\n", 0);
                 int temp = continuee(acpt);
                 // printf("=====temp %d\n",temp);
                 return temp;
@@ -944,7 +944,7 @@ int manage_user_role(int acpt){
                 send_message(acpt, "Sorry Couldn't change the balance  ...\n", 0);
             }
             else{
-                send_message(acpt, "Balance Changed Successfully ...\n", 0);
+                // send_message(acpt, "Balance Changed Successfully ...\n", 0);
             }
             close(fd);
 

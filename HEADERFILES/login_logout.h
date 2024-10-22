@@ -20,7 +20,7 @@ int login_admin(struct Admin a, int acpt){
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0 ){
         // printf("-----------------3------------ Inside Admin Login\n");
-        if(strcmp(tempAdmin.u.username, a.u.username)==0){
+        if(strcmp(tempAdmin.u.username, a.u.username)==0 & tempAdmin.u.is_active==1){
             // printf("------------------4----------- Inside Admin Login\n");
             if( (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 // printf("-------------0000000000000---------- %d\n",tempAdmin.u.is_logged_in);
@@ -62,7 +62,7 @@ int login_manager(struct Manager a, int acpt){
     // search for the availability of the Admin userx
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
-        if(strcmp(tempCustomer.u.username, a.u.username)==0){
+        if(strcmp(tempCustomer.u.username, a.u.username)==0 & tempCustomer.u.is_active==1){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 if(tempCustomer.u.is_logged_in==1) {
                     send_message(acpt, "You are already logged in somewhere.....!",1);
@@ -101,7 +101,7 @@ int login_employee(struct Employee a, int acpt){
     // printf("Start checking for the user...\n");
     while((bytesRead = read(fd, &tempCustomer, sizeof(tempCustomer))) > 0 ){
         printf("%d %d", tempCustomer.u.userid, a.u.userid);
-        if(strcmp(tempCustomer.u.username, a.u.username)==0){
+        if(strcmp(tempCustomer.u.username, a.u.username)==0 & tempCustomer.u.is_active==1){
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 if(tempCustomer.u.is_logged_in==1){
                     send_message(acpt, "You are already logged in somewhere.....!",1);
@@ -125,8 +125,8 @@ int login_employee(struct Employee a, int acpt){
 }
 
 int login_customer(struct Customer a, int acpt){
-    printf("--inside Customer login\n");
-    printf("%s %d\n", a.u.username, a.u.userid);
+    // printf("--inside Customer login\n");
+    // printf("%s %d\n", a.u.username, a.u.userid);
     struct Customer tempCustomer;
     memset(&tempCustomer, 0, sizeof(tempCustomer));
 
@@ -144,11 +144,11 @@ int login_customer(struct Customer a, int acpt){
         // printf("%s %s\n",tempAdmin.u.username, tempAdmin.u.password);
         // printf("%s %s\n",a.u.username, a.u.password);
         // printf("%d\n", (memcmp(tempAdmin.u.password, a.u.password, SHA256_DIGEST_LENGTH)));
-        if(strcmp(tempCustomer.u.username, a.u.username)==0){
-            printf("%s %d %s %s\n", a.u.username, a.u.userid, tempCustomer.u.username, tempCustomer.u.password);
+        if(strcmp(tempCustomer.u.username, a.u.username)==0 & tempCustomer.u.is_active==1){
+            // printf("%s %d %s %s\n", a.u.username, a.u.userid, tempCustomer.u.username, tempCustomer.u.password);
             char pass[70];
             // hashedPasswordToHex(tempCustomer.u.password, pass, SHA256_DIGEST_LENGTH);
-            printf("%s\n",pass);
+            // printf("%s\n",pass);
             if( (memcmp(tempCustomer.u.password, a.u.password, SHA256_DIGEST_LENGTH)) == 0){
                 // printf("-------------0000000000000---------- %d\n",tempCustomer.u.is_logged_in);
                 if(tempCustomer.u.is_logged_in==1){
@@ -168,7 +168,7 @@ int login_customer(struct Customer a, int acpt){
     }
 
     close(fd);
-    return -2;
+    return -1;
 
 }
 

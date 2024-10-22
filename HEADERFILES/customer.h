@@ -459,7 +459,7 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
                     // Move the file pointer back to update the sender record
                     lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
                     read(fd2, &tempp, sizeof(tempp));
-                    tempp.account_balance -= amount;
+                    tempAdmin.account_balance -= amount;
                     lseek(fd2, -sizeof(tempAdmin_reciver), SEEK_CUR);
                     if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
                         perror("Error writing updated sender data");
@@ -747,7 +747,7 @@ int view_transaction_history(int acpt, int cust_id){
             else if(transaction.transaction_type==2) strcpy(type_str, "Withdraw");
             else if(transaction.transaction_type==3) strcpy(type_str, "Transfer");
             else if(transaction.transaction_type==4) strcpy(type_str, "Credited");
-            sprintf(message, "%d %d %.2f %s %s \n", transaction.sender_uid, transaction.reciever_uid, transaction.amount, time_str, type_str);
+            sprintf(message, "%d %d %.2f %s %s", transaction.sender_uid, transaction.reciever_uid, transaction.amount, time_str, type_str);
             send_message(acpt, message, 0);
         }
     }
@@ -761,56 +761,56 @@ int view_transaction_history(int acpt, int cust_id){
 int customer_handler(int acpt, int login_success_user_id) {
     char buffer[500];
     int choice = 4;
-    printf("================== in customer handler ==================\n");
+    printf("----------------------------- in customer handler\n");
 
     // Step 1: Receive ready signal from client
-    printf("Waiting to receive ready signal from client...\n");
+    // printf("Waiting to receive ready signal from client...\n");
     if (recv(acpt, buffer, sizeof(buffer), 0) == -1) {
         perror("Error receiving ready signal");
     } else {
         // printf("Ready signal received: %s\n", buffer);
     }
-    printf("Received ready signal from client \n============================================\n");
+    // printf("Received ready signal from client \n============================================\n");
 
     // Step 2: Send type signal back to the client
     strcpy(buffer, "1"); // Type 1 operation
-    printf("Sending type signal to client...\n");
+    // printf("Sending type signal to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending type signal");
     } else {
         // printf("Type signal sent: %s\n", buffer);
     }
-    printf("Sent type signal to client \n============================================\n");
+    // printf("Sent type signal to client \n============================================\n");
 
     // Step 3: Send the customer menu to the client
     strcpy(buffer, "==========================================\nSelect Your Option :\n1. View My account Balance\n2. Deposite Money\n3. Withdraw Money\n4. Transfer Funds\n5. Change Password\n6. Exit\n7. Logout\n8. Apply for a loan\n9. Add Feedback\n10. View Transaction History\nEnter Your Choice : ");
-    printf("Sending customer menu to client...\n");
+    // printf("Sending customer menu to client...\n");
     if (send(acpt, buffer, strlen(buffer) + 1, 0) == -1) {
         perror("Error sending admin menu");
     } else {
-        printf("customer menu sent: %s\n", buffer);
+        // printf("customer menu sent: %s\n", buffer);
     }
-    printf("Sent customer menu \n============================================\n");
+    // printf("Sent customer menu \n============================================\n");
 
     // Step 4: Receive admin's choice
-    printf("Waiting to receive customer's choice...\n");
+    // printf("Waiting to receive customer's choice...\n");
     if (recv(acpt, buffer, sizeof(buffer), 0) == -1) {
         perror("Error receiving customer's choice");
     } else {
-        printf("customer's choice received: %s\n", buffer);
+        // printf("customer's choice received: %s\n", buffer);
     }
-    printf("Received customer's choice \n============================================\n");
+    // printf("Received customer's choice \n============================================\n");
 
     // Convert choice to integer
     int temp_choice = atoi(buffer);
-    printf("customer selected choice: %d\n", temp_choice);
+    // printf("customer selected choice: %d\n", temp_choice);
     int cont;
     // Step 5: Handle the admin's choice using switch case
     while(1){
         switch (temp_choice) {
             case 1:
                 char userid_buffer[10];
-                printf("Case 1: View My Account Balance\n");
+                // printf("Case 1: View My Account Balance\n");
                 // show_msg_get_data(acpt, userid_buffer, "Enter your user id :");
                 // printf("entert uid %d\n",atoi(userid_buffer));
                 cont = view_account_balance(acpt, temp_choice, login_success_user_id);  
@@ -822,7 +822,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 // Logic for viewing managers here
                 break;
             case 2:
-                printf("Case 2: Deposite Money\n");
+                // printf("Case 2: Deposite Money\n");
                 cont = deposite_money(acpt, login_success_user_id, sizeof(struct Customer), -1);
                 if(cont==0) {
                     temp_choice=7;
@@ -832,7 +832,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 // Logic for viewing managers here
                 break;
             case 3:
-                printf("Case 3: Withdraw Money\n");
+                // printf("Case 3: Withdraw Money\n");
                 cont = withdraw_money(acpt, login_success_user_id, sizeof(struct Customer));
                 if(cont==0) {
                     temp_choice=7;
@@ -842,7 +842,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 // Logic for viewing managers here
                 break;
             case 4:
-                printf("Case 4: Transfer Funds\n");
+                // printf("Case 4: Transfer Funds\n");
                 cont = transfer_funds(acpt, login_success_user_id, 4);
                 if(cont==0) {
                     temp_choice=7;
@@ -850,7 +850,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 }
                 else return 1;
             case 5:
-                printf("Case 5: Change Password\n");
+                // printf("Case 5: Change Password\n");
                 cont = change_password_common(acpt, login_success_user_id, 4);
                 if(cont==0) {
                     temp_choice=7;
@@ -858,7 +858,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 }
                 else return 1;
             case 6:
-                printf("Case 6: Exiting the manager handler\n");
+                // printf("Case 6: Exiting the manager handler\n");
                 logout_customer(login_success_user_id);
                 return 6;  // Exit the admin handler
             case 7:
@@ -879,10 +879,10 @@ int customer_handler(int acpt, int login_success_user_id) {
                     default:
                         break;
                 }
-                printf("Case 7: Logout  --ENDDD  %d\n", choice);
+                // printf("Case 7: Logout  --ENDDD  %d\n", choice);
                 return 7;  // Exit the admin handler
             case 8:
-                printf("Case 8: Apply for a loan\n");
+                printf("----------------------------- Apply for a loan\n");
                 cont = apply_for_a_loan(acpt, login_success_user_id, sizeof(struct Customer));
                 if(cont==0) {
                     temp_choice=7;
@@ -890,7 +890,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 }
                 else return 1;
             case 9:
-                printf("Case 9: Add Feedback\n");
+                printf("----------------------------- Add Feedback\n");
                 cont = add_feedback(acpt, login_success_user_id);
                 if(cont==0) {
                     temp_choice=7;
@@ -898,7 +898,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 }
                 else return 1;
             case 10:
-                printf("Case 10: View Transaction History\n");
+                printf("----------------------------- View Transaction History\n");
                 cont = view_transaction_history(acpt, login_success_user_id);
                 if(cont==0) {
                     temp_choice=7;
@@ -906,7 +906,7 @@ int customer_handler(int acpt, int login_success_user_id) {
                 }
                 else return 1;
             default:
-                printf("Invalid choice. Please select a valid option.\n");
+                send_message(acpt, "Invalid Choice...\n", 0);
                 break;
         }
     break;

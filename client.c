@@ -195,7 +195,7 @@ void main(int argc, char *argv[])
         }
         // printf("===%s\n", read_buffer);
         if(atoi(read_buffer) == 0) {
-            printf("Login Unsuccesful\n============================================\n");
+            printf("Login Unsuccesful\n===============t=============================\n");
             continue;
             }
         else {
@@ -373,7 +373,7 @@ void main(int argc, char *argv[])
                     printf("Something Went Wrong.\n");
                 }
                 
-                printf("%s\n", read_buffer);
+                // printf("%s\n", read_buffer);
                 
                 printf("====================================================================\n===== WELCOME TO XYZ BANK =====\n====================================================================\nIN WHICH MODE YOU WANT TO LOGIN ?\nSELECT AN OPTION FROM THE FOLLOWING :\n1. Admin\n2. Manager\n3. Employee\n4. Customer\n==========================================\nEnter your choice : ");
         

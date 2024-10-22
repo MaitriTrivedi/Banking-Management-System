@@ -29,7 +29,7 @@ void list_of_managers(){
 }
 
 int logout_admin(int userid){
-    printf("----------------------------Inside Logout Admin\n");
+    printf("---------------------------- Inside Logout Admin\n");
     struct Admin tempAdmin;
     memset(&tempAdmin, 0, sizeof(tempAdmin));
 
