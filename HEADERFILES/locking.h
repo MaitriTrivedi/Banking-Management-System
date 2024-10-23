@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "structures.h"
+#include <errno.h>
 
 // Locking function
 int lock_record(int fd, int type, ssize_t record_size) {
@@ -15,10 +16,24 @@ int lock_record(int fd, int type, ssize_t record_size) {
     fl.l_whence = SEEK_CUR;     
     fl.l_pid = getpid();        
 
-    printf("Waiting to acquire lock...\n");
+    printf("Attempting to acquire lock...\n");
 
-    return fcntl(fd, F_SETLKW, &fl);  // Apply the lock, wait if needed
+    // Loop until the lock is acquired successfully
+    while (fcntl(fd, F_SETLKW, &fl) == -1) {
+        // If lock acquisition fails due to an interrupt, print a message and retry
+        if (errno == EINTR) {
+            printf("Interrupted while waiting for lock. Retrying...\n");
+            continue;
+        } else {
+            perror("Error acquiring lock");
+            return -1;
+        }
+    }
+
+    printf("Lock acquired successfully.\n");
+    return 0;
 }
+
 
 
 int unlock_record(int fd, ssize_t record_size) {

@@ -362,24 +362,15 @@ int withdraw_money(int acpt, int userid, size_t recordsize){
     // return continuee(acpt);  // Call continuee function if user not found
 }
 
-int transfer_funds(int acpt, int userid, size_t recordsize) {
-    struct Customer tempAdmin, tempAdmin_reciver, tempp;
-    memset(&tempAdmin, 0, sizeof(tempAdmin));
-    memset(&tempAdmin_reciver, 0, sizeof(tempAdmin_reciver));
+int transfer_funds(int acpt, int sender_userid, size_t recordsize){
+    struct Customer sender, reciver, user;
+    memset(&sender, 0, sizeof(sender));
+    memset(&reciver, 0, sizeof(reciver));
 
-    // Open customer database file
-    int fd, bytesRead;
-    int fd2, bytesRead2;
+    int fd;
     fd = open("DATABASE/customer.txt", O_RDWR);
     if (fd == -1) {
         perror("Error opening customer database");
-        return -1;
-    }
-
-    fd2 = open("DATABASE/customer.txt", O_RDWR);
-    if (fd2 == -1) {
-        perror("Error opening customer database");
-        close(fd);  // Close the first file descriptor before returning
         return -1;
     }
 
@@ -388,130 +379,103 @@ int transfer_funds(int acpt, int userid, size_t recordsize) {
     show_msg_get_data(acpt, uid_reciever, "Enter the receiver's user ID: ");
     show_msg_get_data(acpt, buff, "Enter the amount you want to transfer: ");
 
-    // Convert the entered amount to float
-    float amount = atof(buff);
+    int reciver_userid = atoi(uid_reciever);
 
-    // Read through the file to find the sender
-    while ((bytesRead = read(fd, &tempAdmin, sizeof(tempAdmin))) > 0) {
-        if (tempAdmin.u.userid == userid) {
-            // Find the receiver in the second file descriptor
-            while ((bytesRead2 = read(fd2, &tempAdmin_reciver, sizeof(tempAdmin_reciver))) > 0) {
-                if (tempAdmin_reciver.u.userid == atoi(uid_reciever)) {
-                    // Lock both records for writing
-                    printf("Locking Record......................\n");
-                    if (lock_record(fd, F_WRLCK, recordsize) == -1 || lock_record(fd2, F_WRLCK, recordsize) == -1) {
-                        perror("Error locking records");
-                        close(fd);
-                        close(fd2);
-                        int temp = continuee(acpt);
-                        // printf("=====temp %d\n",temp);
-                        return temp;
-                    }
-                    printf("Locked Record......................\n");
+    int sender_found=0, reciever_found=0, sender_cnt=1, reciever_cnt=1;
 
-                    // Check if sender has enough balance
-                    if (tempAdmin.account_balance < amount) {
-                        char message[100];
-                        sprintf(message, "Insufficient funds. Your current balance is: %.2f\n", tempAdmin.account_balance);
-                        send_message(acpt, message, 0);
-
-                        // Unlock both records before returning
-                        unlock_record(fd, recordsize);
-                        unlock_record(fd2, recordsize);
-                        close(fd);
-                        close(fd2);
-                        int temp = continuee(acpt);
-                        // printf("=====temp %d\n",temp);
-                        return temp;
-                    }
-
-
-                    // Update the receiver's balance
-                    char message[100];
-                    sprintf(message, "Current Balance of Receiver is: %.2f\n", tempAdmin_reciver.account_balance);
-                    send_message(acpt, message, 0);
-
-                    // tempAdmin_reciver.account_balance += amount;
-
-                    // Move the file pointer back to update the receiver record
-                    lseek(fd2, -sizeof(tempAdmin_reciver), SEEK_CUR);
-                    read(fd2, &tempp, sizeof(tempp));
-                    tempp.account_balance += amount;
-                    lseek(fd2, -sizeof(tempAdmin_reciver), SEEK_CUR);
-                    if (write(fd2, &tempp, sizeof(tempp)) == -1) {
-                        perror("Error writing updated receiver data");
-                        // Unlock both records in case of error
-                        unlock_record(fd, recordsize);
-                        unlock_record(fd2, recordsize);
-                        close(fd);
-                        close(fd2);
-                        int temp = continuee(acpt);
-                        // printf("=====temp %d\n",temp);
-                        return temp;
-                    }
-
-                    // Update the sender's balance
-                    sprintf(message, "Your Current Balance is: %.2f\n", tempAdmin.account_balance);
-                    send_message(acpt, message, 0);
-
-                    // tempAdmin.account_balance -= amount;
-
-                    // Move the file pointer back to update the sender record
-                    lseek(fd, -sizeof(tempAdmin), SEEK_CUR);
-                    read(fd2, &tempp, sizeof(tempp));
-                    tempAdmin.account_balance -= amount;
-                    lseek(fd2, -sizeof(tempAdmin_reciver), SEEK_CUR);
-                    if (write(fd, &tempAdmin, sizeof(tempAdmin)) == -1) {
-                        perror("Error writing updated sender data");
-                        // Unlock both records in case of error
-                        printf("Unlocking Record......................\n");
-                        unlock_record(fd, recordsize);
-                        printf("Unlocked Record......................\n");
-                        printf("Unlocking Record......................\n");
-                        unlock_record(fd2, recordsize);
-                        printf("Unlocked Record......................\n");
-                        close(fd);
-                        close(fd2);
-                        int temp = continuee(acpt);
-                        // printf("=====temp %d\n",temp);
-                        return temp;
-                    }
-
-                    // Send the updated balances to both the sender and receiver
-                    sprintf(message, "Updated Balance of Receiver is: %.2f\n", tempAdmin_reciver.account_balance);
-                    send_message(acpt, message, 0);
-
-                    sprintf(message, "Updated Balance of Yours is: %.2f\n", tempAdmin.account_balance);
-                    send_message(acpt, message, 0);
-
-                    add_transaction_history(userid, atoi(uid_reciever), amount, 3);
-
-                    // Unlock both records after updating
-                    printf("Unlocking Record......................\n");
-                    if (unlock_record(fd, recordsize) == -1 || unlock_record(fd2, recordsize) == -1) {
-                        perror("Error unlocking records");
-                    }
-                    printf("Unlocked Record......................\n");
-
-                    // add_transaction_history(userid, atoi(uid_reciever), amount, 4);
-
-                    close(fd);
-                    close(fd2);
-                    int temp = continuee(acpt);
-                    // printf("=====temp %d\n",temp);
-                    return temp;  // Return sender's userid on success
-                }
-            }
+    while(read(fd, &user, sizeof(user)) > 0 && (sender_found==0 || reciever_found==0)){
+        if(user.u.userid!=sender_userid && sender_found==0){
+            sender_cnt+=1;
+        }
+        else{
+            sender = user;
+            sender_found = 1;
+        }
+        if(user.u.userid!=reciver_userid && reciever_found==0){
+            reciever_cnt+=1;
+        }
+        else{
+            reciver = user;
+            reciever_found = 1;
         }
     }
 
-    // Close file descriptors if user not found
+    lseek(fd, 0, SEEK_SET);
+
+    // lock sender and reciever
+    struct flock lock_sender, lock_reciever;
+    lock_sender.l_type = F_WRLCK;
+    lock_sender.l_whence = SEEK_SET;
+    lock_sender.l_start = sizeof(user)*(sender_cnt-1);
+    lock_sender.l_len = sizeof(user);
+    lock_sender.l_pid = getpid();
+    printf("Before locking sender...\n");
+    while (fcntl(fd, F_SETLKW, &lock_sender) == -1) {
+        printf("waiting...\n");
+        // If lock acquisition fails due to an interrupt, print a message and retry
+        if (errno == EINTR) {
+            printf("Interrupted while waiting for lock. Retrying...\n");
+            continue;
+        } else {
+            // For other errors, print the error and return failure
+            perror("Error acquiring lock");
+            return -1;
+        }
+    }
+    printf("Locked sender...\n");
+
+    lock_reciever.l_type = F_WRLCK;
+    lock_reciever.l_whence = SEEK_SET;
+    lock_reciever.l_start = sizeof(user)*(reciever_cnt-1);
+    lock_reciever.l_len = sizeof(user);
+    lock_reciever.l_pid = getpid();
+    printf("Before locking reciever...\n");
+    while (fcntl(fd, F_SETLKW, &lock_reciever) == -1) {
+        printf("waiting...\n");
+        // If lock acquisition fails due to an interrupt, print a message and retry
+        if (errno == EINTR) {
+            printf("Interrupted while waiting for lock. Retrying...\n");
+            continue;
+        } else {
+            // For other errors, print the error and return failure
+            perror("Error acquiring lock");
+            return -1;
+        }
+    }
+    fcntl(fd, F_SETLKW, &lock_reciever);
+    printf("Locked reciever...\n");
+
+    // updating both
+    lseek(fd, sizeof(sender)*(sender_cnt-1), SEEK_SET);
+    read(fd, &sender, sizeof(sender));
+    sender.account_balance -= atof(buff);
+    lseek(fd, sizeof(sender)*(sender_cnt-1), SEEK_SET);
+    write(fd, &sender, sizeof(sender));
+    lseek(fd, sizeof(sender)*(sender_cnt-1), SEEK_SET);
+    read(fd, &sender, sizeof(sender));
+
+    lseek(fd, sizeof(reciver)*(reciever_cnt-1), SEEK_SET);
+    read(fd, &reciver, sizeof(reciver));
+    reciver.account_balance += atof(buff);
+    lseek(fd, sizeof(reciver)*(reciever_cnt-1), SEEK_SET);
+    write(fd, &reciver, sizeof(reciver));
+    lseek(fd, sizeof(reciver)*(reciever_cnt-1), SEEK_SET);
+    read(fd, &reciver, sizeof(reciver));
+
+    // unlock both
+    printf("Unlocking sender...\n");
+    lock_sender.l_type = F_UNLCK;
+    fcntl(fd, F_SETLK, &lock_sender);
+    printf("Unlocked sender...\n");
+
+    printf("Unlocking reciever...\n");
+    lock_reciever.l_type = F_UNLCK;
+    fcntl(fd, F_SETLK, &lock_reciever);
+    printf("Unlocked reciever...\n");
+
     close(fd);
-    close(fd2);
-    int temp = continuee(acpt);
-    // printf("=====temp %d\n",temp);
-    return temp;
-    // return continuee(acpt);  // Call continuee function if user not found
+    return continuee(acpt);
+
 }
 
 float view_account_balance2(int user_id){
