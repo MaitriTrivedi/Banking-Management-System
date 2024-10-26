@@ -69,7 +69,7 @@ void *handleClient(void *client_socket)
         memset(write_buffer, '\0', sizeof(write_buffer));
         memset(msg, '\0', sizeof(msg));
 
-        printf("ready to recv login choice\n");
+        // printf("ready to recv login choice\n");
         if (recv(acpt, &read_buffer, sizeof(read_buffer), 0) == -1) {
             perror("Error receiving login choice");
             close(acpt);
@@ -629,7 +629,7 @@ int main(int argc, char const *argv[])
             perror("");
             return 0;
         }
-        printf("-########################testing\n");
+        // printf("-########################testing\n");
     }
     
 
